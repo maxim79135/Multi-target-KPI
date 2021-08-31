@@ -125,6 +125,27 @@ export class CardKPI implements IVisual {
                                   this.model.settings.card.borderFill
                             : ""
                     );
+                let categoryLabel = cardContainer
+                    .append("div")
+                    .classed("category category-" + i, true)
+                    .style(
+                        "font-size",
+                        this.model.settings.categoryLabel.textSize + "px"
+                    )
+                    .style(
+                        "font-family",
+                        this.model.settings.categoryLabel.fontFamily
+                    )
+                    .style(
+                        "padding-top",
+                        this.model.settings.categoryLabel.paddingTop + "px"
+                    )
+                    .style(
+                        "text-align",
+                        this.model.settings.categoryLabel.horizontalAlignment
+                    )
+                    .style("color", this.model.settings.categoryLabel.color)
+                    .text(this.model.dataGroups[i].displayName);
             }
         }
     }
@@ -162,6 +183,7 @@ export class CardKPI implements IVisual {
                     }
 
                     dataGroups.push(dataGroup);
+                    if (dataGroup) break;
                 }
                 //dataGroups.push({});
             }
