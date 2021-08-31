@@ -245,6 +245,34 @@ export class CardKPI implements IVisual {
                     selector: null,
                 });
                 break;
+
+            case "categoryLabel":
+                objectEnumeration.push({
+                    objectName: objectName,
+                    properties: {
+                        show: this.model.settings.categoryLabel.show,
+                        horizontalAlignment:
+                            this.model.settings.categoryLabel
+                                .horizontalAlignment,
+                        paddingTop:
+                            this.model.settings.categoryLabel.paddingTop,
+                        color: this.model.settings.categoryLabel.color,
+                        textSize: this.model.settings.categoryLabel.textSize,
+                        fontFamily:
+                            this.model.settings.categoryLabel.fontFamily,
+                        wordWrap: this.model.settings.categoryLabel.wordWrap,
+                    },
+                    validValues: {
+                        paddingTop: {
+                            numberRange: {
+                                min: 0,
+                                max: 15,
+                            },
+                        },
+                    },
+                    selector: null,
+                });
+                break;
         }
 
         return objectEnumeration;

@@ -184,9 +184,9 @@
                 }
             }
         },
-        "categoryMainMeasureSettings": {
+        "categoryLabel": {
             "displayName": "Category label",
-            "displayNameKey": "categoryMainMeasureSettings",
+            "displayNameKey": "categoryLabel",
             "properties": {
                 "show": {
                     "displayName": "Show Category Label",
@@ -197,7 +197,6 @@
                 "horizontalAlignment": {
                     "displayName": "Alignment",
                     "displayNameKey": "alignment",
-                    "description": "Align the content of the card to either left, right or center.",
                     "type": {
                         "formatting": {
                             "alignment": true
@@ -208,7 +207,7 @@
                     "displayName": "Padding top",
                     "displayNameKey": "paddngTop",
                     "type": {
-                        "numeric": true
+                        "integer": true
                     }
                 },
                 "color": {
@@ -340,13 +339,6 @@
                     "displayNameKey": "wordWrap",
                     "type": {
                         "bool": true
-                    }
-                },
-                "defaultTitle": {
-                    "displayName": "Default title",
-                    "displayNameKey": "defaultTitle",
-                    "type": {
-                        "text": true
                     }
                 }
             }
@@ -515,59 +507,59 @@
             "displayName": "Card",
             "displayNameKey": "card",
             "properties": {
-                "backFill":{
-                    "displayName":"Background color",
-                    "type":{
-                       "fill":{
-                          "solid":{
-                             "color":{
-                                "nullable":true
-                             }
-                          }
-                       }
+                "backFill": {
+                    "displayName": "Background color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": {
+                                    "nullable": true
+                                }
+                            }
+                        }
                     }
-                 },
-                 "borderShow":{
-                    "displayName":"Border",
-                    "type":{
-                       "bool":true
+                },
+                "borderShow": {
+                    "displayName": "Border",
+                    "type": {
+                        "bool": true
                     }
-                 },
-                 "borderFill":{
-                    "displayName":"Border color",
-                    "type":{
-                       "fill":{
-                          "solid":{
-                             "color":true
-                          }
-                       }
+                },
+                "borderFill": {
+                    "displayName": "Border color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
-                 },
-                 "borderType":{
-                    "displayName":"Border stroke",
-                    "type":{
-                       "enumeration":[
-                          {
-                             "displayName":"━━━━━",
-                             "value":"solid"
-                          },
-                          {
-                             "displayName":"━ ━ ━ ━",
-                             "value":"dashed"
-                          },
-                          {
-                             "displayName":"· · · · · · · · · ·",
-                             "value":"dotted"
-                          }
-                       ]
+                },
+                "borderType": {
+                    "displayName": "Border stroke",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "━━━━━",
+                                "value": "solid"
+                            },
+                            {
+                                "displayName": "━ ━ ━ ━",
+                                "value": "dashed"
+                            },
+                            {
+                                "displayName": "· · · · · · · · · ·",
+                                "value": "dotted"
+                            }
+                        ]
                     }
-                 },
-                 "borderWeight":{
-                    "displayName":"Border weight",
-                    "type":{
-                       "integer":true
+                },
+                "borderWeight": {
+                    "displayName": "Border weight",
+                    "type": {
+                        "integer": true
                     }
-                 }
+                }
             }
         },
         "multiple": {
@@ -581,16 +573,14 @@
                         "integer": true
                     }
                 },
-                "cardsMargin":{
-                    "displayName":"Space between cards",
-                    "type":{
-                       "integer":true
+                "cardsMargin": {
+                    "displayName": "Space between cards",
+                    "type": {
+                        "integer": true
                     }
-                 }
+                }
             }
         },
-        
-        
         "measureComparison1": {
             "displayName": "Measure for comparison 1",
             "displayNameKey": "measureComparison1",
