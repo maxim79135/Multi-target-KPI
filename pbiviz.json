@@ -2,7 +2,7 @@
     "visual":{
        "name":"cardKPI",
        "displayName":"cardKPI",
-       "guid":"cardKPI38E5AD38F6564219AD4D3E72BC969155",
+       "guid":"cardKPI",
        "visualClassName":"CardKPI",
        "version":"1.0.0",
        "description":"",
@@ -15,7 +15,7 @@
        "email":""
     },
     "assets":{
-       "icon":"assets/icon.png"
+       
     },
     "externalJS":null,
     "style":"style/visual.less",
