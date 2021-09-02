@@ -38,9 +38,9 @@
         }
     ],
     "objects": {
-        "mainMeasureSettings": {
+        "dataLabel": {
             "displayName": "Data label",
-            "displayNameKey": "mainMeasureSettings",
+            "displayNameKey": "dataLabel",
             "properties": {
                 "color": {
                     "displayName": "Color",
@@ -180,6 +180,20 @@
                                 "value": "Wingdings"
                             }
                         ]
+                    }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
                     }
                 }
             }

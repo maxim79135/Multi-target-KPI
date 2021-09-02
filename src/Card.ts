@@ -21,6 +21,7 @@ export enum CardClassNames {
     CardsContainer = "cardsContainer",
     CardContainer = "card card-",
     CategoryLabel = "category category-",
+    DataLabel = "data data-",
 }
 
 interface IDataGroup {
@@ -185,9 +186,10 @@ export class Card {
         if (this.model.settings.categoryLabel.show) {
             this.createCategoryLabel();
         }
+        this.createDataLabel();
     }
 
-    public createCategoryLabel() {
+    private createCategoryLabel() {
         for (let i = 0; i < this.model.dataGroups.length; i++) {
             let svg = this.cardsContainer.select(".card-" + i).select("svg");
             let categoryLabel = svg
@@ -252,6 +254,52 @@ export class Card {
             }
 
             categoryLabel.attr("transform", translate(x, y));
+        }
+    }
+
+    private createDataLabel() {
+        for (let i = 0; i < this.model.dataGroups.length; i++) {
+            let svg = this.cardsContainer.select(".card-" + i).select("svg");
+            let dataLabel = svg
+                .append("g")
+                .classed(CardClassNames.DataLabel + i, true);
+            dataLabel.append("text");
+
+            let svgRect = this.svgRect[i];
+            let textProperties = this.getTextProperties(
+                this.model.settings.dataLabel
+            );
+            textProperties.text =
+                this.model.dataGroups[i].mainMeasureValue.toString();
+            this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
+            let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
+                textProperties,
+                svgRect.width
+            );
+            this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
+
+            let categoryExist = this.elementExist(svg.select(".category-" + i));
+
+            let x: number, y: number;
+            let dataLabelSize = this.getLabelSize(dataLabel);
+            if (categoryExist) {
+                let categoryLabelSize = this.getLabelSize(
+                    svg.select(".category-" + i)
+                );
+                x = svgRect.width / 4;
+                y =
+                    this.model.settings.categoryLabel.paddingTop +
+                    categoryLabelSize.height +
+                    (svgRect.height -
+                        this.model.settings.categoryLabel.paddingTop -
+                        categoryLabelSize.height) /
+                        2 +
+                    dataLabelSize.height / 2;
+            } else {
+                x = svgRect.width / 2;
+            }
+            dataLabel.select("text").attr("text-anchor", "middle");
+            dataLabel.attr("transform", translate(x, y));
         }
     }
 

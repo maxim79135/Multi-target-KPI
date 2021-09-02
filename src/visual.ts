@@ -168,6 +168,27 @@ export class CardKPI implements IVisual {
                     selector: null,
                 });
                 break;
+
+            case "dataLabel":
+                objectEnumeration.push({
+                    objectName: objectName,
+                    properties: {
+                        color: model.settings.dataLabel.color,
+                        textSize: model.settings.dataLabel.textSize,
+                        fontFamily: model.settings.dataLabel.fontFamily,
+                        isItalic: model.settings.dataLabel.isItalic,
+                        isBold: model.settings.dataLabel.isBold,
+                    },
+                    propertyInstanceKind: {
+                        color: VisualEnumerationInstanceKinds.ConstantOrRule,
+                    },
+                    altConstantValueSelector: null,
+                    selector: dataViewWildcard.createDataViewWildcardSelector(
+                        dataViewWildcard.DataViewWildcardMatchingOption
+                            .InstancesAndTotals
+                    ),
+                });
+                break;
         }
 
         return objectEnumeration;

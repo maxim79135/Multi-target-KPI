@@ -56,8 +56,20 @@ export class CategoryLabel {
     public isBold: boolean = false;
 }
 
+export class DataLabel {
+    public color: string = "#333333";
+    public displayUnit: number = 0;
+    public decimalPlaces: number = 0;
+    public textSize: number = 27;
+    public fontFamily: string =
+        "wf_standard-font, helvetica, arial, sans-serif";
+    public isItalic: boolean = false;
+    public isBold: boolean = false;
+}
+
 export class CardSettings extends DataViewObjectsParser {
     public multiple: Multiple = new Multiple();
     public card: Card = new Card();
     public categoryLabel: CategoryLabel = new CategoryLabel();
+    public dataLabel: DataLabel = new DataLabel();
 }
