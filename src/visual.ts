@@ -55,7 +55,7 @@ export class CardKPI implements IVisual {
         this.card.visualTransform(options, settings);
         this.card.updateViewport(options.viewport);
         this.card.createCardContainer();
-        this.card.createCategoryLabel();
+        this.card.createLabels();
     }
 
     private static parseSettings(dataView: DataView): CardSettings {
@@ -148,6 +148,8 @@ export class CardKPI implements IVisual {
                         textSize: model.settings.categoryLabel.textSize,
                         fontFamily: model.settings.categoryLabel.fontFamily,
                         wordWrap: model.settings.categoryLabel.wordWrap,
+                        isItalic: model.settings.categoryLabel.isItalic,
+                        isBold: model.settings.categoryLabel.isBold,
                     },
                     validValues: {
                         paddingTop: {

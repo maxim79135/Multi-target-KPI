@@ -4,6 +4,7 @@ import DataView = powerbi.DataView;
 import {
     stringExtensions as StringExtensions,
     textMeasurementService as TextMeasurementService,
+    wordBreaker,
     interfaces,
 } from "powerbi-visuals-utils-formattingutils";
 import { manipulation } from "powerbi-visuals-utils-svgutils";
@@ -32,11 +33,17 @@ interface ICardViewModel {
     dataGroups: IDataGroup[];
 }
 
+interface ILabelProperties {
+    textSize: number;
+    fontFamily: string;
+    isBold: boolean;
+    isItalic: boolean;
+    color: string;
+}
+
 export class Card {
     private root: Selection<BaseType, any, any, any>;
-    private cardContainer: Selection<BaseType, any, any, any>;
     private cardsContainer: Selection<BaseType, any, any, any>;
-    private categoryLabel: Selection<BaseType, any, any, any>;
     private model: ICardViewModel;
     private cardViewport: { width: number; height: number };
     private cardMargin: {
@@ -48,6 +55,7 @@ export class Card {
     private numberOfCards: number;
     private cardsPerRow: number;
     private numberOfRows: number;
+    private svgRect: SVGRect[];
 
     constructor(target: HTMLElement) {
         this.root = select(target).classed(CardClassNames.Root, true);
@@ -140,9 +148,10 @@ export class Card {
 
     public createCardContainer() {
         this.cardsContainer.selectAll(".card").remove();
+        this.svgRect = [];
 
         for (let i = 0; i < this.model.dataGroups.length; i++) {
-            this.cardsContainer
+            let cardContainer = this.cardsContainer
                 .append("div")
                 .classed(CardClassNames.CardContainer + i, true)
                 .style("margin-left", this.cardMargin.left + "px")
@@ -162,85 +171,157 @@ export class Card {
                               this.model.settings.card.borderFill
                         : ""
                 );
+            let svg = cardContainer
+                .append("svg")
+                .style("width", "100%")
+                .style("height", "100%");
+            this.svgRect.push(
+                <SVGRect>(<SVGElement>svg.node()).getBoundingClientRect()
+            );
+        }
+    }
+
+    public createLabels() {
+        if (this.model.settings.categoryLabel.show) {
+            this.createCategoryLabel();
         }
     }
 
     public createCategoryLabel() {
-        if (this.model.settings.categoryLabel.show) {
-            for (let i = 0; i < this.model.dataGroups.length; i++) {
-                this.cardContainer = this.cardsContainer.select(".card-" + i);
-                let svg = this.cardContainer
-                    .append("svg")
-                    .style("width", "100%")
-                    .style("height", "100%");
-                this.categoryLabel = svg
-                    .append("g")
-                    .classed(CardClassNames.CategoryLabel + i, true);
-                this.categoryLabel.append("text");
+        for (let i = 0; i < this.model.dataGroups.length; i++) {
+            let svg = this.cardsContainer.select(".card-" + i).select("svg");
+            let categoryLabel = svg
+                .append("g")
+                .classed(CardClassNames.CategoryLabel + i, true);
+            categoryLabel.append("text");
 
-                let svgSize: SVGRect = <SVGRect>(
-                    (<SVGElement>svg.node()).getBoundingClientRect()
+            let svgRect = this.svgRect[i];
+            let textProperties = this.getTextProperties(
+                this.model.settings.categoryLabel
+            );
+            textProperties.text = this.model.dataGroups[i].displayName;
+            this.updateLabelStyles(
+                categoryLabel,
+                this.model.settings.categoryLabel
+            );
+
+            if (this.model.settings.categoryLabel.wordWrap) {
+                let maxDataHeight = svgRect.height * 0.4;
+                this.updateLabelValueWithWrapping(
+                    categoryLabel,
+                    textProperties,
+                    this.model.dataGroups[i].displayName,
+                    svgRect.width,
+                    maxDataHeight
                 );
-                let textProperties: TextProperties = {
-                    fontFamily: this.model.settings.categoryLabel.fontFamily,
-                    fontSize: this.model.settings.categoryLabel.textSize + "px",
-                    text: this.model.dataGroups[i].displayName,
-                };
+            } else {
                 let categoryValue =
                     TextMeasurementService.getTailoredTextOrDefault(
                         textProperties,
-                        svgSize.width
+                        svgRect.width
                     );
-                this.categoryLabel
-                    .select("text")
-                    .style(
-                        "font-size",
-                        this.model.settings.categoryLabel.textSize + "px"
-                    )
-                    .style(
-                        "font-family",
-                        this.model.settings.categoryLabel.fontFamily
-                    )
-                    .style("fill", this.model.settings.categoryLabel.color)
-                    .text(categoryValue);
-
-                let categorySize = this.getLabelSize(this.categoryLabel);
-                let x: number;
-                let y: number =
-                    this.model.settings.categoryLabel.paddingTop +
-                    categorySize.height;
-
-                if (
-                    this.model.settings.categoryLabel.horizontalAlignment ==
-                    "center"
-                ) {
-                    x = svgSize.width / 2;
-                    this.categoryLabel
-                        .select("text")
-                        .attr("text-anchor", "middle");
-                } else if (
-                    this.model.settings.categoryLabel.horizontalAlignment ==
-                    "left"
-                ) {
-                    x = this.model.settings.categoryLabel.paddingSide;
-                    this.categoryLabel
-                        .select("text")
-                        .attr("text-anchor", "start");
-                } else if (
-                    this.model.settings.categoryLabel.horizontalAlignment ==
-                    "right"
-                ) {
-                    x =
-                        svgSize.width -
-                        this.model.settings.categoryLabel.paddingSide;
-                    this.categoryLabel
-                        .select("text")
-                        .attr("text-anchor", "end");
-                }
-
-                this.categoryLabel.attr("transform", translate(x, y));
+                this.updateLabelValueWithoutWrapping(
+                    categoryLabel,
+                    categoryValue
+                );
             }
+            let categoryLabelSize = this.getLabelSize(categoryLabel);
+            let x: number;
+            let y: number =
+                this.model.settings.categoryLabel.paddingTop +
+                categoryLabelSize.height;
+
+            if (
+                this.model.settings.categoryLabel.horizontalAlignment ==
+                "center"
+            ) {
+                x = svgRect.width / 2;
+                categoryLabel.select("text").attr("text-anchor", "middle");
+            } else if (
+                this.model.settings.categoryLabel.horizontalAlignment == "left"
+            ) {
+                x = this.model.settings.categoryLabel.paddingSide;
+                categoryLabel.select("text").attr("text-anchor", "start");
+            } else if (
+                this.model.settings.categoryLabel.horizontalAlignment == "right"
+            ) {
+                x =
+                    svgRect.width -
+                    this.model.settings.categoryLabel.paddingSide;
+                categoryLabel.select("text").attr("text-anchor", "end");
+            }
+
+            categoryLabel.attr("transform", translate(x, y));
         }
+    }
+
+    private getTextProperties(properties: ILabelProperties): TextProperties {
+        return {
+            fontFamily: properties.fontFamily,
+            fontSize: properties.textSize + "px",
+            fontWeight: properties.isBold ? "bold" : "normal",
+            fontStyle: properties.isItalic ? "italic" : "normal",
+        };
+    }
+
+    private updateLabelStyles(
+        label: Selection<BaseType, any, any, any>,
+        styles: ILabelProperties
+    ) {
+        label
+            .select("text")
+            .style("font-family", styles.fontFamily)
+            .style("font-size", styles.textSize + "px")
+            .style("font-style", styles.isItalic === true ? "italic" : "normal")
+            .style("font-weight", styles.isBold === true ? "bold" : "normal")
+            .style("fill", styles.color);
+    }
+
+    private updateLabelValueWithoutWrapping(
+        label: Selection<BaseType, any, any, any>,
+        value: string
+    ) {
+        label.select("text").text(value);
+    }
+
+    private updateLabelValueWithWrapping(
+        label: Selection<BaseType, any, any, any>,
+        textProperties: TextProperties,
+        value: string,
+        maxWidth: number,
+        maxHeight: number
+    ) {
+        let textHeight: number =
+            TextMeasurementService.estimateSvgTextHeight(textProperties);
+        let maxNumLines: number = Math.max(
+            1,
+            Math.floor(maxHeight / textHeight)
+        );
+        let labelValues = wordBreaker.splitByWidth(
+            value,
+            textProperties,
+            TextMeasurementService.measureSvgTextWidth,
+            maxWidth,
+            maxNumLines,
+            TextMeasurementService.getTailoredTextOrDefault
+        );
+        label
+            .select("text")
+            .selectAll("tspan")
+            .data(labelValues)
+            .enter()
+            .append("tspan")
+            .attr("x", 0)
+            .attr("dy", (d, i) => {
+                if (i === 0) {
+                    return 0;
+                } else {
+                    return textHeight;
+                }
+            })
+            .text((d) => {
+                return d;
+            });
     }
 
     private elementExist(labelGroup: Selection<BaseType, any, any, any>) {

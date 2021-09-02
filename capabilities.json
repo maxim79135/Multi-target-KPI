@@ -347,6 +347,20 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },

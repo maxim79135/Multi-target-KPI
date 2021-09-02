@@ -52,6 +52,8 @@ export class CategoryLabel {
     public fontFamily: string =
         "wf_standard-font, helvetica, arial, sans-serif";
     public wordWrap: boolean = false;
+    public isItalic: boolean = false;
+    public isBold: boolean = false;
 }
 
 export class CardSettings extends DataViewObjectsParser {
