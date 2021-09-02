@@ -46,6 +46,7 @@ export class CategoryLabel {
     public show: boolean = true;
     public horizontalAlignment: string = "center";
     public paddingTop: number = 5;
+    public paddingSide: number = 5;
     public color: string = "#333333";
     public textSize: number = 15;
     public fontFamily: string =

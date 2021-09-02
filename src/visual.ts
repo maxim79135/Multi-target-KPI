@@ -35,161 +35,27 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
-import IVisualHost = powerbi.extensibility.visual.IVisualHost;
-import IViewport = powerbi.IViewport;
 import VisualEnumerationInstanceKinds = powerbi.VisualEnumerationInstanceKinds;
 import { dataViewWildcard } from "powerbi-visuals-utils-dataviewutils";
 
 import { CardSettings } from "./settings";
+import { Card } from "./Card";
 export type Selection = d3.Selection<any, any, any, any>;
 
-interface IDataGroup {
-    displayName?: string;
-    mainMeasureValue?: number;
-}
-
-interface ICardViewModel {
-    settings: CardSettings;
-    dataGroups: IDataGroup[];
-}
-
 export class CardKPI implements IVisual {
-    private model: ICardViewModel;
-    private host: IVisualHost;
-    private element: Selection;
-    private cardsContainer: Selection;
+    private card: Card;
 
     constructor(options: VisualConstructorOptions) {
-        this.element = d3.select(options.element);
-        this.cardsContainer = this.element
-            .append("div")
-            .classed("cardsContainer", true);
-        this.host = options.host;
+        this.card = new Card(options.element);
     }
 
     public update(options: VisualUpdateOptions) {
-        this.model = this.visualTransform(options);
-        this.cardsContainer.selectAll(".card").remove();
-        let numberOfCards = this.model.dataGroups.length;
-        if (numberOfCards > 0) {
-            let viewport = options.viewport;
-            let cardsPerRow = Math.min(
-                numberOfCards,
-                this.model.settings.multiple.cardsPerRow
-            );
-            let numberOfRows = Math.ceil(numberOfCards / cardsPerRow);
-            let cardMargin = {
-                left: 0,
-                top: 0,
-                right:
-                    cardsPerRow > 1
-                        ? this.model.settings.multiple.cardsMargin
-                        : 0,
-                bottom:
-                    numberOfRows > 1
-                        ? this.model.settings.multiple.cardsMargin
-                        : 0,
-            };
+        let settings = CardKPI.parseSettings(options.dataViews[0]);
 
-            let cardViewport = {
-                width: Math.floor(
-                    (viewport.width -
-                        (cardMargin.left + cardMargin.right) * cardsPerRow) /
-                        cardsPerRow
-                ),
-                height: Math.floor(
-                    (viewport.height -
-                        (cardMargin.top + cardMargin.bottom) * numberOfRows) /
-                        numberOfRows
-                ),
-            };
-
-            for (let i = 0; i < this.model.dataGroups.length; i++) {
-                let cardContainer = this.cardsContainer
-                    .append("div")
-                    .classed("card card-" + i, true)
-                    .style("margin-left", cardMargin.left + "px")
-                    .style("margin-right", cardMargin.right + "px")
-                    .style("margin-top", cardMargin.top + "px")
-                    .style("margin-bottom", cardMargin.bottom + "px")
-                    .style("width", cardViewport.width + "px")
-                    .style("height", cardViewport.height + "px")
-                    .style("background", this.model.settings.card.backFill)
-                    .style(
-                        "border",
-                        this.model.settings.card.borderShow
-                            ? this.model.settings.card.borderWeight +
-                                  "px " +
-                                  this.model.settings.card.borderType +
-                                  " " +
-                                  this.model.settings.card.borderFill
-                            : ""
-                    );
-                let categoryLabel = cardContainer
-                    .append("div")
-                    .classed("category category-" + i, true)
-                    .style(
-                        "font-size",
-                        this.model.settings.categoryLabel.textSize + "px"
-                    )
-                    .style(
-                        "font-family",
-                        this.model.settings.categoryLabel.fontFamily
-                    )
-                    .style(
-                        "padding-top",
-                        this.model.settings.categoryLabel.paddingTop + "px"
-                    )
-                    .style(
-                        "text-align",
-                        this.model.settings.categoryLabel.horizontalAlignment
-                    )
-                    .style("color", this.model.settings.categoryLabel.color)
-                    .text(this.model.dataGroups[i].displayName);
-            }
-        }
-    }
-
-    private visualTransform(options: VisualUpdateOptions): ICardViewModel {
-        let dataViews: DataView[] = options.dataViews;
-        let dataGroups: IDataGroup[] = [];
-        let settings: CardSettings;
-        settings = CardKPI.parseSettings(dataViews[0]);
-        if (
-            dataViews &&
-            dataViews[0] &&
-            dataViews[0].categorical &&
-            dataViews[0].categorical.values
-        ) {
-            let dataCategorical = dataViews[0].categorical;
-            let category = dataCategorical.categories
-                ? dataCategorical.categories[
-                      dataCategorical.categories.length - 1
-                  ]
-                : null;
-            let categories = category ? category.values : [""];
-
-            for (let i = 0; i < categories.length; i++) {
-                let dataGroup: IDataGroup = {};
-                for (let ii = 0; ii < dataCategorical.values.length; ii++) {
-                    let dataValue = dataCategorical.values[ii];
-                    let value: any = dataValue.values[i];
-
-                    if (dataValue.source.roles["main_measure"]) {
-                        dataGroup.displayName = category
-                            ? categories[i].toString()
-                            : dataValue.source.displayName;
-                        dataGroup.mainMeasureValue = value;
-                    }
-
-                    dataGroups.push(dataGroup);
-                    if (dataGroup) break;
-                }
-                //dataGroups.push({});
-            }
-        }
-
-        return { settings, dataGroups };
+        this.card.visualTransform(options, settings);
+        this.card.updateViewport(options.viewport);
+        this.card.createCardContainer();
+        this.card.createCategoryLabel();
     }
 
     private static parseSettings(dataView: DataView): CardSettings {
@@ -206,13 +72,14 @@ export class CardKPI implements IVisual {
     ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
         var objectName = options.objectName;
         var objectEnumeration: VisualObjectInstance[] = [];
+        let model = this.card.getModel();
         switch (objectName) {
             case "card":
                 objectEnumeration.push({
                     objectName: objectName,
                     properties: {
-                        backFill: this.model.settings.card.backFill,
-                        borderShow: this.model.settings.card.borderShow,
+                        backFill: model.settings.card.backFill,
+                        borderShow: model.settings.card.borderShow,
                     },
                     propertyInstanceKind: {
                         backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
@@ -223,13 +90,13 @@ export class CardKPI implements IVisual {
                             .InstancesAndTotals
                     ),
                 });
-                this.model.settings.card.borderShow &&
+                model.settings.card.borderShow &&
                     objectEnumeration.push({
                         objectName: objectName,
                         properties: {
-                            borderFill: this.model.settings.card.borderFill,
-                            borderType: this.model.settings.card.borderType,
-                            borderWeight: this.model.settings.card.borderWeight,
+                            borderFill: model.settings.card.borderFill,
+                            borderType: model.settings.card.borderType,
+                            borderWeight: model.settings.card.borderWeight,
                         },
                         validValues: {
                             borderWeight: {
@@ -247,8 +114,8 @@ export class CardKPI implements IVisual {
                 objectEnumeration.push({
                     objectName: objectName,
                     properties: {
-                        cardsPerRow: this.model.settings.multiple.cardsPerRow,
-                        cardsMargin: this.model.settings.multiple.cardsMargin,
+                        cardsPerRow: model.settings.multiple.cardsPerRow,
+                        cardsMargin: model.settings.multiple.cardsMargin,
                     },
                     validValues: {
                         cardsPerRow: {
@@ -272,20 +139,24 @@ export class CardKPI implements IVisual {
                 objectEnumeration.push({
                     objectName: objectName,
                     properties: {
-                        show: this.model.settings.categoryLabel.show,
+                        show: model.settings.categoryLabel.show,
                         horizontalAlignment:
-                            this.model.settings.categoryLabel
-                                .horizontalAlignment,
-                        paddingTop:
-                            this.model.settings.categoryLabel.paddingTop,
-                        color: this.model.settings.categoryLabel.color,
-                        textSize: this.model.settings.categoryLabel.textSize,
-                        fontFamily:
-                            this.model.settings.categoryLabel.fontFamily,
-                        wordWrap: this.model.settings.categoryLabel.wordWrap,
+                            model.settings.categoryLabel.horizontalAlignment,
+                        paddingTop: model.settings.categoryLabel.paddingTop,
+                        paddingSide: model.settings.categoryLabel.paddingSide,
+                        color: model.settings.categoryLabel.color,
+                        textSize: model.settings.categoryLabel.textSize,
+                        fontFamily: model.settings.categoryLabel.fontFamily,
+                        wordWrap: model.settings.categoryLabel.wordWrap,
                     },
                     validValues: {
                         paddingTop: {
+                            numberRange: {
+                                min: 0,
+                                max: 15,
+                            },
+                        },
+                        paddingSide: {
                             numberRange: {
                                 min: 0,
                                 max: 15,
