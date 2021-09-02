@@ -66,7 +66,7 @@
                     "displayName": "Decimal places",
                     "displayNameKey": "precision",
                     "type": {
-                        "numeric": true
+                        "integer": true
                     }
                 },
                 "textSize": {

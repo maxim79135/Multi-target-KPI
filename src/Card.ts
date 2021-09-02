@@ -269,8 +269,10 @@ export class Card {
             let textProperties = this.getTextProperties(
                 this.model.settings.dataLabel
             );
-            textProperties.text =
-                this.model.dataGroups[i].mainMeasureValue.toString();
+            textProperties.text = Number(
+                this.model.dataGroups[i].mainMeasureValue
+            ).toFixed(this.model.settings.dataLabel.decimalPlaces);
+
             this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
             let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
                 textProperties,
@@ -279,25 +281,37 @@ export class Card {
             this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
 
             let categoryExist = this.elementExist(svg.select(".category-" + i));
+            let additionalMeasuresExist = [
+                this.elementExist(svg.select(".additional-measure1-" + i)),
+                this.elementExist(svg.select(".additional-measure2-" + i)),
+                this.elementExist(svg.select(".additional-measure3-" + i)),
+            ];
+            let isDisableAdditionalMeasures =
+                !additionalMeasuresExist[0] &&
+                !additionalMeasuresExist[1] &&
+                !additionalMeasuresExist[2];
 
             let x: number, y: number;
             let dataLabelSize = this.getLabelSize(dataLabel);
+
             if (categoryExist) {
                 let categoryLabelSize = this.getLabelSize(
                     svg.select(".category-" + i)
                 );
-                x = svgRect.width / 4;
                 y =
                     this.model.settings.categoryLabel.paddingTop +
                     categoryLabelSize.height +
                     (svgRect.height -
                         this.model.settings.categoryLabel.paddingTop -
                         categoryLabelSize.height) /
-                        2 +
-                    dataLabelSize.height / 2;
+                        2;
+                if (isDisableAdditionalMeasures) x = svgRect.width / 2;
+                else x = svgRect.width / 4;
             } else {
                 x = svgRect.width / 2;
+                y = svgRect.height / 2;
             }
+            dataLabel.select("text").style("dominant-baseline", "middle");
             dataLabel.select("text").attr("text-anchor", "middle");
             dataLabel.attr("transform", translate(x, y));
         }
@@ -372,8 +386,8 @@ export class Card {
             });
     }
 
-    private elementExist(labelGroup: Selection<BaseType, any, any, any>) {
-        if (labelGroup) {
+    private elementExist(element: Selection<BaseType, any, any, any>) {
+        if (!element.empty()) {
             return true;
         } else {
             return false;

@@ -178,6 +178,16 @@ export class CardKPI implements IVisual {
                         fontFamily: model.settings.dataLabel.fontFamily,
                         isItalic: model.settings.dataLabel.isItalic,
                         isBold: model.settings.dataLabel.isBold,
+                        displayUnit: model.settings.dataLabel.displayUnit,
+                        decimalPlaces: model.settings.dataLabel.decimalPlaces,
+                    },
+                    validValues: {
+                        decimalPlaces: {
+                            numberRange: {
+                                min: 0,
+                                max: 9,
+                            },
+                        },
                     },
                     propertyInstanceKind: {
                         color: VisualEnumerationInstanceKinds.ConstantOrRule,
