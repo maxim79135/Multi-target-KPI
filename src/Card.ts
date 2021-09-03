@@ -28,15 +28,16 @@ export enum CardClassNames {
     AdditionalMeasureLabel = "additional-measure additional-measure-",
 }
 
-interface IAdditionalCategory {
+interface IAdditionalMeasure {
+    id?: string;
     name?: string;
-    value?: string;
+    value?: number;
 }
 
 interface IDataGroup {
     displayName?: string;
     mainMeasureValue?: number;
-    additionalCategory?: IAdditionalCategory[];
+    additionalMeasures?: IAdditionalMeasure[];
 }
 
 interface ICardViewModel {
@@ -101,7 +102,7 @@ export class Card {
 
             for (let i = 0; i < categories.length; i++) {
                 let dataGroup: IDataGroup = {};
-                dataGroup.additionalCategory = [];
+                dataGroup.additionalMeasures = [];
 
                 for (let ii = 0; ii < dataCategorical.values.length; ii++) {
                     let dataValue = dataCategorical.values[ii];
@@ -115,17 +116,21 @@ export class Card {
                     }
 
                     [
-                        "measure_comparison_1",
-                        "measure_comparison_2",
-                        "measure_comparison_3",
+                        "measureComparison1",
+                        "measureComparison2",
+                        "measureComparison3",
                     ].map((v) => {
-                        if (dataValue.source.roles[v])
-                            dataGroup.additionalCategory.push({
-                                name: v,
-                                value: dataValue.source.displayName,
+                        if (
+                            dataValue.source.roles[v] &&
+                            settings.measureComparison[v].show
+                        )
+                            dataGroup.additionalMeasures.push({
+                                id: v,
+                                name: dataValue.source.displayName,
+                                value: <number>dataValue.values[i],
                             });
                     });
-                    dataGroup.additionalCategory.sort((a, b) => {
+                    dataGroup.additionalMeasures.sort((a, b) => {
                         if (a.name > b.name) return 1;
                         if (a.name < b.name) return -1;
                         return 0;
@@ -134,7 +139,6 @@ export class Card {
                 dataGroups.push(dataGroup);
             }
         }
-
         this.model = { settings, dataGroups };
         this.numberOfCards = this.model.dataGroups.length;
         this.cardsPerRow = Math.min(
@@ -215,6 +219,13 @@ export class Card {
         }
         if (this.model.settings.additionalCategoryLabel.show) {
             this.createAdditionalCategoryLabel();
+        }
+        if (
+            this.model.settings.measureComparison1.show ||
+            this.model.settings.measureComparison2.show ||
+            this.model.settings.measureComparison3.show
+        ) {
+            this.createAdditionalMeasureLabel();
         }
         this.createDataLabel();
     }
@@ -351,7 +362,7 @@ export class Card {
                 svg.select(".category-" + i)
             );
 
-            this.model.dataGroups[0].additionalCategory.map((v, j, array) => {
+            this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
                 let additionalCategoryLabel = additionalCategoryContainter
                     .append("g")
                     .classed(
@@ -362,7 +373,7 @@ export class Card {
                 let textProperties = this.getTextProperties(
                     this.model.settings.additionalCategoryLabel
                 );
-                textProperties.text = v.value;
+                textProperties.text = v.name;
                 let additionalCategoryWidth =
                     svgRect.width / (2 * array.length);
 
@@ -376,7 +387,7 @@ export class Card {
                     this.updateLabelValueWithWrapping(
                         additionalCategoryLabel,
                         textProperties,
-                        v.value,
+                        v.name,
                         additionalCategoryWidth,
                         maxDataHeight
                     );
@@ -441,6 +452,77 @@ export class Card {
                     .select("text")
                     .style("dominant-baseline", "middle");
                 additionalCategoryLabel.attr("transform", translate(x, y));
+            });
+        }
+    }
+
+    private createAdditionalMeasureLabel() {
+        for (let i = 0; i < this.model.dataGroups.length; i++) {
+            let svg = this.cardsContainer.select(".card-" + i).select("svg");
+            let svgRect = this.svgRect[i];
+            let additionalMeasureContainter = svg
+                .append("g")
+                .classed(CardClassNames.AdditionalMeasureContainer + i, true);
+            let categoryLabelSize = this.getLabelSize(
+                svg.select(".category-" + i)
+            );
+
+            this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
+                let additionalMeasureLabel = additionalMeasureContainter
+                    .append("g")
+                    .classed(
+                        CardClassNames.AdditionalMeasureLabel + i + j,
+                        true
+                    );
+                additionalMeasureLabel.append("text");
+                let textProperties = this.getTextProperties(
+                    this.model.settings.measureComparison[v.id]
+                );
+                textProperties.text = v.value.toString();
+                let additionalMeasureWidth = svgRect.width / (2 * array.length);
+
+                this.updateLabelStyles(
+                    additionalMeasureLabel,
+                    this.model.settings.measureComparison[v.id]
+                );
+                let measureValue =
+                    TextMeasurementService.getTailoredTextOrDefault(
+                        textProperties,
+                        additionalMeasureWidth
+                    );
+                this.updateLabelValueWithoutWrapping(
+                    additionalMeasureLabel,
+                    measureValue
+                );
+
+                let additionalCategoryLabelSize = this.getLabelSize(
+                    svg.select(".additional-category-" + i + j)
+                );
+                let additionalMeasureLabelSize = this.getLabelSize(
+                    additionalMeasureLabel
+                );
+                let x =
+                    svgRect.width / 2 +
+                    j * additionalMeasureWidth +
+                    additionalMeasureWidth / 2;
+                let y =
+                    this.model.settings.categoryLabel.paddingTop +
+                    categoryLabelSize.height +
+                    additionalMeasureLabelSize.height / 2 +
+                    this.model.settings.additionalCategoryLabel.paddingTop +
+                    additionalCategoryLabelSize.height +
+                    this.model.settings.measureComparison[v.id].paddingTop;
+
+                additionalMeasureLabel
+                    .select("text")
+                    .attr("text-anchor", "middle");
+                additionalMeasureLabel
+                    .select("text")
+                    .attr("text-anchor", "middle");
+                additionalMeasureLabel
+                    .select("text")
+                    .style("dominant-baseline", "middle");
+                additionalMeasureLabel.attr("transform", translate(x, y));
             });
         }
     }

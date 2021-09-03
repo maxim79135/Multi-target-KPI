@@ -83,6 +83,23 @@ export class AdditionalCategoryLabel {
     public wordWrap: boolean = false;
 }
 
+export class MeasureComparison {
+    public show: boolean = false;
+    public componentType: string = "measure";
+    public unmatchedColor: string = "#333333";
+    public comparisonOperator: string = ">";
+    public condition1: boolean = false;
+    public condition2: boolean = false;
+    public condition3: boolean = false;
+    public condition4: boolean = false;
+    public isItalic: boolean = false;
+    public isBold: boolean = false;
+    public textSize: number = 25;
+    public fontFamily: string =
+        "wf_standard-font, helvetica, arial, sans-serif";
+    public paddingTop: number = 5;
+}
+
 export class CardSettings extends DataViewObjectsParser {
     public multiple: Multiple = new Multiple();
     public card: Card = new Card();
@@ -90,4 +107,12 @@ export class CardSettings extends DataViewObjectsParser {
     public dataLabel: DataLabel = new DataLabel();
     public additionalCategoryLabel: AdditionalCategoryLabel =
         new AdditionalCategoryLabel();
+    public measureComparison1: MeasureComparison = new MeasureComparison();
+    public measureComparison2: MeasureComparison = new MeasureComparison();
+    public measureComparison3: MeasureComparison = new MeasureComparison();
+    public measureComparison = {
+        measureComparison1: this.measureComparison1,
+        measureComparison2: this.measureComparison2,
+        measureComparison3: this.measureComparison3,
+    };
 }

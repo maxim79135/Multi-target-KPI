@@ -14,20 +14,20 @@
         },
         {
             "displayName": "Measure for comparison 1",
-            "displayNameKey": "additionalMeasure1",
-            "name": "measure_comparison_1",
+            "displayNameKey": "measureComparison1",
+            "name": "measureComparison1",
             "kind": "Measure"
         },
         {
             "displayName": "Measure for comparison 2",
-            "displayNameKey": "additionalMeasure2",
-            "name": "measure_comparison_2",
+            "displayNameKey": "measureComparison2",
+            "name": "measureComparison2",
             "kind": "Measure"
         },
         {
             "displayName": "Measure for comparison 3",
-            "displayNameKey": "additionalMeasure3",
-            "name": "measure_comparison_3",
+            "displayNameKey": "measureComparison3",
+            "name": "measureComparison3",
             "kind": "Measure"
         },
         {
@@ -659,6 +659,140 @@
                         "bool": true
                     }
                 },
+                "textSize": {
+                    "displayName": "Text Size",
+                    "displayNameKey": "textSize",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font family",
+                    "displayNameKey": "fontFamily",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "DIN",
+                                "value": "wf_standard-font, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "\"Arial Black\""
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "\"Arial Unicode MS\""
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "\"Cambria Math\""
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "\"Comic Sans MS\""
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "\"Courier New\""
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "\"Lucida Sans Unicode\""
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "\"Times New Roman\""
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "\"Trebuchet MS\""
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
+                    }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "paddingTop": {
+                    "displayName": "Padding top",
+                    "displayNameKey": "paddngTop",
+                    "type": {
+                        "integer": true
+                    }
+                },
                 "componentType": {
                     "displayName": "Component type",
                     "displayNameKey": "componentType",
@@ -673,8 +807,580 @@
                                 "displayName": "Change over Measure 1",
                                 "displayNameKey": "changeOver1",
                                 "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Measure 1",
+                                "displayNameKey": "percentageOver1",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Measure 1",
+                                "displayNameKey": "measure1",
+                                "value": "measure"
                             }
                         ]
+                    }
+                },
+                "unmatchedColor": {
+                    "displayName": "Unmatched state color",
+                    "displayNameKey": "unmatchedColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "comparisonOperator": {
+                    "displayName": "Comparison operator",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "condition1": {
+                    "displayName": "Condition 1",
+                    "displayNameKey": "condition1",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition2": {
+                    "displayName": "Condition 2",
+                    "displayNameKey": "condition2",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition3": {
+                    "displayName": "Condition 3",
+                    "displayNameKey": "condition3",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition4": {
+                    "displayName": "Condition 4",
+                    "displayNameKey": "condition4",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
+        "measureComparison2": {
+            "displayName": "Measure for comparison 2",
+            "displayNameKey": "measureComparison2",
+            "properties": {
+                "show": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "textSize": {
+                    "displayName": "Text Size",
+                    "displayNameKey": "textSize",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font family",
+                    "displayNameKey": "fontFamily",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "DIN",
+                                "value": "wf_standard-font, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "\"Arial Black\""
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "\"Arial Unicode MS\""
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "\"Cambria Math\""
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "\"Comic Sans MS\""
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "\"Courier New\""
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "\"Lucida Sans Unicode\""
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "\"Times New Roman\""
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "\"Trebuchet MS\""
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
+                    }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "paddingTop": {
+                    "displayName": "Padding top",
+                    "displayNameKey": "paddngTop",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "componentType": {
+                    "displayName": "Component type",
+                    "displayNameKey": "componentType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Percentage change over Measure 2",
+                                "displayNameKey": "percentageChanveOver2",
+                                "value": "percentageChanveOver"
+                            },
+                            {
+                                "displayName": "Change over Measure 2",
+                                "displayNameKey": "changeOver2",
+                                "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Measure 2",
+                                "displayNameKey": "percentageOver2",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Measure 2",
+                                "displayNameKey": "measure2",
+                                "value": "measure"
+                            }
+                        ]
+                    }
+                },
+                "unmatchedColor": {
+                    "displayName": "Unmatched state color",
+                    "displayNameKey": "unmatchedColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "comparisonOperator": {
+                    "displayName": "Comparison operator",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "condition1": {
+                    "displayName": "Condition 1",
+                    "displayNameKey": "condition1",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition2": {
+                    "displayName": "Condition 2",
+                    "displayNameKey": "condition2",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition3": {
+                    "displayName": "Condition 3",
+                    "displayNameKey": "condition3",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition4": {
+                    "displayName": "Condition 4",
+                    "displayNameKey": "condition4",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
+        "measureComparison3": {
+            "displayName": "Measure for comparison 3",
+            "displayNameKey": "measureComparison3",
+            "properties": {
+                "show": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "textSize": {
+                    "displayName": "Text Size",
+                    "displayNameKey": "textSize",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "fontFamily": {
+                    "displayName": "Font family",
+                    "displayNameKey": "fontFamily",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "DIN",
+                                "value": "wf_standard-font, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "\"Arial Black\""
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "\"Arial Unicode MS\""
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "\"Cambria Math\""
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "\"Comic Sans MS\""
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "\"Courier New\""
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "\"Lucida Sans Unicode\""
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "\"Times New Roman\""
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "\"Trebuchet MS\""
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
+                    }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "paddingTop": {
+                    "displayName": "Padding top",
+                    "displayNameKey": "paddngTop",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "componentType": {
+                    "displayName": "Component type",
+                    "displayNameKey": "componentType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Percentage change over Measure 3",
+                                "displayNameKey": "percentageChanveOver3",
+                                "value": "percentageChanveOver"
+                            },
+                            {
+                                "displayName": "Change over Measure 3",
+                                "displayNameKey": "changeOver3",
+                                "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Measure 3",
+                                "displayNameKey": "percentageOver3",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Measure 3",
+                                "displayNameKey": "measure3",
+                                "value": "measure"
+                            }
+                        ]
+                    }
+                },
+                "unmatchedColor": {
+                    "displayName": "Unmatched state color",
+                    "displayNameKey": "unmatchedColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "comparisonOperator": {
+                    "displayName": "Comparison operator",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "condition1": {
+                    "displayName": "Condition 1",
+                    "displayNameKey": "condition1",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition2": {
+                    "displayName": "Condition 2",
+                    "displayNameKey": "condition2",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition3": {
+                    "displayName": "Condition 3",
+                    "displayNameKey": "condition3",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition4": {
+                    "displayName": "Condition 4",
+                    "displayNameKey": "condition4",
+                    "type": {
+                        "bool": true
                     }
                 }
             }
@@ -692,13 +1398,13 @@
                         "min": 0,
                         "max": 1
                     },
-                    "measure_comparison_1": {
+                    "measureComparison1": {
                         "max": 1
                     },
-                    "measure_comparison_2": {
+                    "measureComparison2": {
                         "max": 1
                     },
-                    "measure_comparison_3": {
+                    "measureComparison3": {
                         "max": 1
                     },
                     "tooltips": {
@@ -729,17 +1435,17 @@
                         },
                         {
                             "bind": {
-                                "to": "measure_comparison_1"
+                                "to": "measureComparison1"
                             }
                         },
                         {
                             "bind": {
-                                "to": "measure_comparison_2"
+                                "to": "measureComparison2"
                             }
                         },
                         {
                             "bind": {
-                                "to": "measure_comparison_3"
+                                "to": "measureComparison3"
                             }
                         }
                     ]

@@ -264,6 +264,61 @@ export class CardKPI implements IVisual {
                 });
                 break;
         }
+        if (
+            objectName == "measureComparison1" ||
+            objectName == "measureComparison2" ||
+            objectName == "measureComparison3"
+        ) {
+            objectEnumeration.push({
+                objectName: objectName,
+                properties: {
+                    show: model.settings.measureComparison[objectName].show,
+                    unmatchedColor:
+                        model.settings.measureComparison[objectName]
+                            .unmatchedColor,
+                    textSize:
+                        model.settings.measureComparison[objectName].textSize,
+                    fontFamily:
+                        model.settings.measureComparison[objectName].fontFamily,
+                    isItalic:
+                        model.settings.measureComparison[objectName].isItalic,
+                    isBold: model.settings.measureComparison[objectName].isBold,
+                    componentType:
+                        model.settings.measureComparison[objectName]
+                            .componentType,
+                    comparisonOperator:
+                        model.settings.measureComparison[objectName]
+                            .comparisonOperator,
+                    condition1:
+                        model.settings.measureComparison[objectName].condition1,
+                    condition2:
+                        model.settings.measureComparison[objectName].condition2,
+                    condition3:
+                        model.settings.measureComparison[objectName].condition3,
+                    condition4:
+                        model.settings.measureComparison[objectName].condition4,
+                    paddingTop:
+                        model.settings.measureComparison[objectName].paddingTop,
+                },
+                validValues: {
+                    paddingTop: {
+                        numberRange: {
+                            min: 0,
+                            max: 50,
+                        },
+                    },
+                },
+                propertyInstanceKind: {
+                    unmatchedColor:
+                        VisualEnumerationInstanceKinds.ConstantOrRule,
+                },
+                altConstantValueSelector: null,
+                selector: dataViewWildcard.createDataViewWildcardSelector(
+                    dataViewWildcard.DataViewWildcardMatchingOption
+                        .InstancesAndTotals
+                ),
+            });
+        }
 
         return objectEnumeration;
     }
