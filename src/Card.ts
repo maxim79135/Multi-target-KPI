@@ -328,7 +328,7 @@ export class Card {
                 svg.select(".additional-measure-container-" + i)
             );
             let isDisableAdditionalMeasures =
-                !additionalMeasuresExist && !additionalCategoryExist;
+                !additionalMeasuresExist;
 
             let x: number, y: number;
             let categoryLabelSize = this.getLabelSize(
