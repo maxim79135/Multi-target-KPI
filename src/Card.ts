@@ -22,11 +22,21 @@ export enum CardClassNames {
     CardContainer = "card card-",
     CategoryLabel = "category category-",
     DataLabel = "data data-",
+    AdditionalCategoryContainer = "additional-category-container additional-category-container-",
+    AdditionalCategoryLabel = "additional-category additional-category-",
+    AdditionalMeasureContainer = "additional-measure-container additional-measure-container-",
+    AdditionalMeasureLabel = "additional-measure additional-measure-",
+}
+
+interface IAdditionalCategory {
+    name?: string;
+    value?: string;
 }
 
 interface IDataGroup {
     displayName?: string;
     mainMeasureValue?: number;
+    additionalCategory?: IAdditionalCategory[];
 }
 
 interface ICardViewModel {
@@ -91,6 +101,8 @@ export class Card {
 
             for (let i = 0; i < categories.length; i++) {
                 let dataGroup: IDataGroup = {};
+                dataGroup.additionalCategory = [];
+
                 for (let ii = 0; ii < dataCategorical.values.length; ii++) {
                     let dataValue = dataCategorical.values[ii];
                     let value: any = dataValue.values[i];
@@ -102,12 +114,28 @@ export class Card {
                         dataGroup.mainMeasureValue = value;
                     }
 
-                    dataGroups.push(dataGroup);
-                    if (dataGroup) break;
+                    [
+                        "measure_comparison_1",
+                        "measure_comparison_2",
+                        "measure_comparison_3",
+                    ].map((v) => {
+                        if (dataValue.source.roles[v])
+                            dataGroup.additionalCategory.push({
+                                name: v,
+                                value: dataValue.source.displayName,
+                            });
+                    });
+                    dataGroup.additionalCategory.sort((a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name < b.name) return -1;
+                        return 0;
+                    });
                 }
-                //dataGroups.push({});
+                dataGroups.push(dataGroup);
             }
         }
+        console.log(dataGroups);
+
         this.model = { settings, dataGroups };
         this.numberOfCards = this.model.dataGroups.length;
         this.cardsPerRow = Math.min(
@@ -185,6 +213,9 @@ export class Card {
     public createLabels() {
         if (this.model.settings.categoryLabel.show) {
             this.createCategoryLabel();
+        }
+        if (this.model.settings.additionalCategoryLabel.show) {
+            this.createAdditionalCategoryLabel();
         }
         this.createDataLabel();
     }
@@ -276,44 +307,102 @@ export class Card {
             this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
             let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
                 textProperties,
-                svgRect.width
+                svgRect.width / 2
             );
             this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
 
-            let categoryExist = this.elementExist(svg.select(".category-" + i));
-            let additionalMeasuresExist = [
-                this.elementExist(svg.select(".additional-measure1-" + i)),
-                this.elementExist(svg.select(".additional-measure2-" + i)),
-                this.elementExist(svg.select(".additional-measure3-" + i)),
-            ];
+            let additionalCategoryExist = this.elementExist(
+                svg.select(".additional-category-container-" + i)
+            );
+            let additionalMeasuresExist = this.elementExist(
+                svg.select(".additional-measure-container-" + i)
+            );
             let isDisableAdditionalMeasures =
-                !additionalMeasuresExist[0] &&
-                !additionalMeasuresExist[1] &&
-                !additionalMeasuresExist[2];
+                !additionalMeasuresExist && !additionalCategoryExist;
 
             let x: number, y: number;
-            let dataLabelSize = this.getLabelSize(dataLabel);
+            let categoryLabelSize = this.getLabelSize(
+                svg.select(".category-" + i)
+            );
+            y =
+                this.model.settings.categoryLabel.paddingTop +
+                categoryLabelSize.height +
+                (svgRect.height -
+                    this.model.settings.categoryLabel.paddingTop -
+                    categoryLabelSize.height) /
+                    2;
+            if (isDisableAdditionalMeasures) x = svgRect.width / 2;
+            else x = svgRect.width / 4;
 
-            if (categoryExist) {
-                let categoryLabelSize = this.getLabelSize(
-                    svg.select(".category-" + i)
-                );
-                y =
-                    this.model.settings.categoryLabel.paddingTop +
-                    categoryLabelSize.height +
-                    (svgRect.height -
-                        this.model.settings.categoryLabel.paddingTop -
-                        categoryLabelSize.height) /
-                        2;
-                if (isDisableAdditionalMeasures) x = svgRect.width / 2;
-                else x = svgRect.width / 4;
-            } else {
-                x = svgRect.width / 2;
-                y = svgRect.height / 2;
-            }
             dataLabel.select("text").style("dominant-baseline", "middle");
             dataLabel.select("text").attr("text-anchor", "middle");
             dataLabel.attr("transform", translate(x, y));
+        }
+    }
+
+    private createAdditionalCategoryLabel() {
+        console.log(this.model.dataGroups);
+
+        for (let i = 0; i < this.model.dataGroups.length; i++) {
+            let svg = this.cardsContainer.select(".card-" + i).select("svg");
+            let svgRect = this.svgRect[i];
+            let additionalCategoryContainter = svg
+                .append("g")
+                .classed(CardClassNames.AdditionalCategoryContainer + i, true);
+
+            let categoryLabelSize = this.getLabelSize(
+                svg.select(".category-" + i)
+            );
+
+            this.model.dataGroups[0].additionalCategory.map((v, j, array) => {
+                let additionalCategoryLabel = additionalCategoryContainter
+                    .append("g")
+                    .classed(
+                        CardClassNames.AdditionalCategoryLabel + i + j,
+                        true
+                    );
+                additionalCategoryLabel.append("text");
+                let textProperties = this.getTextProperties(
+                    this.model.settings.additionalCategoryLabel
+                );
+                textProperties.text = v.value;
+                let additionalCategoryWidth =
+                    svgRect.width / (2 * array.length);
+
+                this.updateLabelStyles(
+                    additionalCategoryLabel,
+                    this.model.settings.additionalCategoryLabel
+                );
+                let categoryValue =
+                    TextMeasurementService.getTailoredTextOrDefault(
+                        textProperties,
+                        additionalCategoryWidth
+                    );
+                this.updateLabelValueWithoutWrapping(
+                    additionalCategoryLabel,
+                    categoryValue
+                );
+                let additionalCategoryLabelSize = this.getLabelSize(
+                    additionalCategoryLabel
+                );
+                let x =
+                    svgRect.width / 2 +
+                    j * additionalCategoryWidth +
+                    additionalCategoryWidth / 2;
+                let y =
+                    this.model.settings.categoryLabel.paddingTop +
+                    categoryLabelSize.height +
+                    additionalCategoryLabelSize.height / 2 +
+                    this.model.settings.additionalCategoryLabel.paddingTop;
+
+                additionalCategoryLabel
+                    .select("text")
+                    .style("dominant-baseline", "middle");
+                additionalCategoryLabel
+                    .select("text")
+                    .attr("text-anchor", "middle");
+                additionalCategoryLabel.attr("transform", translate(x, y));
+            });
         }
     }
 

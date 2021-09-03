@@ -116,6 +116,10 @@ export class CardKPI implements IVisual {
                     properties: {
                         cardsPerRow: model.settings.multiple.cardsPerRow,
                         cardsMargin: model.settings.multiple.cardsMargin,
+                        spaceBeforeFirstComponent:
+                            model.settings.multiple.spaceBeforeFirstComponent,
+                        spaceBetweenCardComponent:
+                            model.settings.multiple.spaceBetweenCardComponent,
                     },
                     validValues: {
                         cardsPerRow: {
@@ -128,6 +132,18 @@ export class CardKPI implements IVisual {
                             numberRange: {
                                 min: 0,
                                 max: 100,
+                            },
+                        },
+                        spaceBeforeFirstComponent: {
+                            numberRange: {
+                                min: 0,
+                                max: 10,
+                            },
+                        },
+                        spaceBetweenCardComponent: {
+                            numberRange: {
+                                min: 0,
+                                max: 10,
                             },
                         },
                     },
@@ -188,6 +204,47 @@ export class CardKPI implements IVisual {
                                 max: 9,
                             },
                         },
+                    },
+                    propertyInstanceKind: {
+                        color: VisualEnumerationInstanceKinds.ConstantOrRule,
+                    },
+                    altConstantValueSelector: null,
+                    selector: dataViewWildcard.createDataViewWildcardSelector(
+                        dataViewWildcard.DataViewWildcardMatchingOption
+                            .InstancesAndTotals
+                    ),
+                });
+                break;
+
+            case "additionalCategoryLabel":
+                objectEnumeration.push({
+                    objectName: objectName,
+                    properties: {
+                        show: model.settings.additionalCategoryLabel.show,
+                        horizontalAlignment:
+                            model.settings.additionalCategoryLabel
+                                .horizontalAlignment,
+                        paddingTop:
+                            model.settings.additionalCategoryLabel.paddingTop,
+                        color: model.settings.additionalCategoryLabel.color,
+                        textSize:
+                            model.settings.additionalCategoryLabel.textSize,
+                        fontFamily:
+                            model.settings.additionalCategoryLabel.fontFamily,
+                        wordWrap:
+                            model.settings.additionalCategoryLabel.wordWrap,
+                        isItalic:
+                            model.settings.additionalCategoryLabel.isItalic,
+                        isBold: model.settings.additionalCategoryLabel.isBold,
+                    },
+                    validValues: {
+                        paddingTop: {
+                            numberRange: {
+                                min: 0,
+                                max: 50,
+                            },
+                        },
+
                     },
                     propertyInstanceKind: {
                         color: VisualEnumerationInstanceKinds.ConstantOrRule,

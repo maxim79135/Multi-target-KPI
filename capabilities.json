@@ -378,7 +378,7 @@
                 }
             }
         },
-        "categoryAdditionalMeasures": {
+        "additionalCategoryLabel": {
             "displayName": "Category label for additional measures",
             "displayNameKey": "categoryAdditionalMeasures",
             "properties": {
@@ -391,7 +391,6 @@
                 "horizontalAlignment": {
                     "displayName": "Content horizontal alignment",
                     "displayNameKey": "alignment",
-                    "description": "Align the content of the card to either left, right or center.",
                     "type": {
                         "formatting": {
                             "alignment": true
@@ -402,7 +401,7 @@
                     "displayName": "Padding top",
                     "displayNameKey": "paddngTop",
                     "type": {
-                        "numeric": true
+                        "integer": true
                     }
                 },
                 "color": {
@@ -535,6 +534,20 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },
@@ -610,6 +623,20 @@
                 },
                 "cardsMargin": {
                     "displayName": "Space between cards",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "spaceBeforeFirstComponent": {
+                    "displayName": "Space before the first component",
+                    "displayNameKey": "spaceBeforeFirstComponent",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "spaceBetweenCardComponent": {
+                    "displayNameKey": "spaceBetweenCardComponent",
+                    "displayName": "Space between card components",
                     "type": {
                         "integer": true
                     }

@@ -32,6 +32,8 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 export class Multiple {
     public cardsPerRow: number = 5;
     public cardsMargin: number = 5;
+    public spaceBeforeFirstComponent: number = 15;
+    public spaceBetweenCardComponent: number = 15;
 }
 
 export class Card {
@@ -67,9 +69,24 @@ export class DataLabel {
     public isBold: boolean = false;
 }
 
+export class AdditionalCategoryLabel {
+    public show: boolean = true;
+    public horizontalAlignment: string = "center";
+    public paddingTop: number = 5;
+    public color: string = "#333333";
+    public textSize: number = 15;
+    public fontFamily: string =
+        "wf_standard-font, helvetica, arial, sans-serif";
+    public wordWrap: boolean = false;
+    public isItalic: boolean = false;
+    public isBold: boolean = false;
+}
+
 export class CardSettings extends DataViewObjectsParser {
     public multiple: Multiple = new Multiple();
     public card: Card = new Card();
     public categoryLabel: CategoryLabel = new CategoryLabel();
     public dataLabel: DataLabel = new DataLabel();
+    public additionalCategoryLabel: AdditionalCategoryLabel =
+        new AdditionalCategoryLabel();
 }
