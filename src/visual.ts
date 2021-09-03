@@ -137,13 +137,13 @@ export class CardKPI implements IVisual {
                         spaceBeforeFirstComponent: {
                             numberRange: {
                                 min: 0,
-                                max: 10,
+                                max: 100,
                             },
                         },
                         spaceBetweenCardComponent: {
                             numberRange: {
                                 min: 0,
-                                max: 10,
+                                max: 100,
                             },
                         },
                     },
@@ -226,6 +226,8 @@ export class CardKPI implements IVisual {
                                 .horizontalAlignment,
                         paddingTop:
                             model.settings.additionalCategoryLabel.paddingTop,
+                        paddingSide:
+                            model.settings.additionalCategoryLabel.paddingSide,
                         color: model.settings.additionalCategoryLabel.color,
                         textSize:
                             model.settings.additionalCategoryLabel.textSize,
@@ -244,7 +246,12 @@ export class CardKPI implements IVisual {
                                 max: 50,
                             },
                         },
-
+                        paddingSide: {
+                            numberRange: {
+                                min: 0,
+                                max: 50,
+                            },
+                        },
                     },
                     propertyInstanceKind: {
                         color: VisualEnumerationInstanceKinds.ConstantOrRule,

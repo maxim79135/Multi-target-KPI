@@ -72,14 +72,15 @@ export class DataLabel {
 export class AdditionalCategoryLabel {
     public show: boolean = true;
     public horizontalAlignment: string = "center";
-    public paddingTop: number = 5;
+    public paddingTop: number = 15;
+    public paddingSide: number = 5;
     public color: string = "#333333";
     public textSize: number = 15;
     public fontFamily: string =
         "wf_standard-font, helvetica, arial, sans-serif";
-    public wordWrap: boolean = false;
     public isItalic: boolean = false;
     public isBold: boolean = false;
+    public wordWrap: boolean = false;
 }
 
 export class CardSettings extends DataViewObjectsParser {

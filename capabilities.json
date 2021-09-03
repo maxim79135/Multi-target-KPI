@@ -404,6 +404,13 @@
                         "integer": true
                     }
                 },
+                "paddingSide": {
+                    "displayName": "Padding side",
+                    "displayNameKey": "paddingSide",
+                    "type": {
+                        "integer": true
+                    }
+                },
                 "color": {
                     "displayName": "Color",
                     "displayNameKey": "fontColor",

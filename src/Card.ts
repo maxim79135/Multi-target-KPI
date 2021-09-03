@@ -134,7 +134,6 @@ export class Card {
                 dataGroups.push(dataGroup);
             }
         }
-        console.log(dataGroups);
 
         this.model = { settings, dataGroups };
         this.numberOfCards = this.model.dataGroups.length;
@@ -239,7 +238,7 @@ export class Card {
             );
 
             if (this.model.settings.categoryLabel.wordWrap) {
-                let maxDataHeight = svgRect.height * 0.4;
+                let maxDataHeight = svgRect.height / 2;
                 this.updateLabelValueWithWrapping(
                     categoryLabel,
                     textProperties,
@@ -341,8 +340,6 @@ export class Card {
     }
 
     private createAdditionalCategoryLabel() {
-        console.log(this.model.dataGroups);
-
         for (let i = 0; i < this.model.dataGroups.length; i++) {
             let svg = this.cardsContainer.select(".card-" + i).select("svg");
             let svgRect = this.svgRect[i];
@@ -373,34 +370,76 @@ export class Card {
                     additionalCategoryLabel,
                     this.model.settings.additionalCategoryLabel
                 );
-                let categoryValue =
-                    TextMeasurementService.getTailoredTextOrDefault(
+
+                if (this.model.settings.additionalCategoryLabel.wordWrap) {
+                    let maxDataHeight = svgRect.height / 2;
+                    this.updateLabelValueWithWrapping(
+                        additionalCategoryLabel,
                         textProperties,
-                        additionalCategoryWidth
+                        v.value,
+                        additionalCategoryWidth,
+                        maxDataHeight
                     );
-                this.updateLabelValueWithoutWrapping(
-                    additionalCategoryLabel,
-                    categoryValue
-                );
+                } else {
+                    let categoryValue =
+                        TextMeasurementService.getTailoredTextOrDefault(
+                            textProperties,
+                            additionalCategoryWidth
+                        );
+                    this.updateLabelValueWithoutWrapping(
+                        additionalCategoryLabel,
+                        categoryValue
+                    );
+                }
+
                 let additionalCategoryLabelSize = this.getLabelSize(
                     additionalCategoryLabel
                 );
-                let x =
-                    svgRect.width / 2 +
-                    j * additionalCategoryWidth +
-                    additionalCategoryWidth / 2;
                 let y =
                     this.model.settings.categoryLabel.paddingTop +
                     categoryLabelSize.height +
                     additionalCategoryLabelSize.height / 2 +
                     this.model.settings.additionalCategoryLabel.paddingTop;
-
+                let x: number;
+                if (
+                    this.model.settings.additionalCategoryLabel
+                        .horizontalAlignment == "center"
+                ) {
+                    x =
+                        svgRect.width / 2 +
+                        j * additionalCategoryWidth +
+                        additionalCategoryWidth / 2;
+                    additionalCategoryLabel
+                        .select("text")
+                        .attr("text-anchor", "middle");
+                } else if (
+                    this.model.settings.additionalCategoryLabel
+                        .horizontalAlignment == "left"
+                ) {
+                    x =
+                        svgRect.width / 2 +
+                        j * additionalCategoryWidth +
+                        this.model.settings.additionalCategoryLabel.paddingSide;
+                    additionalCategoryLabel
+                        .select("text")
+                        .attr("text-anchor", "start");
+                } else if (
+                    this.model.settings.additionalCategoryLabel
+                        .horizontalAlignment == "right"
+                ) {
+                    x =
+                        svgRect.width / 2 +
+                        j * additionalCategoryWidth +
+                        additionalCategoryWidth -
+                        this.model.settings.multiple.spaceBetweenCardComponent -
+                        this.model.settings.additionalCategoryLabel.paddingSide;
+                    additionalCategoryLabel
+                        .select("text")
+                        .attr("text-anchor", "end");
+                }
                 additionalCategoryLabel
                     .select("text")
                     .style("dominant-baseline", "middle");
-                additionalCategoryLabel
-                    .select("text")
-                    .attr("text-anchor", "middle");
                 additionalCategoryLabel.attr("transform", translate(x, y));
             });
         }
