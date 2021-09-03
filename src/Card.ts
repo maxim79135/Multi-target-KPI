@@ -56,6 +56,12 @@ interface ILabelProperties {
 export class Card {
     private root: Selection<BaseType, any, any, any>;
     private cardsContainer: Selection<BaseType, any, any, any>;
+    private cards: Selection<BaseType, any, any, any>[];
+    private svg: Selection<BaseType, any, any, any>[];
+    private categoryLabels: Selection<BaseType, any, any, any>[];
+    private dataLabels: Selection<BaseType, any, any, any>[];
+    private additionalCategoryLabels: Selection<BaseType, any, any, any>[];
+    private additionalMeasureLabels: Selection<BaseType, any, any, any>[];
     private model: ICardViewModel;
     private cardViewport: { width: number; height: number };
     private cardMargin: {
@@ -67,7 +73,6 @@ export class Card {
     private numberOfCards: number;
     private cardsPerRow: number;
     private numberOfRows: number;
-    private svgRect: SVGRect[];
 
     constructor(target: HTMLElement) {
         this.root = select(target).classed(CardClassNames.Root, true);
@@ -180,7 +185,8 @@ export class Card {
 
     public createCardContainer() {
         this.cardsContainer.selectAll(".card").remove();
-        this.svgRect = [];
+        this.cards = [];
+        this.svg = [];
 
         for (let i = 0; i < this.model.dataGroups.length; i++) {
             let cardContainer = this.cardsContainer
@@ -203,12 +209,12 @@ export class Card {
                               this.model.settings.card.borderFill
                         : ""
                 );
-            let svg = cardContainer
-                .append("svg")
-                .style("width", "100%")
-                .style("height", "100%");
-            this.svgRect.push(
-                <SVGRect>(<SVGElement>svg.node()).getBoundingClientRect()
+            this.cards.push(cardContainer);
+            this.svg.push(
+                cardContainer
+                    .append("svg")
+                    .style("width", "100%")
+                    .style("height", "100%")
             );
         }
     }
@@ -231,14 +237,15 @@ export class Card {
     }
 
     private createCategoryLabel() {
+        this.categoryLabels = [];
         for (let i = 0; i < this.model.dataGroups.length; i++) {
-            let svg = this.cardsContainer.select(".card-" + i).select("svg");
+            let svg = this.svg[i];
             let categoryLabel = svg
                 .append("g")
                 .classed(CardClassNames.CategoryLabel + i, true);
             categoryLabel.append("text");
 
-            let svgRect = this.svgRect[i];
+            let svgRect = this.getSVGRect(svg);
             let textProperties = this.getTextProperties(
                 this.model.settings.categoryLabel
             );
@@ -295,18 +302,20 @@ export class Card {
             }
 
             categoryLabel.attr("transform", translate(x, y));
+            this.categoryLabels.push(categoryLabel);
         }
     }
 
     private createDataLabel() {
+        this.dataLabels = [];
         for (let i = 0; i < this.model.dataGroups.length; i++) {
-            let svg = this.cardsContainer.select(".card-" + i).select("svg");
+            let svg = this.svg[i];
             let dataLabel = svg
                 .append("g")
                 .classed(CardClassNames.DataLabel + i, true);
             dataLabel.append("text");
 
-            let svgRect = this.svgRect[i];
+            let svgRect = this.getSVGRect(svg);
             let textProperties = this.getTextProperties(
                 this.model.settings.dataLabel
             );
@@ -321,19 +330,13 @@ export class Card {
             );
             this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
 
-            let additionalCategoryExist = this.elementExist(
-                svg.select(".additional-category-container-" + i)
-            );
             let additionalMeasuresExist = this.elementExist(
                 svg.select(".additional-measure-container-" + i)
             );
-            let isDisableAdditionalMeasures =
-                !additionalMeasuresExist;
+            let isDisableAdditionalMeasures = !additionalMeasuresExist;
 
             let x: number, y: number;
-            let categoryLabelSize = this.getLabelSize(
-                svg.select(".category-" + i)
-            );
+            let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
             y =
                 this.model.settings.categoryLabel.paddingTop +
                 categoryLabelSize.height +
@@ -347,20 +350,20 @@ export class Card {
             dataLabel.select("text").style("dominant-baseline", "middle");
             dataLabel.select("text").attr("text-anchor", "middle");
             dataLabel.attr("transform", translate(x, y));
+            this.dataLabels.push(dataLabel);
         }
     }
 
     private createAdditionalCategoryLabel() {
+        this.additionalCategoryLabels = [];
         for (let i = 0; i < this.model.dataGroups.length; i++) {
-            let svg = this.cardsContainer.select(".card-" + i).select("svg");
-            let svgRect = this.svgRect[i];
+            let svg = this.svg[i];
+            let svgRect = this.getSVGRect(svg);
             let additionalCategoryContainter = svg
                 .append("g")
                 .classed(CardClassNames.AdditionalCategoryContainer + i, true);
 
-            let categoryLabelSize = this.getLabelSize(
-                svg.select(".category-" + i)
-            );
+            let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
 
             this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
                 let additionalCategoryLabel = additionalCategoryContainter
@@ -452,20 +455,20 @@ export class Card {
                     .select("text")
                     .style("dominant-baseline", "middle");
                 additionalCategoryLabel.attr("transform", translate(x, y));
+                this.additionalCategoryLabels.push(additionalCategoryLabel);
             });
         }
     }
 
     private createAdditionalMeasureLabel() {
+        this.additionalMeasureLabels = [];
         for (let i = 0; i < this.model.dataGroups.length; i++) {
-            let svg = this.cardsContainer.select(".card-" + i).select("svg");
-            let svgRect = this.svgRect[i];
+            let svg = this.svg[i];
+            let svgRect = this.getSVGRect(svg);
             let additionalMeasureContainter = svg
                 .append("g")
                 .classed(CardClassNames.AdditionalMeasureContainer + i, true);
-            let categoryLabelSize = this.getLabelSize(
-                svg.select(".category-" + i)
-            );
+            let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
 
             this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
                 let additionalMeasureLabel = additionalMeasureContainter
@@ -496,7 +499,7 @@ export class Card {
                 );
 
                 let additionalCategoryLabelSize = this.getLabelSize(
-                    svg.select(".additional-category-" + i + j)
+                    this.additionalCategoryLabels[i]
                 );
                 let additionalMeasureLabelSize = this.getLabelSize(
                     additionalMeasureLabel
@@ -523,6 +526,7 @@ export class Card {
                     .select("text")
                     .style("dominant-baseline", "middle");
                 additionalMeasureLabel.attr("transform", translate(x, y));
+                this.additionalMeasureLabels.push(additionalMeasureLabel);
             });
         }
     }
@@ -622,5 +626,9 @@ export class Card {
                 toJSON: null,
             };
         }
+    }
+
+    private getSVGRect(element: Selection<BaseType, any, any, any>): DOMRect {
+        return <SVGRect>(<SVGElement>element.node()).getBoundingClientRect();
     }
 }
