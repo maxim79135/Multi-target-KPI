@@ -43,283 +43,260 @@ import { Card } from "./Card";
 export type Selection = d3.Selection<any, any, any, any>;
 
 export class CardKPI implements IVisual {
-    private card: Card;
+  private card: Card;
 
-    constructor(options: VisualConstructorOptions) {
-        this.card = new Card(options.element);
-    }
+  constructor(options: VisualConstructorOptions) {
+    this.card = new Card(options.element);
+  }
 
-    public update(options: VisualUpdateOptions) {
-        let settings = CardKPI.parseSettings(options.dataViews[0]);
+  public update(options: VisualUpdateOptions) {
+    let settings = CardKPI.parseSettings(options.dataViews[0]);
 
-        this.card.visualTransform(options, settings);
-        this.card.updateViewport(options.viewport);
-        this.card.createCardContainer();
-        this.card.createLabels();
-    }
+    this.card.visualTransform(options, settings);
+    this.card.updateViewport(options.viewport);
+    this.card.createCardContainer();
+    this.card.createLabels();
+  }
 
-    private static parseSettings(dataView: DataView): CardSettings {
-        return <CardSettings>CardSettings.parse(dataView);
-    }
+  private static parseSettings(dataView: DataView): CardSettings {
+    return <CardSettings>CardSettings.parse(dataView);
+  }
 
-    /**
-     * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-     * objects and properties you want to expose to the users in the property pane.
-     *
-     */
-    public enumerateObjectInstances(
-        options: EnumerateVisualObjectInstancesOptions
-    ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-        var objectName = options.objectName;
-        var objectEnumeration: VisualObjectInstance[] = [];
-        let model = this.card.getModel();
-        switch (objectName) {
-            case "card":
-                objectEnumeration.push({
-                    objectName: objectName,
-                    properties: {
-                        backFill: model.settings.card.backFill,
-                        borderShow: model.settings.card.borderShow,
-                    },
-                    propertyInstanceKind: {
-                        backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
-                    },
-                    altConstantValueSelector: null,
-                    selector: dataViewWildcard.createDataViewWildcardSelector(
-                        dataViewWildcard.DataViewWildcardMatchingOption
-                            .InstancesAndTotals
-                    ),
-                });
-                model.settings.card.borderShow &&
-                    objectEnumeration.push({
-                        objectName: objectName,
-                        properties: {
-                            borderFill: model.settings.card.borderFill,
-                            borderType: model.settings.card.borderType,
-                            borderWeight: model.settings.card.borderWeight,
-                        },
-                        validValues: {
-                            borderWeight: {
-                                numberRange: {
-                                    min: 1,
-                                    max: 30,
-                                },
-                            },
-                        },
-                        selector: null,
-                    });
-                break;
-
-            case "multiple":
-                objectEnumeration.push({
-                    objectName: objectName,
-                    properties: {
-                        cardsPerRow: model.settings.multiple.cardsPerRow,
-                        cardsMargin: model.settings.multiple.cardsMargin,
-                        spaceBeforeFirstComponent:
-                            model.settings.multiple.spaceBeforeFirstComponent,
-                        spaceBetweenCardComponent:
-                            model.settings.multiple.spaceBetweenCardComponent,
-                    },
-                    validValues: {
-                        cardsPerRow: {
-                            numberRange: {
-                                min: 1,
-                                max: 15,
-                            },
-                        },
-                        cardsMargin: {
-                            numberRange: {
-                                min: 0,
-                                max: 100,
-                            },
-                        },
-                        spaceBeforeFirstComponent: {
-                            numberRange: {
-                                min: 0,
-                                max: 100,
-                            },
-                        },
-                        spaceBetweenCardComponent: {
-                            numberRange: {
-                                min: 0,
-                                max: 100,
-                            },
-                        },
-                    },
-                    selector: null,
-                });
-                break;
-
-            case "categoryLabel":
-                objectEnumeration.push({
-                    objectName: objectName,
-                    properties: {
-                        show: model.settings.categoryLabel.show,
-                        horizontalAlignment:
-                            model.settings.categoryLabel.horizontalAlignment,
-                        paddingTop: model.settings.categoryLabel.paddingTop,
-                        paddingSide: model.settings.categoryLabel.paddingSide,
-                        color: model.settings.categoryLabel.color,
-                        textSize: model.settings.categoryLabel.textSize,
-                        fontFamily: model.settings.categoryLabel.fontFamily,
-                        wordWrap: model.settings.categoryLabel.wordWrap,
-                        isItalic: model.settings.categoryLabel.isItalic,
-                        isBold: model.settings.categoryLabel.isBold,
-                    },
-                    validValues: {
-                        paddingTop: {
-                            numberRange: {
-                                min: 0,
-                                max: 15,
-                            },
-                        },
-                        paddingSide: {
-                            numberRange: {
-                                min: 0,
-                                max: 15,
-                            },
-                        },
-                    },
-                    selector: null,
-                });
-                break;
-
-            case "dataLabel":
-                objectEnumeration.push({
-                    objectName: objectName,
-                    properties: {
-                        color: model.settings.dataLabel.color,
-                        textSize: model.settings.dataLabel.textSize,
-                        fontFamily: model.settings.dataLabel.fontFamily,
-                        isItalic: model.settings.dataLabel.isItalic,
-                        isBold: model.settings.dataLabel.isBold,
-                        displayUnit: model.settings.dataLabel.displayUnit,
-                        decimalPlaces: model.settings.dataLabel.decimalPlaces,
-                    },
-                    validValues: {
-                        decimalPlaces: {
-                            numberRange: {
-                                min: 0,
-                                max: 9,
-                            },
-                        },
-                    },
-                    propertyInstanceKind: {
-                        color: VisualEnumerationInstanceKinds.ConstantOrRule,
-                    },
-                    altConstantValueSelector: null,
-                    selector: dataViewWildcard.createDataViewWildcardSelector(
-                        dataViewWildcard.DataViewWildcardMatchingOption
-                            .InstancesAndTotals
-                    ),
-                });
-                break;
-
-            case "additionalCategoryLabel":
-                objectEnumeration.push({
-                    objectName: objectName,
-                    properties: {
-                        show: model.settings.additionalCategoryLabel.show,
-                        horizontalAlignment:
-                            model.settings.additionalCategoryLabel
-                                .horizontalAlignment,
-                        paddingTop:
-                            model.settings.additionalCategoryLabel.paddingTop,
-                        paddingSide:
-                            model.settings.additionalCategoryLabel.paddingSide,
-                        color: model.settings.additionalCategoryLabel.color,
-                        textSize:
-                            model.settings.additionalCategoryLabel.textSize,
-                        fontFamily:
-                            model.settings.additionalCategoryLabel.fontFamily,
-                        wordWrap:
-                            model.settings.additionalCategoryLabel.wordWrap,
-                        isItalic:
-                            model.settings.additionalCategoryLabel.isItalic,
-                        isBold: model.settings.additionalCategoryLabel.isBold,
-                    },
-                    validValues: {
-                        paddingTop: {
-                            numberRange: {
-                                min: 0,
-                                max: 50,
-                            },
-                        },
-                        paddingSide: {
-                            numberRange: {
-                                min: 0,
-                                max: 50,
-                            },
-                        },
-                    },
-                    propertyInstanceKind: {
-                        color: VisualEnumerationInstanceKinds.ConstantOrRule,
-                    },
-                    altConstantValueSelector: null,
-                    selector: dataViewWildcard.createDataViewWildcardSelector(
-                        dataViewWildcard.DataViewWildcardMatchingOption
-                            .InstancesAndTotals
-                    ),
-                });
-                break;
-        }
-        if (
-            objectName == "measureComparison1" ||
-            objectName == "measureComparison2" ||
-            objectName == "measureComparison3"
-        ) {
-            objectEnumeration.push({
-                objectName: objectName,
-                properties: {
-                    show: model.settings.measureComparison[objectName].show,
-                    unmatchedColor:
-                        model.settings.measureComparison[objectName]
-                            .unmatchedColor,
-                    textSize:
-                        model.settings.measureComparison[objectName].textSize,
-                    fontFamily:
-                        model.settings.measureComparison[objectName].fontFamily,
-                    isItalic:
-                        model.settings.measureComparison[objectName].isItalic,
-                    isBold: model.settings.measureComparison[objectName].isBold,
-                    componentType:
-                        model.settings.measureComparison[objectName]
-                            .componentType,
-                    comparisonOperator:
-                        model.settings.measureComparison[objectName]
-                            .comparisonOperator,
-                    condition1:
-                        model.settings.measureComparison[objectName].condition1,
-                    condition2:
-                        model.settings.measureComparison[objectName].condition2,
-                    condition3:
-                        model.settings.measureComparison[objectName].condition3,
-                    condition4:
-                        model.settings.measureComparison[objectName].condition4,
-                    paddingTop:
-                        model.settings.measureComparison[objectName].paddingTop,
+  /**
+   * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
+   * objects and properties you want to expose to the users in the property pane.
+   *
+   */
+  public enumerateObjectInstances(
+    options: EnumerateVisualObjectInstancesOptions
+  ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
+    var objectName = options.objectName;
+    var objectEnumeration: VisualObjectInstance[] = [];
+    let model = this.card.getModel();
+    switch (objectName) {
+      case "card":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            backFill: model.settings.card.backFill,
+            borderShow: model.settings.card.borderShow,
+          },
+          propertyInstanceKind: {
+            backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
+          },
+          altConstantValueSelector: null,
+          selector: dataViewWildcard.createDataViewWildcardSelector(
+            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+          ),
+        });
+        model.settings.card.borderShow &&
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              borderFill: model.settings.card.borderFill,
+              borderType: model.settings.card.borderType,
+              borderWeight: model.settings.card.borderWeight,
+            },
+            validValues: {
+              borderWeight: {
+                numberRange: {
+                  min: 1,
+                  max: 30,
                 },
-                validValues: {
-                    paddingTop: {
-                        numberRange: {
-                            min: 0,
-                            max: 50,
-                        },
-                    },
-                },
-                propertyInstanceKind: {
-                    unmatchedColor:
-                        VisualEnumerationInstanceKinds.ConstantOrRule,
-                },
-                altConstantValueSelector: null,
-                selector: dataViewWildcard.createDataViewWildcardSelector(
-                    dataViewWildcard.DataViewWildcardMatchingOption
-                        .InstancesAndTotals
-                ),
-            });
-        }
+              },
+            },
+            selector: null,
+          });
+        break;
 
-        return objectEnumeration;
+      case "multiple":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            cardsPerRow: model.settings.multiple.cardsPerRow,
+            cardsMargin: model.settings.multiple.cardsMargin,
+            spaceBeforeFirstComponent:
+              model.settings.multiple.spaceBeforeFirstComponent,
+            spaceBetweenCardComponent:
+              model.settings.multiple.spaceBetweenCardComponent,
+          },
+          validValues: {
+            cardsPerRow: {
+              numberRange: {
+                min: 1,
+                max: 15,
+              },
+            },
+            cardsMargin: {
+              numberRange: {
+                min: 0,
+                max: 100,
+              },
+            },
+            spaceBeforeFirstComponent: {
+              numberRange: {
+                min: 0,
+                max: 100,
+              },
+            },
+            spaceBetweenCardComponent: {
+              numberRange: {
+                min: 0,
+                max: 100,
+              },
+            },
+          },
+          selector: null,
+        });
+        break;
+
+      case "categoryLabel":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            show: model.settings.categoryLabel.show,
+            horizontalAlignment:
+              model.settings.categoryLabel.horizontalAlignment,
+            paddingTop: model.settings.categoryLabel.paddingTop,
+            paddingSide: model.settings.categoryLabel.paddingSide,
+            color: model.settings.categoryLabel.color,
+            textSize: model.settings.categoryLabel.textSize,
+            fontFamily: model.settings.categoryLabel.fontFamily,
+            wordWrap: model.settings.categoryLabel.wordWrap,
+            isItalic: model.settings.categoryLabel.isItalic,
+            isBold: model.settings.categoryLabel.isBold,
+          },
+          validValues: {
+            paddingTop: {
+              numberRange: {
+                min: 0,
+                max: 15,
+              },
+            },
+            paddingSide: {
+              numberRange: {
+                min: 0,
+                max: 15,
+              },
+            },
+          },
+          selector: null,
+        });
+        break;
+
+      case "dataLabel":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            color: model.settings.dataLabel.color,
+            textSize: model.settings.dataLabel.textSize,
+            fontFamily: model.settings.dataLabel.fontFamily,
+            isItalic: model.settings.dataLabel.isItalic,
+            isBold: model.settings.dataLabel.isBold,
+            displayUnit: model.settings.dataLabel.displayUnit,
+            decimalPlaces: model.settings.dataLabel.decimalPlaces,
+          },
+          validValues: {
+            decimalPlaces: {
+              numberRange: {
+                min: 0,
+                max: 9,
+              },
+            },
+          },
+          propertyInstanceKind: {
+            color: VisualEnumerationInstanceKinds.ConstantOrRule,
+          },
+          altConstantValueSelector: null,
+          selector: dataViewWildcard.createDataViewWildcardSelector(
+            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+          ),
+        });
+        break;
+
+      case "additionalCategoryLabel":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            show: model.settings.additionalCategoryLabel.show,
+            horizontalAlignment:
+              model.settings.additionalCategoryLabel.horizontalAlignment,
+            paddingTop: model.settings.additionalCategoryLabel.paddingTop,
+            paddingSide: model.settings.additionalCategoryLabel.paddingSide,
+            color: model.settings.additionalCategoryLabel.color,
+            textSize: model.settings.additionalCategoryLabel.textSize,
+            fontFamily: model.settings.additionalCategoryLabel.fontFamily,
+            wordWrap: model.settings.additionalCategoryLabel.wordWrap,
+            isItalic: model.settings.additionalCategoryLabel.isItalic,
+            isBold: model.settings.additionalCategoryLabel.isBold,
+          },
+          validValues: {
+            paddingTop: {
+              numberRange: {
+                min: 0,
+                max: 50,
+              },
+            },
+            paddingSide: {
+              numberRange: {
+                min: 0,
+                max: 50,
+              },
+            },
+          },
+          propertyInstanceKind: {
+            color: VisualEnumerationInstanceKinds.ConstantOrRule,
+          },
+          altConstantValueSelector: null,
+          selector: dataViewWildcard.createDataViewWildcardSelector(
+            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+          ),
+        });
+        break;
     }
+    if (
+      objectName == "measureComparison1" ||
+      objectName == "measureComparison2" ||
+      objectName == "measureComparison3"
+    ) {
+      objectEnumeration.push({
+        objectName: objectName,
+        properties: {
+          show: model.settings.measureComparison[objectName].show,
+          unmatchedColor:
+            model.settings.measureComparison[objectName].unmatchedColor,
+          textSize: model.settings.measureComparison[objectName].textSize,
+          fontFamily: model.settings.measureComparison[objectName].fontFamily,
+          isItalic: model.settings.measureComparison[objectName].isItalic,
+          isBold: model.settings.measureComparison[objectName].isBold,
+          componentType:
+            model.settings.measureComparison[objectName].componentType,
+          comparisonOperator:
+            model.settings.measureComparison[objectName].comparisonOperator,
+          condition1: model.settings.measureComparison[objectName].condition1,
+          condition2: model.settings.measureComparison[objectName].condition2,
+          condition3: model.settings.measureComparison[objectName].condition3,
+          condition4: model.settings.measureComparison[objectName].condition4,
+          paddingTop: model.settings.measureComparison[objectName].paddingTop,
+        },
+        validValues: {
+          paddingTop: {
+            numberRange: {
+              min: 0,
+              max: 50,
+            },
+          },
+        },
+        propertyInstanceKind: {
+          unmatchedColor: VisualEnumerationInstanceKinds.ConstantOrRule,
+        },
+        altConstantValueSelector: null,
+        selector: dataViewWildcard.createDataViewWildcardSelector(
+          dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+        ),
+      });
+    }
+
+    return objectEnumeration;
+  }
 }
