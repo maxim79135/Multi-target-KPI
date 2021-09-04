@@ -65,8 +65,9 @@ export class Card {
   private additionalCategoryContainers: Array<
     Selection<BaseType, any, any, any>[]
   >;
-  // private additionalCategoryLabels: Selection<BaseType, any, any, any>[];
-  private additionalMeasureLabels: Selection<BaseType, any, any, any>[];
+  private additionalMeasureContainers: Array<
+    Selection<BaseType, any, any, any>[]
+  >;
   private model: ICardViewModel;
   private cardViewport: { width: number; height: number };
   private cardMargin: {
@@ -78,6 +79,8 @@ export class Card {
   private numberOfCards: number;
   private cardsPerRow: number;
   private numberOfRows: number;
+  private isAdditionalCategoryExist: boolean = false;
+  private isAdditionalMeasureExist: boolean = false;
 
   constructor(target: HTMLElement) {
     this.root = select(target).classed(CardClassNames.Root, true);
@@ -211,11 +214,19 @@ export class Card {
   }
 
   public createLabels() {
+    this.dataLabels = [];
+    this.categoryLabels = [];
+    this.additionalCategoryContainers = [];
+    this.additionalMeasureContainers = [];
+    this.isAdditionalCategoryExist = false;
+    this.isAdditionalMeasureExist = false;
+    
     if (this.model.settings.categoryLabel.show) {
       this.createCategoryLabel();
     }
     if (this.model.settings.additionalCategoryLabel.show) {
       this.createAdditionalCategoryLabel();
+      this.isAdditionalCategoryExist = true;
     }
     if (
       this.model.settings.measureComparison1.show ||
@@ -223,12 +234,12 @@ export class Card {
       this.model.settings.measureComparison3.show
     ) {
       this.createAdditionalMeasureLabel();
+      this.isAdditionalMeasureExist = true;
     }
     this.createDataLabel();
   }
 
   private createCategoryLabel() {
-    this.categoryLabels = [];
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
       let categoryLabel = svg
@@ -285,7 +296,6 @@ export class Card {
   }
 
   private createDataLabel() {
-    this.dataLabels = [];
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
       let dataLabel = svg
@@ -308,11 +318,6 @@ export class Card {
       );
       this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
 
-      let additionalMeasuresExist = this.elementExist(
-        svg.select(".additional-measure-container-" + i)
-      );
-      let isDisableAdditionalMeasures = !additionalMeasuresExist;
-
       let x: number, y: number;
       let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
       y =
@@ -322,7 +327,7 @@ export class Card {
           this.model.settings.categoryLabel.paddingTop -
           categoryLabelSize.height) /
           2;
-      if (isDisableAdditionalMeasures) x = svgRect.width / 2;
+      if (!this.isAdditionalMeasureExist) x = svgRect.width / 2;
       else x = svgRect.width / 4;
 
       dataLabel.select("text").style("dominant-baseline", "middle");
@@ -430,15 +435,13 @@ export class Card {
   }
 
   private createAdditionalMeasureLabel() {
-    this.additionalMeasureLabels = [];
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
       let svgRect = this.getSVGRect(svg);
       let additionalMeasureContainter = svg
         .append("g")
         .classed(CardClassNames.AdditionalMeasureContainer + i, true);
-
-      let additionalCategoryContainer = this.additionalCategoryContainers[i];
+      let additionalMeasureLabels = [];
 
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         let additionalMeasureLabel = additionalMeasureContainter
@@ -468,23 +471,39 @@ export class Card {
         let additionalMeasureLabelSize = this.getLabelSize(
           additionalMeasureLabel
         );
-        let x = Number(
-          transform(additionalCategoryContainer[j].attr("transform")).x
-        );
-        let y =
-          Number(
-            transform(additionalCategoryContainer[j].attr("transform")).y
-          ) +
-          additionalMeasureLabelSize.height +
-          this.model.settings.measureComparison[v.id].paddingTop;
+        let x: number, y: number;
 
+        if (this.isAdditionalCategoryExist) {
+          x = Number(
+            transform(this.additionalCategoryContainers[i][j].attr("transform"))
+              .x
+          );
+          y =
+            Number(
+              transform(
+                this.additionalCategoryContainers[i][j].attr("transform")
+              ).y
+            ) +
+            additionalMeasureLabelSize.height +
+            this.model.settings.measureComparison[v.id].paddingTop;
+        } else {
+          if (this.categoryLabels.length > 0) {
+            x =
+              svgRect.width / 2 +
+              j * additionalMeasureWidth +
+              additionalMeasureWidth / 2;
+            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
+            y = svgRect.height / 2 + additionalMeasureLabelSize.height / 2;
+          }
+        }
         additionalMeasureLabel.select("text").attr("text-anchor", "middle");
         additionalMeasureLabel
           .select("text")
           .style("dominant-baseline", "middle");
         additionalMeasureLabel.attr("transform", translate(x, y));
-        this.additionalMeasureLabels.push(additionalMeasureLabel);
+        additionalMeasureLabels.push(additionalMeasureLabel);
       });
+      this.additionalMeasureContainers.push(additionalMeasureLabels);
     }
   }
 
