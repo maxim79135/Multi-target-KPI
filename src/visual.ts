@@ -300,8 +300,6 @@ export class CardKPI implements IVisual {
         });
         break;
     }
-    console.log(objectEnumeration);
-
     return objectEnumeration;
   }
 }

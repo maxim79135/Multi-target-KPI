@@ -168,12 +168,12 @@ export class Card {
       width: Math.floor(
         (viewport.width -
           (this.cardMargin.left + this.cardMargin.right) * this.cardsPerRow) /
-          this.cardsPerRow
+        this.cardsPerRow
       ),
       height: Math.floor(
         (viewport.height -
           (this.cardMargin.top + this.cardMargin.bottom) * this.numberOfRows) /
-          this.numberOfRows
+        this.numberOfRows
       ),
     };
     this.maxMainMeasureWidth = this.model.settings.dataLabel.percentageWidth;
@@ -199,10 +199,10 @@ export class Card {
           "border",
           this.model.settings.card.borderShow
             ? this.model.settings.card.borderWeight +
-                "px " +
-                this.model.settings.card.borderType +
-                " " +
-                this.model.settings.card.borderFill
+            "px " +
+            this.model.settings.card.borderType +
+            " " +
+            this.model.settings.card.borderFill
             : ""
         );
       this.cards.push(cardContainer);
@@ -317,25 +317,53 @@ export class Card {
       this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
       let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
         textProperties,
-        svgRect.width / 2
+        this.maxMainMeasureWidth
       );
       this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
+      let dataLabelSize = this.getLabelSize(dataLabel)
 
       let x: number, y: number;
-      if (this.categoryLabels.length > 0) {
+
+      if (!this.isAdditionalMeasureExist) this.maxMainMeasureWidth = svgRect.width;
+      if (this.model.settings.dataLabel.horizontalAlignment == "center") {
+        x = this.maxMainMeasureWidth / 2;
+        dataLabel.select("text").attr("text-anchor", "middle");
+      } else if (this.model.settings.dataLabel.horizontalAlignment == "left") {
+        x = dataLabelSize.width / 2
+        dataLabel.select("text").attr("text-anchor", "start");
+      } else if (this.model.settings.dataLabel.horizontalAlignment == "right") {
+        x = this.maxMainMeasureWidth - dataLabelSize.width / 2
+        dataLabel.select("text").attr("text-anchor", "end");
+      }
+
+      if (this.categoryLabels.length == 0) {
+        y = svgRect.height / 2;
+      } else {
         let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
-        y =
+        let startYPos =
           this.model.settings.categoryLabel.paddingTop +
           categoryLabelSize.height +
           (svgRect.height -
             this.model.settings.categoryLabel.paddingTop -
             categoryLabelSize.height) /
-            2;
-      } else {
-        y = svgRect.height / 2;
+          2;
+        if (this.model.settings.dataLabel.verticalAlignment == "middle") {
+          y = startYPos;
+          dataLabel
+            .select("text")
+            .style("dominant-baseline", "middle");
+        } else if (this.model.settings.dataLabel.verticalAlignment == "top") {
+          y = startYPos - dataLabelSize.height;
+          dataLabel
+            .select("text")
+            .style("dominant-baseline", "text-top");
+        } else if (this.model.settings.dataLabel.verticalAlignment == "bottom") {
+          y = svgRect.height - dataLabelSize.height / 2;
+          dataLabel
+            .select("text")
+            .style("dominant-baseline", "text-bottom");
+        }
       }
-      if (!this.isAdditionalMeasureExist) x = svgRect.width / 2;
-      else x = this.maxMainMeasureWidth / 2;
 
       dataLabel.select("text").style("dominant-baseline", "middle");
       dataLabel.select("text").attr("text-anchor", "middle");
@@ -366,7 +394,13 @@ export class Card {
         );
         textProperties.text = v.name;
         let additionalCategoryWidth =
-          (svgRect.width - this.maxMainMeasureWidth) / array.length;
+          (svgRect.width -
+            this.maxMainMeasureWidth -
+            this.model.settings.measureComparison.paddingRight -
+            this.model.settings.multiple.spaceBeforeFirstComponent -
+            (array.length - 1) *
+            this.model.settings.multiple.spaceBetweenCardComponent) /
+          array.length;
 
         this.updateLabelStyles(
           additionalCategoryLabel,
@@ -443,7 +477,7 @@ export class Card {
             this.model.settings.measureComparison.paddingRight -
             this.model.settings.multiple.spaceBeforeFirstComponent -
             (array.length - 1) *
-              this.model.settings.multiple.spaceBetweenCardComponent) /
+            this.model.settings.multiple.spaceBetweenCardComponent) /
           array.length;
         this.updateLabelStyles(
           additionalMeasureLabel,
