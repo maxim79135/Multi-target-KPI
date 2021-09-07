@@ -33,7 +33,7 @@ export class Multiple {
   public cardsPerRow: number = 5;
   public cardsMargin: number = 5;
   public spaceBeforeFirstComponent: number = 15;
-  public spaceBetweenCardComponent: number = 15;
+  public spaceBetweenCardComponent: number = 5;
 }
 
 export class Card {
@@ -65,13 +65,13 @@ export class DataLabel {
   public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
   public isItalic: boolean = false;
   public isBold: boolean = false;
+  public percentageWidth: number = 50;
 }
 
 export class AdditionalCategoryLabel {
   public show: boolean = true;
   public horizontalAlignment: string = "center";
-  public paddingTop: number = 15;
-  public paddingSide: number = 5;
+  public paddingBottom: number = 5;
   public color: string = "#333333";
   public textSize: number = 15;
   public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
@@ -83,7 +83,7 @@ export class AdditionalCategoryLabel {
 export class MeasureComparison {
   public show: boolean = false;
   public componentType: string = "measure";
-  public unmatchedColor: string = "#333333";
+  public color: string = "#333333";
   public comparisonOperator: string = ">";
   public condition1: boolean = false;
   public condition2: boolean = false;
@@ -93,7 +93,8 @@ export class MeasureComparison {
   public isBold: boolean = false;
   public textSize: number = 25;
   public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public paddingTop: number = 5;
+  public paddingBottom: number = 5;
+  public paddingRight: number = 5;
 }
 
 export class CardSettings extends DataViewObjectsParser {
@@ -103,12 +104,5 @@ export class CardSettings extends DataViewObjectsParser {
   public dataLabel: DataLabel = new DataLabel();
   public additionalCategoryLabel: AdditionalCategoryLabel =
     new AdditionalCategoryLabel();
-  public measureComparison1: MeasureComparison = new MeasureComparison();
-  public measureComparison2: MeasureComparison = new MeasureComparison();
-  public measureComparison3: MeasureComparison = new MeasureComparison();
-  public measureComparison = {
-    measureComparison1: this.measureComparison1,
-    measureComparison2: this.measureComparison2,
-    measureComparison3: this.measureComparison3,
-  };
+  public measureComparison: MeasureComparison = new MeasureComparison();
 }

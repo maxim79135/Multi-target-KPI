@@ -81,6 +81,7 @@ export class Card {
   private numberOfRows: number;
   private isAdditionalCategoryExist: boolean = false;
   private isAdditionalMeasureExist: boolean = false;
+  private maxMainMeasureWidth: number;
 
   constructor(target: HTMLElement) {
     this.root = select(target).classed(CardClassNames.Root, true);
@@ -128,7 +129,7 @@ export class Card {
             "measureComparison2",
             "measureComparison3",
           ].map((v) => {
-            if (dataValue.source.roles[v] && settings.measureComparison[v].show)
+            if (dataValue.source.roles[v] && settings.measureComparison.show)
               dataGroup.additionalMeasures.push({
                 id: v,
                 name: dataValue.source.displayName,
@@ -175,6 +176,7 @@ export class Card {
           this.numberOfRows
       ),
     };
+    this.maxMainMeasureWidth = this.model.settings.dataLabel.percentageWidth;
   }
 
   public createCardContainer() {
@@ -211,6 +213,11 @@ export class Card {
           .style("height", "100%")
       );
     }
+    if (this.model.dataGroups.length > 0) {
+      let svgRect = this.getSVGRect(this.svg[0]);
+      this.maxMainMeasureWidth =
+        (svgRect.width * this.maxMainMeasureWidth) / 100;
+    }
   }
 
   public createLabels() {
@@ -224,17 +231,13 @@ export class Card {
     if (this.model.settings.categoryLabel.show) {
       this.createCategoryLabel();
     }
+    if (this.model.settings.measureComparison.show) {
+      this.createAdditionalMeasureLabel();
+      this.isAdditionalMeasureExist = true;
+    }
     if (this.model.settings.additionalCategoryLabel.show) {
       this.createAdditionalCategoryLabel();
       this.isAdditionalCategoryExist = true;
-    }
-    if (
-      this.model.settings.measureComparison1.show ||
-      this.model.settings.measureComparison2.show ||
-      this.model.settings.measureComparison3.show
-    ) {
-      this.createAdditionalMeasureLabel();
-      this.isAdditionalMeasureExist = true;
     }
     this.createDataLabel();
   }
@@ -332,7 +335,7 @@ export class Card {
         y = svgRect.height / 2;
       }
       if (!this.isAdditionalMeasureExist) x = svgRect.width / 2;
-      else x = svgRect.width / 4;
+      else x = this.maxMainMeasureWidth / 2;
 
       dataLabel.select("text").style("dominant-baseline", "middle");
       dataLabel.select("text").attr("text-anchor", "middle");
@@ -343,6 +346,7 @@ export class Card {
 
   private createAdditionalCategoryLabel() {
     this.additionalCategoryContainers = [];
+
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
       let svgRect = this.getSVGRect(svg);
@@ -350,6 +354,7 @@ export class Card {
         .append("g")
         .classed(CardClassNames.AdditionalCategoryContainer + i, true);
       let additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
+      let additionalMeasureContainer = this.additionalMeasureContainers[i];
 
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         let additionalCategoryLabel = additionalCategoryContainter
@@ -360,7 +365,8 @@ export class Card {
           this.model.settings.additionalCategoryLabel
         );
         textProperties.text = v.name;
-        let additionalCategoryWidth = svgRect.width / (2 * array.length);
+        let additionalCategoryWidth =
+          (svgRect.width - this.maxMainMeasureWidth) / array.length;
 
         this.updateLabelStyles(
           additionalCategoryLabel,
@@ -390,49 +396,18 @@ export class Card {
         let additionalCategoryLabelSize = this.getLabelSize(
           additionalCategoryLabel
         );
-        let x: number;
-        let y: number;
+        let textAnchor = additionalMeasureContainer[j]
+          .select("text")
+          .attr("text-anchor");
+        let x = Number(
+          transform(additionalMeasureContainer[j].attr("transform")).x
+        );
+        let y =
+          Number(transform(additionalMeasureContainer[j].attr("transform")).y) -
+          additionalCategoryLabelSize.height -
+          this.model.settings.additionalCategoryLabel.paddingBottom;
 
-        if (this.categoryLabels.length > 0) {
-          let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
-          y =
-            this.model.settings.categoryLabel.paddingTop +
-            categoryLabelSize.height +
-            additionalCategoryLabelSize.height / 2 +
-            this.model.settings.additionalCategoryLabel.paddingTop;
-        } else {
-          y = svgRect.height / 2 - additionalCategoryLabelSize.height;
-        }
-        if (
-          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
-          "center"
-        ) {
-          x =
-            svgRect.width / 2 +
-            j * additionalCategoryWidth +
-            additionalCategoryWidth / 2;
-          additionalCategoryLabel.select("text").attr("text-anchor", "middle");
-        } else if (
-          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
-          "left"
-        ) {
-          x =
-            svgRect.width / 2 +
-            j * additionalCategoryWidth +
-            this.model.settings.additionalCategoryLabel.paddingSide;
-          additionalCategoryLabel.select("text").attr("text-anchor", "start");
-        } else if (
-          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
-          "right"
-        ) {
-          x =
-            svgRect.width / 2 +
-            j * additionalCategoryWidth +
-            additionalCategoryWidth -
-            this.model.settings.multiple.spaceBetweenCardComponent -
-            this.model.settings.additionalCategoryLabel.paddingSide;
-          additionalCategoryLabel.select("text").attr("text-anchor", "end");
-        }
+        additionalCategoryLabel.select("text").attr("text-anchor", textAnchor);
         additionalCategoryLabel
           .select("text")
           .style("dominant-baseline", "middle");
@@ -458,15 +433,21 @@ export class Card {
           .classed(CardClassNames.AdditionalMeasureLabel + i + j, true);
         additionalMeasureLabel.append("text");
         let textProperties = this.getTextProperties(
-          this.model.settings.measureComparison[v.id]
+          this.model.settings.measureComparison
         );
         textProperties.text =
           this.model.dataGroups[i].additionalMeasures[j].value.toString();
-        let additionalMeasureWidth = svgRect.width / (2 * array.length);
-
+        let additionalMeasureWidth =
+          (svgRect.width -
+            this.maxMainMeasureWidth -
+            this.model.settings.measureComparison.paddingRight -
+            this.model.settings.multiple.spaceBeforeFirstComponent -
+            (array.length - 1) *
+              this.model.settings.multiple.spaceBetweenCardComponent) /
+          array.length;
         this.updateLabelStyles(
           additionalMeasureLabel,
-          this.model.settings.measureComparison[v.id]
+          this.model.settings.measureComparison
         );
         let measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
@@ -480,32 +461,35 @@ export class Card {
         let additionalMeasureLabelSize = this.getLabelSize(
           additionalMeasureLabel
         );
-        let x: number, y: number;
-
-        if (this.isAdditionalCategoryExist) {
-          x = Number(
-            transform(this.additionalCategoryContainers[i][j].attr("transform"))
-              .x
-          );
-          y =
-            Number(
-              transform(
-                this.additionalCategoryContainers[i][j].attr("transform")
-              ).y
-            ) +
-            additionalMeasureLabelSize.height +
-            this.model.settings.measureComparison[v.id].paddingTop;
-        } else {
-          //   if (this.categoryLabels.length > 0) {
-          x =
-            svgRect.width / 2 +
-            j * additionalMeasureWidth +
-            additionalMeasureWidth / 2;
+        let x: number;
+        let startXMeasures =
+          this.maxMainMeasureWidth +
+          this.model.settings.multiple.spaceBeforeFirstComponent +
+          j * additionalMeasureWidth +
+          j * this.model.settings.multiple.spaceBetweenCardComponent;
+        let y =
+          svgRect.height -
+          additionalMeasureLabelSize.height / 2 -
+          this.model.settings.measureComparison.paddingBottom;
+        if (
+          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
+          "center"
+        ) {
+          x = startXMeasures + additionalMeasureWidth / 2;
           additionalMeasureLabel.select("text").attr("text-anchor", "middle");
-          y = svgRect.height / 2;
-          //   }
+        } else if (
+          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
+          "left"
+        ) {
+          x = startXMeasures;
+          additionalMeasureLabel.select("text").attr("text-anchor", "start");
+        } else if (
+          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
+          "right"
+        ) {
+          x = startXMeasures + additionalMeasureWidth;
+          additionalMeasureLabel.select("text").attr("text-anchor", "end");
         }
-        additionalMeasureLabel.select("text").attr("text-anchor", "middle");
         additionalMeasureLabel
           .select("text")
           .style("dominant-baseline", "middle");
