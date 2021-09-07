@@ -66,6 +66,8 @@ export class DataLabel {
   public isItalic: boolean = false;
   public isBold: boolean = false;
   public percentageWidth: number = 50;
+  public verticalAlignment: string = "middle";
+  public horizontalAlignment: string = "center";
 }
 
 export class AdditionalCategoryLabel {

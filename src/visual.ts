@@ -188,6 +188,9 @@ export class CardKPI implements IVisual {
         objectEnumeration.push({
           objectName: objectName,
           properties: {
+            verticalAlignment: model.settings.dataLabel.verticalAlignment,
+            horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
+            percentageWidth: model.settings.dataLabel.percentageWidth,
             color: model.settings.dataLabel.color,
             textSize: model.settings.dataLabel.textSize,
             fontFamily: model.settings.dataLabel.fontFamily,
@@ -195,7 +198,6 @@ export class CardKPI implements IVisual {
             isBold: model.settings.dataLabel.isBold,
             displayUnit: model.settings.dataLabel.displayUnit,
             decimalPlaces: model.settings.dataLabel.decimalPlaces,
-            percentageWidth: model.settings.dataLabel.percentageWidth,
           },
           validValues: {
             decimalPlaces: {

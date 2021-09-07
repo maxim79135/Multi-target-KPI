@@ -49,6 +49,38 @@
                         "numeric": true
                     }
                 },
+                "verticalAlignment": {
+                    "displayName": "Content vertical alignment",
+                    "displayNameKey": "verticalAlignment",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Top",
+                                "displayNameKey": "top",
+                                "value": "top"
+                            },
+                            {
+                                "displayName": "Middle",
+                                "displayNameKey": "middle",
+                                "value": "middle"
+                            },
+                            {
+                                "displayName": "Bottom",
+                                "displayNameKey": "bottom",
+                                "value": "bottom"
+                            }
+                        ]
+                    }
+                },
+                "horizontalAlignment": {
+                    "displayName": "Content horizontal alignment",
+                    "displayNameKey": "alignment",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
                 "color": {
                     "displayName": "Color",
                     "displayNameKey": "fontColor",
