@@ -39,7 +39,6 @@ import VisualEnumerationInstanceKinds = powerbi.VisualEnumerationInstanceKinds;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { dataViewWildcard } from "powerbi-visuals-utils-dataviewutils";
 
-import { CardSettings } from "./settings";
 import { Card } from "./Card";
 import { visualTransform } from "./model/ViewModelHelper";
 import { ICardViewModel } from "./model/ViewModel";
@@ -56,17 +55,11 @@ export class CardKPI implements IVisual {
   }
 
   public update(options: VisualUpdateOptions) {
-    let settings = CardKPI.parseSettings(options.dataViews[0]);
-
     this.model = visualTransform(options, this.host);
     this.card.setModel(this.model);
     this.card.updateViewport(options.viewport);
     this.card.createCardContainer();
     this.card.createLabels();
-  }
-
-  private static parseSettings(dataView: DataView): CardSettings {
-    return <CardSettings>CardSettings.parse(dataView);
   }
 
   /**
@@ -85,6 +78,40 @@ export class CardKPI implements IVisual {
       instances: [],
     };
     switch (objectName) {
+      case "categoryLabel":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            show: model.settings.categoryLabel.show,
+            horizontalAlignment:
+              model.settings.categoryLabel.horizontalAlignment,
+            paddingTop: model.settings.categoryLabel.paddingTop,
+            paddingSide: model.settings.categoryLabel.paddingSide,
+            color: model.settings.categoryLabel.color,
+            textSize: model.settings.categoryLabel.textSize,
+            fontFamily: model.settings.categoryLabel.fontFamily,
+            wordWrap: model.settings.categoryLabel.wordWrap,
+            isItalic: model.settings.categoryLabel.isItalic,
+            isBold: model.settings.categoryLabel.isBold,
+          },
+          validValues: {
+            paddingTop: {
+              numberRange: {
+                min: 0,
+                max: 15,
+              },
+            },
+            paddingSide: {
+              numberRange: {
+                min: 0,
+                max: 15,
+              },
+            },
+          },
+          selector: null,
+        });
+        break;
+
       case "dataLabel":
         objectEnumeration.push({
           objectName: objectName,
@@ -167,40 +194,6 @@ export class CardKPI implements IVisual {
             },
             selector: null,
           });
-        break;
-
-      case "categoryLabel":
-        objectEnumeration.push({
-          objectName: objectName,
-          properties: {
-            show: model.settings.categoryLabel.show,
-            horizontalAlignment:
-              model.settings.categoryLabel.horizontalAlignment,
-            paddingTop: model.settings.categoryLabel.paddingTop,
-            paddingSide: model.settings.categoryLabel.paddingSide,
-            color: model.settings.categoryLabel.color,
-            textSize: model.settings.categoryLabel.textSize,
-            fontFamily: model.settings.categoryLabel.fontFamily,
-            wordWrap: model.settings.categoryLabel.wordWrap,
-            isItalic: model.settings.categoryLabel.isItalic,
-            isBold: model.settings.categoryLabel.isBold,
-          },
-          validValues: {
-            paddingTop: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-            paddingSide: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-          },
-          selector: null,
-        });
         break;
 
       case "multiple":
