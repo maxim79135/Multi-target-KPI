@@ -9,11 +9,13 @@ import {
   interfaces,
 } from "powerbi-visuals-utils-formattingutils";
 import { manipulation } from "powerbi-visuals-utils-svgutils";
+import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 
 import { BaseType, select, Selection } from "d3-selection";
 import powerbi from "powerbi-visuals-api";
 import { CardSettings } from "./settings";
 import { TextProperties } from "powerbi-visuals-utils-formattingutils/lib/src/interfaces";
+import { ICardViewModel, ILabelProperties } from "./model/ViewModel";
 
 import translate = manipulation.translate;
 import transform = manipulation.parseTranslateTransform;
@@ -30,31 +32,6 @@ export enum CardClassNames {
   AdditionalMeasureLabel = "additional-measure additional-measure-",
 }
 
-interface IAdditionalMeasure {
-  id?: string;
-  name?: string;
-  value?: number;
-}
-
-interface IDataGroup {
-  displayName?: string;
-  mainMeasureValue?: number;
-  additionalMeasures?: IAdditionalMeasure[];
-}
-
-interface ICardViewModel {
-  settings: CardSettings;
-  dataGroups: IDataGroup[];
-}
-
-interface ILabelProperties {
-  textSize: number;
-  fontFamily: string;
-  isBold: boolean;
-  isItalic: boolean;
-  color: string;
-}
-
 export class Card {
   private root: Selection<BaseType, any, any, any>;
   private cardsContainer: Selection<BaseType, any, any, any>;
@@ -68,7 +45,6 @@ export class Card {
   private additionalMeasureContainers: Array<
     Selection<BaseType, any, any, any>[]
   >;
-  private model: ICardViewModel;
   private cardViewport: { width: number; height: number };
   private cardMargin: {
     left: number;
@@ -79,82 +55,28 @@ export class Card {
   private numberOfCards: number;
   private cardsPerRow: number;
   private numberOfRows: number;
-  private isAdditionalCategoryExist: boolean = false;
-  private isAdditionalMeasureExist: boolean = false;
   private maxMainMeasureWidth: number;
 
-  constructor(target: HTMLElement) {
-    this.root = select(target).classed(CardClassNames.Root, true);
+  private model: ICardViewModel;
+
+  constructor(target: VisualConstructorOptions) {
+    this.root = select(target.element).classed(CardClassNames.Root, true);
     this.cardsContainer = this.root
       .append("div")
       .classed(CardClassNames.CardsContainer, true);
   }
 
-  public getModel(): ICardViewModel {
-    return this.model;
+  public setModel(model: ICardViewModel) {
+    this.model = model;
   }
 
-  public visualTransform(options: VisualUpdateOptions, settings: CardSettings) {
-    let dataViews: DataView[] = options.dataViews;
-    let dataGroups: IDataGroup[] = [];
-    if (
-      dataViews &&
-      dataViews[0] &&
-      dataViews[0].categorical &&
-      dataViews[0].categorical.values
-    ) {
-      let dataCategorical = dataViews[0].categorical;
-      let category = dataCategorical.categories
-        ? dataCategorical.categories[dataCategorical.categories.length - 1]
-        : null;
-      let categories = category ? category.values : [""];
-
-      for (let i = 0; i < categories.length; i++) {
-        let dataGroup: IDataGroup = {};
-        dataGroup.additionalMeasures = [];
-
-        for (let ii = 0; ii < dataCategorical.values.length; ii++) {
-          let dataValue = dataCategorical.values[ii];
-          let value: any = dataValue.values[i];
-
-          if (dataValue.source.roles["main_measure"]) {
-            dataGroup.displayName = category
-              ? categories[i].toString()
-              : dataValue.source.displayName;
-            dataGroup.mainMeasureValue = value;
-          }
-
-          [
-            "measureComparison1",
-            "measureComparison2",
-            "measureComparison3",
-          ].map((v) => {
-            if (dataValue.source.roles[v] && settings.measureComparison.show)
-              dataGroup.additionalMeasures.push({
-                id: v,
-                name: dataValue.source.displayName,
-                value: <number>dataValue.values[i],
-              });
-          });
-          dataGroup.additionalMeasures.sort((a, b) => {
-            if (a.id > b.id) return 1;
-            if (a.id < b.id) return -1;
-            return 0;
-          });
-        }
-        dataGroups.push(dataGroup);
-      }
-    }
-    this.model = { settings, dataGroups };
+  public updateViewport(viewport: powerbi.IViewport) {
     this.numberOfCards = this.model.dataGroups.length;
     this.cardsPerRow = Math.min(
       this.numberOfCards,
       this.model.settings.multiple.cardsPerRow
     );
     this.numberOfRows = Math.ceil(this.numberOfCards / this.cardsPerRow);
-  }
-
-  public updateViewport(viewport: powerbi.IViewport) {
     this.cardMargin = {
       left: 0,
       top: 0,
@@ -168,12 +90,12 @@ export class Card {
       width: Math.floor(
         (viewport.width -
           (this.cardMargin.left + this.cardMargin.right) * this.cardsPerRow) /
-        this.cardsPerRow
+          this.cardsPerRow
       ),
       height: Math.floor(
         (viewport.height -
           (this.cardMargin.top + this.cardMargin.bottom) * this.numberOfRows) /
-        this.numberOfRows
+          this.numberOfRows
       ),
     };
     this.maxMainMeasureWidth = this.model.settings.dataLabel.percentageWidth;
@@ -199,10 +121,10 @@ export class Card {
           "border",
           this.model.settings.card.borderShow
             ? this.model.settings.card.borderWeight +
-            "px " +
-            this.model.settings.card.borderType +
-            " " +
-            this.model.settings.card.borderFill
+                "px " +
+                this.model.settings.card.borderType +
+                " " +
+                this.model.settings.card.borderFill
             : ""
         );
       this.cards.push(cardContainer);
@@ -225,19 +147,16 @@ export class Card {
     this.categoryLabels = [];
     this.additionalCategoryContainers = [];
     this.additionalMeasureContainers = [];
-    this.isAdditionalCategoryExist = false;
-    this.isAdditionalMeasureExist = false;
 
     if (this.model.settings.categoryLabel.show) {
       this.createCategoryLabel();
     }
-    if (this.model.settings.measureComparison.show) {
+    if (
+      this.model.dataGroups.length > 0 &&
+      this.model.dataGroups[0].additionalMeasures.length > 0
+    ) {
       this.createAdditionalMeasureLabel();
-      this.isAdditionalMeasureExist = true;
-    }
-    if (this.model.settings.additionalCategoryLabel.show) {
       this.createAdditionalCategoryLabel();
-      this.isAdditionalCategoryExist = true;
     }
     this.createDataLabel();
   }
@@ -310,9 +229,7 @@ export class Card {
       let textProperties = this.getTextProperties(
         this.model.settings.dataLabel
       );
-      textProperties.text = Number(
-        this.model.dataGroups[i].mainMeasureValue
-      ).toFixed(this.model.settings.dataLabel.decimalPlaces);
+      textProperties.text = this.model.dataGroups[i].mainMeasureDataLabel;
 
       this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
       let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
@@ -320,19 +237,23 @@ export class Card {
         this.maxMainMeasureWidth
       );
       this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
-      let dataLabelSize = this.getLabelSize(dataLabel)
+      let dataLabelSize = this.getLabelSize(dataLabel);
 
       let x: number, y: number;
 
-      if (!this.isAdditionalMeasureExist) this.maxMainMeasureWidth = svgRect.width;
+      if (
+        this.model.dataGroups.length == 0 ||
+        this.model.dataGroups[0].additionalMeasures.length == 0
+      )
+        this.maxMainMeasureWidth = svgRect.width;
       if (this.model.settings.dataLabel.horizontalAlignment == "center") {
         x = this.maxMainMeasureWidth / 2;
         dataLabel.select("text").attr("text-anchor", "middle");
       } else if (this.model.settings.dataLabel.horizontalAlignment == "left") {
-        x = dataLabelSize.width / 2
+        x = dataLabelSize.width / 2;
         dataLabel.select("text").attr("text-anchor", "start");
       } else if (this.model.settings.dataLabel.horizontalAlignment == "right") {
-        x = this.maxMainMeasureWidth - dataLabelSize.width / 2
+        x = this.maxMainMeasureWidth - dataLabelSize.width / 2;
         dataLabel.select("text").attr("text-anchor", "end");
       }
 
@@ -346,22 +267,18 @@ export class Card {
           (svgRect.height -
             this.model.settings.categoryLabel.paddingTop -
             categoryLabelSize.height) /
-          2;
+            2;
         if (this.model.settings.dataLabel.verticalAlignment == "middle") {
           y = startYPos;
-          dataLabel
-            .select("text")
-            .style("dominant-baseline", "middle");
+          dataLabel.select("text").style("dominant-baseline", "middle");
         } else if (this.model.settings.dataLabel.verticalAlignment == "top") {
           y = startYPos - dataLabelSize.height;
-          dataLabel
-            .select("text")
-            .style("dominant-baseline", "text-top");
-        } else if (this.model.settings.dataLabel.verticalAlignment == "bottom") {
+          dataLabel.select("text").style("dominant-baseline", "text-top");
+        } else if (
+          this.model.settings.dataLabel.verticalAlignment == "bottom"
+        ) {
           y = svgRect.height - dataLabelSize.height / 2;
-          dataLabel
-            .select("text")
-            .style("dominant-baseline", "text-bottom");
+          dataLabel.select("text").style("dominant-baseline", "text-bottom");
         }
       }
 
@@ -390,29 +307,29 @@ export class Card {
           .classed(CardClassNames.AdditionalCategoryLabel + i + j, true);
         additionalCategoryLabel.append("text");
         let textProperties = this.getTextProperties(
-          this.model.settings.additionalCategoryLabel
+          this.model.settings.additionalItems[j]
         );
-        textProperties.text = v.name;
+        textProperties.text = v.displayName;
         let additionalCategoryWidth =
           (svgRect.width -
             this.maxMainMeasureWidth -
-            this.model.settings.measureComparison.paddingRight -
+            // this.model.settings.measureComparison.paddingRight -
             this.model.settings.multiple.spaceBeforeFirstComponent -
             (array.length - 1) *
-            this.model.settings.multiple.spaceBetweenCardComponent) /
+              this.model.settings.multiple.spaceBetweenCardComponent) /
           array.length;
 
         this.updateLabelStyles(
           additionalCategoryLabel,
-          this.model.settings.additionalCategoryLabel
+          this.model.settings.additionalItems[j]
         );
 
-        if (this.model.settings.additionalCategoryLabel.wordWrap) {
+        if (this.model.settings.additional.wordWrap) {
           let maxDataHeight = svgRect.height / 2;
           this.updateLabelValueWithWrapping(
             additionalCategoryLabel,
             textProperties,
-            v.name,
+            v.displayName,
             additionalCategoryWidth,
             maxDataHeight
           );
@@ -439,7 +356,7 @@ export class Card {
         let y =
           Number(transform(additionalMeasureContainer[j].attr("transform")).y) -
           additionalCategoryLabelSize.height -
-          this.model.settings.additionalCategoryLabel.paddingBottom;
+          this.model.settings.additional.paddingBottom;
 
         additionalCategoryLabel.select("text").attr("text-anchor", textAnchor);
         additionalCategoryLabel
@@ -467,21 +384,21 @@ export class Card {
           .classed(CardClassNames.AdditionalMeasureLabel + i + j, true);
         additionalMeasureLabel.append("text");
         let textProperties = this.getTextProperties(
-          this.model.settings.measureComparison
+          this.model.settings.additionalItems[j]
         );
         textProperties.text =
-          this.model.dataGroups[i].additionalMeasures[j].value.toString();
+          this.model.dataGroups[i].additionalMeasures[j].dataLabel;
         let additionalMeasureWidth =
           (svgRect.width -
             this.maxMainMeasureWidth -
-            this.model.settings.measureComparison.paddingRight -
+            // this.model.settings.measureComparison.paddingRight -
             this.model.settings.multiple.spaceBeforeFirstComponent -
             (array.length - 1) *
-            this.model.settings.multiple.spaceBetweenCardComponent) /
+              this.model.settings.multiple.spaceBetweenCardComponent) /
           array.length;
         this.updateLabelStyles(
           additionalMeasureLabel,
-          this.model.settings.measureComparison
+          this.model.settings.additionalItems[j]
         );
         let measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
@@ -504,22 +421,17 @@ export class Card {
         let y =
           svgRect.height -
           additionalMeasureLabelSize.height / 2 -
-          this.model.settings.measureComparison.paddingBottom;
-        if (
-          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
-          "center"
-        ) {
+          this.model.settings.additional.paddingBottom;
+        if (this.model.settings.additional.horizontalAlignment == "center") {
           x = startXMeasures + additionalMeasureWidth / 2;
           additionalMeasureLabel.select("text").attr("text-anchor", "middle");
         } else if (
-          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
-          "left"
+          this.model.settings.additional.horizontalAlignment == "left"
         ) {
           x = startXMeasures;
           additionalMeasureLabel.select("text").attr("text-anchor", "start");
         } else if (
-          this.model.settings.additionalCategoryLabel.horizontalAlignment ==
-          "right"
+          this.model.settings.additional.horizontalAlignment == "right"
         ) {
           x = startXMeasures + additionalMeasureWidth;
           additionalMeasureLabel.select("text").attr("text-anchor", "end");
@@ -534,7 +446,7 @@ export class Card {
     }
   }
 
-  private getTextProperties(properties: ILabelProperties): TextProperties {
+  private getTextProperties(properties): TextProperties {
     return {
       fontFamily: properties.fontFamily,
       fontSize: properties.textSize + "px",
@@ -543,10 +455,7 @@ export class Card {
     };
   }
 
-  private updateLabelStyles(
-    label: Selection<BaseType, any, any, any>,
-    styles: ILabelProperties
-  ) {
+  private updateLabelStyles(label: Selection<BaseType, any, any, any>, styles) {
     label
       .select("text")
       .style("font-family", styles.fontFamily)

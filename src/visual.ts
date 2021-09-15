@@ -36,23 +36,30 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 import VisualEnumerationInstanceKinds = powerbi.VisualEnumerationInstanceKinds;
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { dataViewWildcard } from "powerbi-visuals-utils-dataviewutils";
 
 import { CardSettings } from "./settings";
 import { Card } from "./Card";
+import { visualTransform } from "./model/ViewModelHelper";
+import { ICardViewModel } from "./model/ViewModel";
 export type Selection = d3.Selection<any, any, any, any>;
 
 export class CardKPI implements IVisual {
   private card: Card;
+  private host: IVisualHost;
+  private model: ICardViewModel;
 
   constructor(options: VisualConstructorOptions) {
-    this.card = new Card(options.element);
+    this.host = options.host;
+    this.card = new Card(options);
   }
 
   public update(options: VisualUpdateOptions) {
     let settings = CardKPI.parseSettings(options.dataViews[0]);
 
-    this.card.visualTransform(options, settings);
+    this.model = visualTransform(options, this.host);
+    this.card.setModel(this.model);
     this.card.updateViewport(options.viewport);
     this.card.createCardContainer();
     this.card.createLabels();
@@ -72,8 +79,61 @@ export class CardKPI implements IVisual {
   ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
     var objectName = options.objectName;
     var objectEnumeration: VisualObjectInstance[] = [];
-    let model = this.card.getModel();
+    let model = this.model;
+    const enumerationObject: powerbi.VisualObjectInstanceEnumerationObject = {
+      containers: [],
+      instances: [],
+    };
     switch (objectName) {
+      case "dataLabel":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            percentageWidth: model.settings.dataLabel.percentageWidth,
+            verticalAlignment: model.settings.dataLabel.verticalAlignment,
+            horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
+            fontFamily: model.settings.dataLabel.fontFamily,
+            textSize: model.settings.dataLabel.textSize,
+            color: model.settings.dataLabel.color,
+            isItalic: model.settings.dataLabel.isItalic,
+            isBold: model.settings.dataLabel.isBold,
+            displayUnit: model.settings.dataLabel.displayUnit,
+            decimalPlaces: model.settings.dataLabel.decimalPlaces,
+            suppressBlankAndNaN: model.settings.dataLabel.suppressBlankAndNaN,
+          },
+          validValues: {
+            decimalPlaces: {
+              numberRange: {
+                min: 0,
+                max: 9,
+              },
+            },
+            percentageWidth: {
+              numberRange: {
+                min: 30,
+                max: 70,
+              },
+            },
+          },
+          propertyInstanceKind: {
+            color: VisualEnumerationInstanceKinds.ConstantOrRule,
+          },
+          altConstantValueSelector: null,
+          selector: dataViewWildcard.createDataViewWildcardSelector(
+            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+          ),
+        });
+        if (this.model.settings.dataLabel.suppressBlankAndNaN)
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              blankAndNaNReplaceText:
+                this.model.settings.dataLabel.blankAndNaNReplaceText,
+            },
+            selector: null,
+          });
+        break;
+
       case "card":
         objectEnumeration.push({
           objectName: objectName,
@@ -107,47 +167,6 @@ export class CardKPI implements IVisual {
             },
             selector: null,
           });
-        break;
-
-      case "multiple":
-        objectEnumeration.push({
-          objectName: objectName,
-          properties: {
-            cardsPerRow: model.settings.multiple.cardsPerRow,
-            cardsMargin: model.settings.multiple.cardsMargin,
-            spaceBeforeFirstComponent:
-              model.settings.multiple.spaceBeforeFirstComponent,
-            spaceBetweenCardComponent:
-              model.settings.multiple.spaceBetweenCardComponent,
-          },
-          validValues: {
-            cardsPerRow: {
-              numberRange: {
-                min: 1,
-                max: 15,
-              },
-            },
-            cardsMargin: {
-              numberRange: {
-                min: 0,
-                max: 100,
-              },
-            },
-            spaceBeforeFirstComponent: {
-              numberRange: {
-                min: 0,
-                max: 100,
-              },
-            },
-            spaceBetweenCardComponent: {
-              numberRange: {
-                min: 0,
-                max: 100,
-              },
-            },
-          },
-          selector: null,
-        });
         break;
 
       case "categoryLabel":
@@ -184,122 +203,86 @@ export class CardKPI implements IVisual {
         });
         break;
 
-      case "dataLabel":
+      case "multiple":
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            verticalAlignment: model.settings.dataLabel.verticalAlignment,
-            horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
-            percentageWidth: model.settings.dataLabel.percentageWidth,
-            color: model.settings.dataLabel.color,
-            textSize: model.settings.dataLabel.textSize,
-            fontFamily: model.settings.dataLabel.fontFamily,
-            isItalic: model.settings.dataLabel.isItalic,
-            isBold: model.settings.dataLabel.isBold,
-            displayUnit: model.settings.dataLabel.displayUnit,
-            decimalPlaces: model.settings.dataLabel.decimalPlaces,
+            cardsPerRow: model.settings.multiple.cardsPerRow,
+            cardsMargin: model.settings.multiple.cardsMargin,
           },
           validValues: {
-            decimalPlaces: {
+            cardsPerRow: {
+              numberRange: {
+                min: 1,
+                max: 15,
+              },
+            },
+            cardsMargin: {
               numberRange: {
                 min: 0,
-                max: 9,
-              },
-            },
-            percentageWidth: {
-              numberRange: {
-                min: 30,
-                max: 70,
+                max: 100,
               },
             },
           },
-          propertyInstanceKind: {
-            color: VisualEnumerationInstanceKinds.ConstantOrRule,
-          },
-          altConstantValueSelector: null,
-          selector: dataViewWildcard.createDataViewWildcardSelector(
-            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
-          ),
+          selector: null,
         });
         break;
-
-      case "additionalCategoryLabel":
-        objectEnumeration.push({
-          objectName: objectName,
+      case "additional":
+        enumerationObject.instances.push({
+          objectName,
           properties: {
-            show: model.settings.additionalCategoryLabel.show,
-            horizontalAlignment:
-              model.settings.additionalCategoryLabel.horizontalAlignment,
-            paddingBottom: model.settings.additionalCategoryLabel.paddingBottom,
-            color: model.settings.additionalCategoryLabel.color,
-            textSize: model.settings.additionalCategoryLabel.textSize,
-            fontFamily: model.settings.additionalCategoryLabel.fontFamily,
-            wordWrap: model.settings.additionalCategoryLabel.wordWrap,
-            isItalic: model.settings.additionalCategoryLabel.isItalic,
-            isBold: model.settings.additionalCategoryLabel.isBold,
+            fontFamily: model.settings.additional.fontFamily,
+            paddingBottom: model.settings.additional.paddingBottom,
+            wordWrap: model.settings.additional.wordWrap,
+            horizontalAlignment: model.settings.additional.horizontalAlignment,
           },
           validValues: {
             paddingBottom: {
               numberRange: {
                 min: 0,
-                max: 50,
+                max: 40,
               },
             },
           },
-          propertyInstanceKind: {
-            color: VisualEnumerationInstanceKinds.ConstantOrRule,
-          },
-          altConstantValueSelector: null,
-          selector: dataViewWildcard.createDataViewWildcardSelector(
-            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
-          ),
+          selector: null,
         });
-        break;
 
-      case "measureComparison":
-        objectEnumeration.push({
-          objectName: objectName,
-          properties: {
-            show: model.settings.measureComparison.show,
-            paddingBottom: model.settings.measureComparison.paddingBottom,
-            paddingRight: model.settings.measureComparison.paddingRight,
-            color: model.settings.measureComparison.color,
-            textSize: model.settings.measureComparison.textSize,
-            fontFamily: model.settings.measureComparison.fontFamily,
-            isItalic: model.settings.measureComparison.isItalic,
-            isBold: model.settings.measureComparison.isBold,
-            componentType: model.settings.measureComparison.componentType,
-            comparisonOperator:
-              model.settings.measureComparison.comparisonOperator,
-            condition1: model.settings.measureComparison.condition1,
-            condition2: model.settings.measureComparison.condition2,
-            condition3: model.settings.measureComparison.condition3,
-            condition4: model.settings.measureComparison.condition4,
-          },
-          validValues: {
-            paddingBottom: {
-              numberRange: {
-                min: 0,
-                max: 50,
+        for (let i = 0; i < model.settings.additionalItems.length; i++) {
+          const displayName: string =
+            model.settings.additionalItems[i].measureDisplayName;
+          const containerIdx: number =
+            enumerationObject.containers.push({ displayName }) - 1;
+          enumerationObject.instances.push({
+            containerIdx,
+            objectName,
+
+            properties: {
+              componentType: model.settings.additionalItems[i].componentType,
+              invertVariance: model.settings.additionalItems[i].invertVariance,
+              textSize: model.settings.additionalItems[i].textSize,
+              isItalic: model.settings.additionalItems[i].isItalic,
+              isBold: model.settings.additionalItems[i].isBold,
+              displayUnit: model.settings.additionalItems[i].displayUnit,
+              decimalPlaces: model.settings.additionalItems[i].decimalPlaces,
+              suppressBlankAndNaN:
+                model.settings.additionalItems[i].suppressBlankAndNaN,
+              blankAndNaNReplaceText:
+                model.settings.additionalItems[i].blankAndNaNReplaceText,
+            },
+            validValues: {
+              decimalPlaces: {
+                numberRange: {
+                  min: 0,
+                  max: 9,
+                },
               },
             },
-            paddingRight: {
-              numberRange: {
-                min: 0,
-                max: 50,
-              },
-            },
-          },
-          propertyInstanceKind: {
-            color: VisualEnumerationInstanceKinds.ConstantOrRule,
-          },
-          altConstantValueSelector: null,
-          selector: dataViewWildcard.createDataViewWildcardSelector(
-            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
-          ),
-        });
-        break;
+            selector: { metadata: model.settings.additionalItems[i].metadata },
+          });
+        }
+        return enumerationObject;
     }
+
     return objectEnumeration;
   }
 }

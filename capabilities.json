@@ -3,7 +3,7 @@
         {
             "displayName": "Main measure",
             "displayNameKey": "mainMeasure",
-            "name": "main_measure",
+            "name": "Main Measure",
             "kind": "Measure"
         },
         {
@@ -13,21 +13,9 @@
             "kind": "Grouping"
         },
         {
-            "displayName": "Measure for comparison 1",
-            "displayNameKey": "measureComparison1",
-            "name": "measureComparison1",
-            "kind": "Measure"
-        },
-        {
-            "displayName": "Measure for comparison 2",
-            "displayNameKey": "measureComparison2",
-            "name": "measureComparison2",
-            "kind": "Measure"
-        },
-        {
-            "displayName": "Measure for comparison 3",
-            "displayNameKey": "measureComparison3",
-            "name": "measureComparison3",
+            "displayName": "Additional measures",
+            "displayNameKey": "additionalMeasures",
+            "name": "additional",
             "kind": "Measure"
         },
         {
@@ -37,10 +25,61 @@
             "kind": "Measure"
         }
     ],
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "Main Measure": {
+                        "min": 1,
+                        "max": 1
+                    },
+                    "category": {
+                        "min": 0,
+                        "max": 1
+                    },
+                    "additional": {
+                        "max": 3
+                    },
+                    "tooltips": {
+                        "max": 3
+                    }
+                }
+            ],
+            "categorical": {
+                "categories": {
+                    "for": {
+                        "in": "category"
+                    },
+                    "dataReductionAlgorithm": {
+                        "top": {}
+                    }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "Main Measure"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "tooltips"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "additional"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
     "objects": {
         "dataLabel": {
-            "displayName": "Main measure",
-            "displayNameKey": "dataLabel",
+            "displayName": "Main data label",
+            "displayNameKey": "maindatalabel",
             "properties": {
                 "percentageWidth": {
                     "displayName": "Percentage width",
@@ -50,7 +89,7 @@
                     }
                 },
                 "verticalAlignment": {
-                    "displayName": "Content vertical alignment",
+                    "displayName": "Vertical alignment",
                     "displayNameKey": "verticalAlignment",
                     "type": {
                         "enumeration": [
@@ -73,7 +112,7 @@
                     }
                 },
                 "horizontalAlignment": {
-                    "displayName": "Content horizontal alignment",
+                    "displayName": "Horizontal alignment",
                     "displayNameKey": "alignment",
                     "type": {
                         "formatting": {
@@ -234,358 +273,19 @@
                     "type": {
                         "bool": true
                     }
-                }
-            }
-        },
-        "categoryLabel": {
-            "displayName": "Category label",
-            "displayNameKey": "categoryLabel",
-            "properties": {
-                "show": {
-                    "displayName": "Show Category Label",
+                },
+                "suppressBlankAndNaN": {
+                    "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "displayNameKey": "suppressBlankAndNaN",
                     "type": {
                         "bool": true
                     }
                 },
-                "horizontalAlignment": {
-                    "displayName": "Alignment",
-                    "displayNameKey": "alignment",
+                "blankAndNaNReplaceText": {
+                    "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "displayNameKey": "blankAndNaNReplaceText",
                     "type": {
-                        "formatting": {
-                            "alignment": true
-                        }
-                    }
-                },
-                "paddingTop": {
-                    "displayName": "Padding top",
-                    "displayNameKey": "paddngTop",
-                    "type": {
-                        "integer": true
-                    }
-                },
-                "paddingSide": {
-                    "displayName": "Padding side",
-                    "displayNameKey": "paddingSide",
-                    "type": {
-                        "integer": true
-                    }
-                },
-                "color": {
-                    "displayName": "Color",
-                    "displayNameKey": "fontColor",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "textSize": {
-                    "displayName": "Text Size",
-                    "displayNameKey": "textSize",
-                    "type": {
-                        "formatting": {
-                            "fontSize": true
-                        }
-                    }
-                },
-                "fontFamily": {
-                    "displayName": "Font family",
-                    "displayNameKey": "fontFamily",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "DIN",
-                                "value": "wf_standard-font, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Arial",
-                                "value": "Arial"
-                            },
-                            {
-                                "displayName": "Arial Black",
-                                "value": "\"Arial Black\""
-                            },
-                            {
-                                "displayName": "Arial Unicode MS",
-                                "value": "\"Arial Unicode MS\""
-                            },
-                            {
-                                "displayName": "Calibri",
-                                "value": "Calibri"
-                            },
-                            {
-                                "displayName": "Cambria",
-                                "value": "Cambria"
-                            },
-                            {
-                                "displayName": "Cambria Math",
-                                "value": "\"Cambria Math\""
-                            },
-                            {
-                                "displayName": "Candara",
-                                "value": "Candara"
-                            },
-                            {
-                                "displayName": "Comic Sans MS",
-                                "value": "\"Comic Sans MS\""
-                            },
-                            {
-                                "displayName": "Consolas",
-                                "value": "Consolas"
-                            },
-                            {
-                                "displayName": "Constantia",
-                                "value": "Constantia"
-                            },
-                            {
-                                "displayName": "Corbel",
-                                "value": "Corbel"
-                            },
-                            {
-                                "displayName": "Courier New",
-                                "value": "\"Courier New\""
-                            },
-                            {
-                                "displayName": "Georgia",
-                                "value": "Georgia"
-                            },
-                            {
-                                "displayName": "Lucida Sans Unicode",
-                                "value": "\"Lucida Sans Unicode\""
-                            },
-                            {
-                                "displayName": "Segoe (Bold)",
-                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Segoe UI",
-                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Segoe UI Light",
-                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Symbol",
-                                "value": "Symbol"
-                            },
-                            {
-                                "displayName": "Tahoma",
-                                "value": "Tahoma"
-                            },
-                            {
-                                "displayName": "Times New Roman",
-                                "value": "\"Times New Roman\""
-                            },
-                            {
-                                "displayName": "Trebuchet MS",
-                                "value": "\"Trebuchet MS\""
-                            },
-                            {
-                                "displayName": "Verdana",
-                                "value": "Verdana"
-                            },
-                            {
-                                "displayName": "Wingdings",
-                                "value": "Wingdings"
-                            }
-                        ]
-                    }
-                },
-                "wordWrap": {
-                    "displayName": "Word wrap",
-                    "displayNameKey": "wordWrap",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "isItalic": {
-                    "displayName": "Italic",
-                    "displayNameKey": "italic",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "isBold": {
-                    "displayName": "Bold",
-                    "displayNameKey": "bold",
-                    "type": {
-                        "bool": true
-                    }
-                }
-            }
-        },
-        "additionalCategoryLabel": {
-            "displayName": "Category label for additional measures",
-            "displayNameKey": "categoryAdditionalMeasures",
-            "properties": {
-                "show": {
-                    "displayName": "Show Category Label",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "horizontalAlignment": {
-                    "displayName": "Content horizontal alignment",
-                    "displayNameKey": "alignment",
-                    "type": {
-                        "formatting": {
-                            "alignment": true
-                        }
-                    }
-                },
-                "paddingBottom": {
-                    "displayName": "Padding bottom",
-                    "displayNameKey": "paddingBottom",
-                    "type": {
-                        "integer": true
-                    }
-                },
-                "color": {
-                    "displayName": "Color",
-                    "displayNameKey": "fontColor",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "textSize": {
-                    "displayName": "Text Size",
-                    "displayNameKey": "textSize",
-                    "type": {
-                        "formatting": {
-                            "fontSize": true
-                        }
-                    }
-                },
-                "fontFamily": {
-                    "displayName": "Font family",
-                    "displayNameKey": "fontFamily",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "DIN",
-                                "value": "wf_standard-font, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Arial",
-                                "value": "Arial"
-                            },
-                            {
-                                "displayName": "Arial Black",
-                                "value": "\"Arial Black\""
-                            },
-                            {
-                                "displayName": "Arial Unicode MS",
-                                "value": "\"Arial Unicode MS\""
-                            },
-                            {
-                                "displayName": "Calibri",
-                                "value": "Calibri"
-                            },
-                            {
-                                "displayName": "Cambria",
-                                "value": "Cambria"
-                            },
-                            {
-                                "displayName": "Cambria Math",
-                                "value": "\"Cambria Math\""
-                            },
-                            {
-                                "displayName": "Candara",
-                                "value": "Candara"
-                            },
-                            {
-                                "displayName": "Comic Sans MS",
-                                "value": "\"Comic Sans MS\""
-                            },
-                            {
-                                "displayName": "Consolas",
-                                "value": "Consolas"
-                            },
-                            {
-                                "displayName": "Constantia",
-                                "value": "Constantia"
-                            },
-                            {
-                                "displayName": "Corbel",
-                                "value": "Corbel"
-                            },
-                            {
-                                "displayName": "Courier New",
-                                "value": "\"Courier New\""
-                            },
-                            {
-                                "displayName": "Georgia",
-                                "value": "Georgia"
-                            },
-                            {
-                                "displayName": "Lucida Sans Unicode",
-                                "value": "\"Lucida Sans Unicode\""
-                            },
-                            {
-                                "displayName": "Segoe (Bold)",
-                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Segoe UI",
-                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Segoe UI Light",
-                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
-                            },
-                            {
-                                "displayName": "Symbol",
-                                "value": "Symbol"
-                            },
-                            {
-                                "displayName": "Tahoma",
-                                "value": "Tahoma"
-                            },
-                            {
-                                "displayName": "Times New Roman",
-                                "value": "\"Times New Roman\""
-                            },
-                            {
-                                "displayName": "Trebuchet MS",
-                                "value": "\"Trebuchet MS\""
-                            },
-                            {
-                                "displayName": "Verdana",
-                                "value": "Verdana"
-                            },
-                            {
-                                "displayName": "Wingdings",
-                                "value": "Wingdings"
-                            }
-                        ]
-                    }
-                },
-                "wordWrap": {
-                    "displayName": "Word wrap",
-                    "displayNameKey": "wordWrap",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "isItalic": {
-                    "displayName": "Italic",
-                    "displayNameKey": "italic",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "isBold": {
-                    "displayName": "Bold",
-                    "displayNameKey": "bold",
-                    "type": {
-                        "bool": true
+                        "text": true
                     }
                 }
             }
@@ -665,41 +365,12 @@
                     "type": {
                         "integer": true
                     }
-                },
-                "spaceBeforeFirstComponent": {
-                    "displayName": "Space before the first component",
-                    "displayNameKey": "spaceBeforeFirstComponent",
-                    "type": {
-                        "integer": true
-                    }
-                },
-                "spaceBetweenCardComponent": {
-                    "displayNameKey": "spaceBetweenCardComponent",
-                    "displayName": "Space between card components",
-                    "type": {
-                        "integer": true
-                    }
                 }
             }
         },
-        "measureComparison": {
-            "displayName": "Measure for comparison",
-            "displayNameKey": "measureComparison",
+        "additional": {
+            "displayName": "Additional measures",
             "properties": {
-                "show": {
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "textSize": {
-                    "displayName": "Text Size",
-                    "displayNameKey": "textSize",
-                    "type": {
-                        "formatting": {
-                            "fontSize": true
-                        }
-                    }
-                },
                 "fontFamily": {
                     "displayName": "Font family",
                     "displayNameKey": "fontFamily",
@@ -804,6 +475,73 @@
                         ]
                     }
                 },
+                "paddingBottom": {
+                    "displayName": "Padding Bottom",
+                    "displayNameKey": "paddngBottom",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "wordWrap": {
+                    "displayName": "Word wrap",
+                    "displayNameKey": "wordWrap",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "horizontalAlignment": {
+                    "displayName": "Alignment",
+                    "displayNameKey": "horizontalAlignment",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "componentType": {
+                    "displayName": "Component type",
+                    "displayNameKey": "componentType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Measure",
+                                "displayNameKey": "measure",
+                                "value": "measure"
+                            },
+                            {
+                                "displayName": "Change over Main Measure",
+                                "displayNameKey": "changeOver",
+                                "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Main Measure",
+                                "displayNameKey": "percentageOver",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Percentage change over Main Measure",
+                                "displayNameKey": "percentageChangeOver",
+                                "value": "percentageChangeOver"
+                            }
+                        ]
+                    }
+                },
+                "invertVariance": {
+                    "displayName": "Invert Variance",
+                    "displayNameKey": "invertVariance",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "textSize": {
+                    "displayName": "Text Size",
+                    "displayNameKey": "textSize",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
                 "isItalic": {
                     "displayName": "Italic",
                     "displayNameKey": "italic",
@@ -818,188 +556,37 @@
                         "bool": true
                     }
                 },
-                "paddingBottom": {
-                    "displayName": "Padding bottom",
-                    "displayNameKey": "paddingBottom",
+                "displayUnit": {
+                    "displayName": "Display Unit",
+                    "displayNameKey": "displayUnit",
+                    "type": {
+                        "formatting": {
+                            "labelDisplayUnits": true
+                        }
+                    }
+                },
+                "decimalPlaces": {
+                    "displayName": "Decimal places",
+                    "displayNameKey": "precision",
                     "type": {
                         "integer": true
                     }
                 },
-                "paddingRight": {
-                    "displayName": "Padding right",
-                    "displayNameKey": "paddingRight",
-                    "type": {
-                        "integer": true
-                    }
-                },
-                "componentType": {
-                    "displayName": "Component type",
-                    "displayNameKey": "componentType",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "Percentage change over Measure",
-                                "displayNameKey": "percentageChanveOver",
-                                "value": "percentageChanveOver"
-                            },
-                            {
-                                "displayName": "Change over Measure",
-                                "displayNameKey": "changeOver",
-                                "value": "changeOver"
-                            },
-                            {
-                                "displayName": "Percentage over Measure",
-                                "displayNameKey": "percentageOver",
-                                "value": "percentageOver"
-                            },
-                            {
-                                "displayName": "Measure",
-                                "displayNameKey": "measure",
-                                "value": "measure"
-                            }
-                        ]
-                    }
-                },
-                "color": {
-                    "displayName": "Unmatched state color",
-                    "displayNameKey": "unmatchedColor",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "comparisonOperator": {
-                    "displayName": "Comparison operator",
-                    "displayNameKey": "comparisonOperator",
-                    "type": {
-                        "enumeration": [
-                            {
-                                "displayName": "Greater than (>)",
-                                "displayNameKey": ">",
-                                "value": ">"
-                            },
-                            {
-                                "displayName": "Greater than or equal to (>=)",
-                                "displayNameKey": ">=",
-                                "value": ">="
-                            },
-                            {
-                                "displayName": "Equal to (=)",
-                                "displayNameKey": "=",
-                                "value": "="
-                            },
-                            {
-                                "displayName": "Less than or equal to (<=)",
-                                "displayNameKey": "<=",
-                                "value": "<="
-                            },
-                            {
-                                "displayName": "Less than (<)",
-                                "displayNameKey": "<",
-                                "value": "<"
-                            }
-                        ]
-                    }
-                },
-                "condition1": {
-                    "displayName": "Condition 1",
-                    "displayNameKey": "condition1",
+                "suppressBlankAndNaN": {
+                    "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "displayNameKey": "suppressBlankAndNaN",
                     "type": {
                         "bool": true
                     }
                 },
-                "condition2": {
-                    "displayName": "Condition 2",
-                    "displayNameKey": "condition2",
+                "blankAndNaNReplaceText": {
+                    "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "displayNameKey": "blankAndNaNReplaceText",
                     "type": {
-                        "bool": true
-                    }
-                },
-                "condition3": {
-                    "displayName": "Condition 3",
-                    "displayNameKey": "condition3",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "condition4": {
-                    "displayName": "Condition 4",
-                    "displayNameKey": "condition4",
-                    "type": {
-                        "bool": true
+                        "text": true
                     }
                 }
             }
         }
-    },
-    "dataViewMappings": [
-        {
-            "conditions": [
-                {
-                    "main_measure": {
-                        "min": 1,
-                        "max": 1
-                    },
-                    "category": {
-                        "min": 0,
-                        "max": 1
-                    },
-                    "measureComparison1": {
-                        "max": 1
-                    },
-                    "measureComparison2": {
-                        "max": 1
-                    },
-                    "measureComparison3": {
-                        "max": 1
-                    },
-                    "tooltips": {
-                        "max": 3
-                    }
-                }
-            ],
-            "categorical": {
-                "categories": {
-                    "for": {
-                        "in": "category"
-                    },
-                    "dataReductionAlgorithm": {
-                        "top": {}
-                    }
-                },
-                "values": {
-                    "select": [
-                        {
-                            "bind": {
-                                "to": "main_measure"
-                            }
-                        },
-                        {
-                            "bind": {
-                                "to": "tooltips"
-                            }
-                        },
-                        {
-                            "bind": {
-                                "to": "measureComparison1"
-                            }
-                        },
-                        {
-                            "bind": {
-                                "to": "measureComparison2"
-                            }
-                        },
-                        {
-                            "bind": {
-                                "to": "measureComparison3"
-                            }
-                        }
-                    ]
-                }
-            }
-        }
-    ]
+    }
 }

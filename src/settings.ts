@@ -27,13 +27,27 @@
 "use strict";
 
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
+import powerbi from "powerbi-visuals-api";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
+export class AdditionalItem {
+  public measureDisplayName: string;
+  public metadata: string;
+  public componentType: string = "measure";
+  public textSize: number = 8;
+  public isItalic: boolean = false;
+  public isBold: boolean = false;
+  public displayUnit: number = 0;
+  public decimalPlaces: number = 0;
+  public suppressBlankAndNaN: boolean = false;
+  public blankAndNaNReplaceText: string = "";
+  public invertVariance: boolean = false;
+}
 export class Multiple {
   public cardsPerRow: number = 5;
   public cardsMargin: number = 5;
   public spaceBeforeFirstComponent: number = 15;
-  public spaceBetweenCardComponent: number = 5;
+  public spaceBetweenCardComponent: number = 15;
 }
 
 export class Card {
@@ -42,6 +56,27 @@ export class Card {
   public borderFill: string = "#000000";
   public borderType: string = "solid";
   public borderWeight: number = 1;
+}
+export class DataLabel {
+  public color: string = "#333333";
+  public displayUnit: number = 0;
+  public decimalPlaces: number = 0;
+  public textSize: number = 27;
+  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
+  public isItalic: boolean = false;
+  public isBold: boolean = false;
+  public percentageWidth: number = 50;
+  public verticalAlignment: string = "middle";
+  public horizontalAlignment: string = "center";
+  public suppressBlankAndNaN: boolean = false;
+  public blankAndNaNReplaceText: string = "";
+}
+
+export class Additional {
+  public paddingBottom: number = 5;
+  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
+  public wordWrap: boolean = false;
+  public horizontalAlignment: string = "center";
 }
 
 export class CategoryLabel {
@@ -57,54 +92,11 @@ export class CategoryLabel {
   public isBold: boolean = false;
 }
 
-export class DataLabel {
-  public color: string = "#333333";
-  public displayUnit: number = 0;
-  public decimalPlaces: number = 0;
-  public textSize: number = 27;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public percentageWidth: number = 50;
-  public verticalAlignment: string = "middle";
-  public horizontalAlignment: string = "center";
-}
-
-export class AdditionalCategoryLabel {
-  public show: boolean = true;
-  public horizontalAlignment: string = "center";
-  public paddingBottom: number = 5;
-  public color: string = "#333333";
-  public textSize: number = 15;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public wordWrap: boolean = false;
-}
-
-export class MeasureComparison {
-  public show: boolean = false;
-  public componentType: string = "measure";
-  public color: string = "#333333";
-  public comparisonOperator: string = ">";
-  public condition1: boolean = false;
-  public condition2: boolean = false;
-  public condition3: boolean = false;
-  public condition4: boolean = false;
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public textSize: number = 25;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public paddingBottom: number = 5;
-  public paddingRight: number = 5;
-}
-
 export class CardSettings extends DataViewObjectsParser {
   public multiple: Multiple = new Multiple();
   public card: Card = new Card();
-  public categoryLabel: CategoryLabel = new CategoryLabel();
+  public additional: Additional = new Additional();
+  public additionalItems: AdditionalItem[] = [];
   public dataLabel: DataLabel = new DataLabel();
-  public additionalCategoryLabel: AdditionalCategoryLabel =
-    new AdditionalCategoryLabel();
-  public measureComparison: MeasureComparison = new MeasureComparison();
+  public categoryLabel: CategoryLabel = new CategoryLabel();
 }
