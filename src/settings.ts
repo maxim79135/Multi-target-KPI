@@ -43,6 +43,9 @@ export class AdditionalItem {
   public suppressBlankAndNaN: boolean = false;
   public blankAndNaNReplaceText: string = "";
   public invertVariance: boolean = false;
+  public componentTypeForColor: string = "measure";
+  public unmatchedColor: string = "#333333";
+  public conditionFormatting: boolean = false;
 }
 export class Multiple {
   public cardsPerRow: number = 5;

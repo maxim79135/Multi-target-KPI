@@ -133,6 +133,30 @@ function getAdditionalSettings(
         additionalSetting.isItalic
       )
     );
+    additionalSetting.componentTypeForColor = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "componentTypeForColor",
+        additionalSetting.componentTypeForColor
+      )
+    );
+    additionalSetting.unmatchedColor = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "unmatchedColor",
+        additionalSetting.unmatchedColor
+      )
+    );
+    additionalSetting.conditionFormatting = <boolean>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "conditionFormatting",
+        additionalSetting.conditionFormatting
+      )
+    );
     settings.additionalItems.push(additionalSetting);
     return additionalSetting;
   }
@@ -216,7 +240,6 @@ export function visualTransform(
   let dataViews: DataView[] = options.dataViews;
   let dataGroups: IDataGroup[] = [];
   let settings: CardSettings = parseSettings(dataViews[0]);
-
   if (
     dataViews &&
     dataViews[0] &&

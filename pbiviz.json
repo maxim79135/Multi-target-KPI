@@ -5,14 +5,14 @@
        "guid":"cardKPI",
        "visualClassName":"CardKPI",
        "version":"1.0.0",
-       "description":"",
-       "supportUrl":"",
+       "description":"Card KPI",
+       "supportUrl":"asd",
        "gitHubUrl":""
     },
     "apiVersion":"3.6.0",
     "author":{
-       "name":"",
-       "email":""
+       "name":"Max",
+       "email":"mdsedov@vyatsu.ru"
     },
     "assets":{
        

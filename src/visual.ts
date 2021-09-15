@@ -220,6 +220,7 @@ export class CardKPI implements IVisual {
           selector: null,
         });
         break;
+
       case "additional":
         model.settings.additionalItems.length > 0 &&
           enumerationObject.instances.push({
@@ -271,6 +272,27 @@ export class CardKPI implements IVisual {
                   max: 9,
                 },
               },
+            },
+            selector: { metadata: model.settings.additionalItems[i].metadata },
+          });
+        }
+        return enumerationObject;
+
+      case "additionalMeasureColors":
+        for (let i = 0; i < model.settings.additionalItems.length; i++) {
+          const displayName: string =
+            model.settings.additionalItems[i].measureDisplayName;
+          const containerIdx: number =
+            enumerationObject.containers.push({ displayName }) - 1;
+          enumerationObject.instances.push({
+            containerIdx,
+            objectName,
+            properties: {
+              unmatchedColor: model.settings.additionalItems[i].unmatchedColor,
+              componentTypeForColor:
+                model.settings.additionalItems[i].componentTypeForColor,
+              conditionFormatting:
+                model.settings.additionalItems[i].conditionFormatting,
             },
             selector: { metadata: model.settings.additionalItems[i].metadata },
           });

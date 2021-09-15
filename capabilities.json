@@ -767,6 +767,58 @@
                     }
                 }
             }
+        },
+        "additionalMeasureColors": {
+            "displayName": "Additional Measure Colors",
+            "displayNameKey": "additionalMeasureColors",
+            "properties": {
+                "componentTypeForColor": {
+                    "displayName": "Component type",
+                    "displayNameKey": "componentType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Measure",
+                                "displayNameKey": "measure",
+                                "value": "measure"
+                            },
+                            {
+                                "displayName": "Change over Main Measure",
+                                "displayNameKey": "changeOver",
+                                "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Main Measure",
+                                "displayNameKey": "percentageOver",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Percentage change over Main Measure",
+                                "displayNameKey": "percentageChangeOver",
+                                "value": "percentageChangeOver"
+                            }
+                        ]
+                    }
+                },
+                "unmatchedColor": {
+                    "displayName": "Unmatched state color",
+                    "displayNameKey": "unmatchedColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "conditionFormatting": {
+                    "displayName": "Condition formatting",
+                    "displayNameKey": "conditionFormatting",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
         }
     }
 }

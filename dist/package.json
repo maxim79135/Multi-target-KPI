@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0",
+    "author": {"name":"Max","email":"mdsedov@vyatsu.ru"},
+    "resources": [
+        {
+            "resourceId": "rId0",
+            "sourceType": 5,
+            "file": "resources/cardKPI.pbiviz.json"
+        }
+    ],
+    "visual": {"name":"cardKPI","displayName":"cardKPI","guid":"cardKPI","visualClassName":"CardKPI","version":"1.0.0","description":"Card KPI","supportUrl":"asd","gitHubUrl":""},
+    "metadata": {
+        "pbivizjson": {
+            "resourceId": "rId0"
+        }
+    }  
+}
