@@ -289,13 +289,15 @@ export class CardKPI implements IVisual {
             objectName,
             properties: {
               unmatchedColor: model.settings.additionalItems[i].unmatchedColor,
-              componentTypeForColor:
-                model.settings.additionalItems[i].componentTypeForColor,
               conditionFormatting:
                 model.settings.additionalItems[i].conditionFormatting,
             },
             selector: { metadata: model.settings.additionalItems[i].metadata },
           });
+          if (model.settings.additionalItems[i].conditionFormatting) {
+            enumerationObject.instances[i].properties["componentTypeForColor"] =
+              model.settings.additionalItems[i].componentTypeForColor;
+          }
         }
         return enumerationObject;
     }

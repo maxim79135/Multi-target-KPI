@@ -141,14 +141,16 @@ function getAdditionalSettings(
         additionalSetting.componentTypeForColor
       )
     );
-    additionalSetting.unmatchedColor = <string>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "unmatchedColor",
-        additionalSetting.unmatchedColor
-      )
+    additionalSetting.unmatchedColor = getValue(
+      value.source.objects,
+      "additionalMeasureColors",
+      "unmatchedColor",
+      additionalSetting.unmatchedColor
     );
+    if (additionalSetting.unmatchedColor["solid"])
+      additionalSetting.unmatchedColor =
+        additionalSetting.unmatchedColor["solid"]["color"];
+
     additionalSetting.conditionFormatting = <boolean>(
       getValue(
         value.source.objects,
@@ -284,7 +286,6 @@ export function visualTransform(
         if (dataValue.source.roles["additional"]) {
           let additionalMeasure: IAdditionalMeasure = {};
           let additionalSettings = getAdditionalSettings(dataValue, settings);
-
           additionalMeasure.displayName = additionalSettings.measureDisplayName;
           additionalMeasure.measureValue =
             valueType.numeric || valueType.integer ? value : null;
@@ -299,6 +300,9 @@ export function visualTransform(
             additionalSettings.componentType,
             additionalSettings.invertVariance
           );
+          if (!additionalSettings.conditionFormatting) {
+            additionalMeasure.labelFill = additionalSettings.unmatchedColor;
+          }
 
           switch (additionalSettings.componentType) {
             case "measure": {

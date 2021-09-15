@@ -230,7 +230,6 @@ export class Card {
         this.model.settings.dataLabel
       );
       textProperties.text = this.model.dataGroups[i].mainMeasureDataLabel;
-
       this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
       let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
         textProperties,
@@ -396,10 +395,14 @@ export class Card {
             (array.length - 1) *
               this.model.settings.multiple.spaceBetweenCardComponent) /
           array.length;
-        this.updateLabelStyles(
-          additionalMeasureLabel,
-          this.model.settings.additionalItems[j]
-        );
+
+        this.updateLabelStyles(additionalMeasureLabel, {
+          fontFamily: this.model.settings.additionalItems[j].fontFamily,
+          textSize: this.model.settings.additionalItems[j].textSize,
+          isItalic: this.model.settings.additionalItems[j].isItalic,
+          isBold: this.model.settings.additionalItems[j].isBold,
+          color: this.model.dataGroups[i].additionalMeasures[j].labelFill,
+        });
         let measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
           additionalMeasureWidth
