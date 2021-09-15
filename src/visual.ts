@@ -221,24 +221,25 @@ export class CardKPI implements IVisual {
         });
         break;
       case "additional":
-        enumerationObject.instances.push({
-          objectName,
-          properties: {
-            fontFamily: model.settings.additional.fontFamily,
-            paddingBottom: model.settings.additional.paddingBottom,
-            wordWrap: model.settings.additional.wordWrap,
-            horizontalAlignment: model.settings.additional.horizontalAlignment,
-          },
-          validValues: {
-            paddingBottom: {
-              numberRange: {
-                min: 0,
-                max: 40,
+        model.settings.additionalItems.length > 0 &&
+          enumerationObject.instances.push({
+            objectName,
+            properties: {
+              paddingBottom: model.settings.additional.paddingBottom,
+              wordWrap: model.settings.additional.wordWrap,
+              horizontalAlignment:
+                model.settings.additional.horizontalAlignment,
+            },
+            validValues: {
+              paddingBottom: {
+                numberRange: {
+                  min: 0,
+                  max: 40,
+                },
               },
             },
-          },
-          selector: null,
-        });
+            selector: null,
+          });
 
         for (let i = 0; i < model.settings.additionalItems.length; i++) {
           const displayName: string =
@@ -253,6 +254,7 @@ export class CardKPI implements IVisual {
               componentType: model.settings.additionalItems[i].componentType,
               invertVariance: model.settings.additionalItems[i].invertVariance,
               textSize: model.settings.additionalItems[i].textSize,
+              fontFamily: model.settings.additionalItems[i].fontFamily,
               isItalic: model.settings.additionalItems[i].isItalic,
               isBold: model.settings.additionalItems[i].isBold,
               displayUnit: model.settings.additionalItems[i].displayUnit,

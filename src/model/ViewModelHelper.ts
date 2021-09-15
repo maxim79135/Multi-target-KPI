@@ -69,6 +69,14 @@ function getAdditionalSettings(
         additionalSetting.textSize
       )
     );
+    additionalSetting.fontFamily = <string>(
+      getValue(
+        value.source.objects,
+        "additional",
+        "fontFamily",
+        additionalSetting.fontFamily
+      )
+    );
     additionalSetting.displayUnit = <number>(
       getValue(
         value.source.objects,

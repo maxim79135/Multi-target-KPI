@@ -35,6 +35,7 @@ export class AdditionalItem {
   public metadata: string;
   public componentType: string = "measure";
   public textSize: number = 8;
+  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
   public isItalic: boolean = false;
   public isBold: boolean = false;
   public displayUnit: number = 0;
@@ -74,7 +75,6 @@ export class DataLabel {
 
 export class Additional {
   public paddingBottom: number = 5;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
   public wordWrap: boolean = false;
   public horizontalAlignment: string = "center";
 }
