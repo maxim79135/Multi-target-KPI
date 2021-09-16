@@ -817,6 +817,180 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "condition1": {
+                    "displayName": "Condition 1",
+                    "displayNameKey": "condition1",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "comparisonOperator1": {
+                    "displayName": "Comparison operator",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "value1": {
+                    "displayName": "Value",
+                    "displayNameKey": "value",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "assignColor1": {
+                    "displayName": "The assign the color",
+                    "displayNameKey": "assignColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "condition2": {
+                    "displayName": "Condition 2",
+                    "displayNameKey": "condition2",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "comparisonOperator2": {
+                    "displayName": "Comparison operator",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "value2": {
+                    "displayName": "Value",
+                    "displayNameKey": "value",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "assignColor2": {
+                    "displayName": "The assign the color",
+                    "displayNameKey": "assignColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "condition3": {
+                    "displayName": "Condition 3",
+                    "displayNameKey": "condition3",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "comparisonOperator3": {
+                    "displayName": "Comparison operator",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "value3": {
+                    "displayName": "Value",
+                    "displayNameKey": "value",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "assignColor3": {
+                    "displayName": "The assign the color",
+                    "displayNameKey": "assignColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
                 }
             }
         }

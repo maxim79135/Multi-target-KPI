@@ -159,6 +159,102 @@ function getAdditionalSettings(
         additionalSetting.conditionFormatting
       )
     );
+    additionalSetting.condition1 = <boolean>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "condition1",
+        additionalSetting.condition1
+      )
+    );
+    additionalSetting.condition2 = <boolean>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "condition2",
+        additionalSetting.condition2
+      )
+    );
+    additionalSetting.condition3 = <boolean>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "condition3",
+        additionalSetting.condition3
+      )
+    );
+    additionalSetting.comparisonOperator1 = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "comparisonOperator1",
+        additionalSetting.comparisonOperator1
+      )
+    );
+    additionalSetting.comparisonOperator2 = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "comparisonOperator2",
+        additionalSetting.comparisonOperator2
+      )
+    );
+    additionalSetting.comparisonOperator3 = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "comparisonOperator3",
+        additionalSetting.comparisonOperator3
+      )
+    );
+    additionalSetting.value1 = <number>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "value1",
+        additionalSetting.value1
+      )
+    );
+    additionalSetting.value2 = <number>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "value2",
+        additionalSetting.value2
+      )
+    );
+    additionalSetting.value3 = <number>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "value3",
+        additionalSetting.value3
+      )
+    );
+    additionalSetting.assignColor1 = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "assignColor1",
+        additionalSetting.assignColor1
+      )
+    );
+    additionalSetting.assignColor2 = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "assignColor2",
+        additionalSetting.assignColor2
+      )
+    );
+    additionalSetting.assignColor3 = <string>(
+      getValue(
+        value.source.objects,
+        "additionalMeasureColors",
+        "assignColor3",
+        additionalSetting.assignColor3
+      )
+    );
     settings.additionalItems.push(additionalSetting);
     return additionalSetting;
   }

@@ -46,6 +46,18 @@ export class AdditionalItem {
   public componentTypeForColor: string = "measure";
   public unmatchedColor: string = "#333333";
   public conditionFormatting: boolean = false;
+  public condition1: boolean = false;
+  public comparisonOperator1: string = ">";
+  public condition2: boolean = false;
+  public comparisonOperator2: string = ">";
+  public condition3: boolean = false;
+  public comparisonOperator3: string = ">";
+  public value1: number = null;
+  public value2: number = null;
+  public value3: number = null;
+  public assignColor1: string = "#333333";
+  public assignColor2: string = "#333333";
+  public assignColor3: string = "#333333";
 }
 export class Multiple {
   public cardsPerRow: number = 5;

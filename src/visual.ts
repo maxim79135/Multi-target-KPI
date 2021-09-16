@@ -297,6 +297,36 @@ export class CardKPI implements IVisual {
           if (model.settings.additionalItems[i].conditionFormatting) {
             enumerationObject.instances[i].properties["componentTypeForColor"] =
               model.settings.additionalItems[i].componentTypeForColor;
+            enumerationObject.instances[i].properties["condition1"] =
+              model.settings.additionalItems[i].condition1;
+            if (model.settings.additionalItems[i].condition1) {
+              enumerationObject.instances[i].properties["comparisonOperator1"] =
+                model.settings.additionalItems[i].comparisonOperator1;
+              enumerationObject.instances[i].properties["value1"] =
+                model.settings.additionalItems[i].value1;
+              enumerationObject.instances[i].properties["assignColor1"] =
+                model.settings.additionalItems[i].assignColor1;
+            }
+            enumerationObject.instances[i].properties["condition2"] =
+              model.settings.additionalItems[i].condition2;
+            if (model.settings.additionalItems[i].condition2) {
+              enumerationObject.instances[i].properties["comparisonOperator2"] =
+                model.settings.additionalItems[i].comparisonOperator2;
+              enumerationObject.instances[i].properties["value2"] =
+                model.settings.additionalItems[i].value2;
+              enumerationObject.instances[i].properties["assignColor2"] =
+                model.settings.additionalItems[i].assignColor2;
+            }
+            enumerationObject.instances[i].properties["condition3"] =
+              model.settings.additionalItems[i].condition3;
+            if (model.settings.additionalItems[i].condition3) {
+              enumerationObject.instances[i].properties["comparisonOperator3"] =
+                model.settings.additionalItems[i].comparisonOperator3;
+              enumerationObject.instances[i].properties["value3"] =
+                model.settings.additionalItems[i].value3;
+              enumerationObject.instances[i].properties["assignColor3"] =
+                model.settings.additionalItems[i].assignColor3;
+            }
           }
         }
         return enumerationObject;
