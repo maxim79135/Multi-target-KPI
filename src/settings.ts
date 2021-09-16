@@ -58,6 +58,7 @@ export class AdditionalItem {
   public assignColor1: string = "#333333";
   public assignColor2: string = "#333333";
   public assignColor3: string = "#333333";
+  public invertVarianceForColor: boolean = false;
 }
 export class Multiple {
   public cardsPerRow: number = 5;

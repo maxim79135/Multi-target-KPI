@@ -800,6 +800,13 @@
                         ]
                     }
                 },
+                "invertVarianceForColor": {
+                    "displayName": "Invert Variance",
+                    "displayNameKey": "invertVariance",
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "unmatchedColor": {
                     "displayName": "Unmatched state color",
                     "displayNameKey": "unmatchedColor",

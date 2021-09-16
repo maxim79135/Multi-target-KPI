@@ -297,6 +297,9 @@ export class CardKPI implements IVisual {
           if (model.settings.additionalItems[i].conditionFormatting) {
             enumerationObject.instances[i].properties["componentTypeForColor"] =
               model.settings.additionalItems[i].componentTypeForColor;
+            enumerationObject.instances[i].properties[
+              "invertVarianceForColor"
+            ] = model.settings.additionalItems[i].invertVarianceForColor;
             enumerationObject.instances[i].properties["condition1"] =
               model.settings.additionalItems[i].condition1;
             if (model.settings.additionalItems[i].condition1) {
