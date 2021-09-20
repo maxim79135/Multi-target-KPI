@@ -371,8 +371,6 @@ export class Card {
             additionalCategoryLabelSize.height -
             this.model.settings.additional.verticalPadding;
         } else {
-          console.log(textAnchor);
-
           let startXPosition =
             this.maxMainMeasureWidth +
             this.model.settings.multiple.spaceBeforeFirstComponent +
@@ -462,8 +460,6 @@ export class Card {
           additionalMeasureLabel,
           measureValue
         );
-
-        console.log(additionalMeasureWidth);
 
         let additionalMeasureLabelSize = this.getLabelSize(
           additionalMeasureLabel
@@ -622,6 +618,19 @@ export class Card {
   }
 
   private getSVGRect(element: Selection<BaseType, any, any, any>): DOMRect {
-    return <SVGRect>(<SVGElement>element.node()).getBoundingClientRect();
+    if (element == undefined)
+      return {
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
+        bottom: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        toJSON: null,
+      };
+    let rect = <SVGRect>(<SVGElement>element.node()).getBoundingClientRect();
+    return rect;
   }
 }
