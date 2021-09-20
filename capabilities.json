@@ -545,6 +545,20 @@
                     "type": {
                         "integer": true
                     }
+                },
+                "spaceBeforeFirstComponent": {
+                    "displayName": "Space before the first component",
+                    "displayNameKey": "spaceBeforeFirstComponent",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "spaceBetweenCardComponent": {
+                    "displayName": "Space between the card component",
+                    "displayNameKey": "spaceBetweenCardComponent",
+                    "type": {
+                        "integer": true
+                    }
                 }
             }
         },
@@ -655,9 +669,9 @@
                         ]
                     }
                 },
-                "paddingBottom": {
-                    "displayName": "Padding Bottom",
-                    "displayNameKey": "paddngBottom",
+                "verticalPadding": {
+                    "displayName": "Vertical padding",
+                    "displayNameKey": "verticalPadding",
                     "type": {
                         "integer": true
                     }
@@ -676,6 +690,24 @@
                         "formatting": {
                             "alignment": true
                         }
+                    }
+                },
+                "layoutType": {
+                    "displayName": "Layout type",
+                    "displayNameKey": "layoutType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Horizontal",
+                                "displayNameKey": "horizontal",
+                                "value": "horizontal"
+                            },
+                            {
+                                "displayName": "Vertical",
+                                "displayNameKey": "vertical",
+                                "value": "vertical"
+                            }   
+                        ]
                     }
                 },
                 "componentType": {

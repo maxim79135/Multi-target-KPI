@@ -202,6 +202,10 @@ export class CardKPI implements IVisual {
           properties: {
             cardsPerRow: model.settings.multiple.cardsPerRow,
             cardsMargin: model.settings.multiple.cardsMargin,
+            spaceBeforeFirstComponent:
+              model.settings.multiple.spaceBeforeFirstComponent,
+            spaceBetweenCardComponent:
+              model.settings.multiple.spaceBetweenCardComponent,
           },
           validValues: {
             cardsPerRow: {
@@ -211,6 +215,18 @@ export class CardKPI implements IVisual {
               },
             },
             cardsMargin: {
+              numberRange: {
+                min: 0,
+                max: 100,
+              },
+            },
+            spaceBeforeFirstComponent: {
+              numberRange: {
+                min: 0,
+                max: 100,
+              },
+            },
+            spaceBetweenCardComponent: {
               numberRange: {
                 min: 0,
                 max: 100,
@@ -226,13 +242,14 @@ export class CardKPI implements IVisual {
           enumerationObject.instances.push({
             objectName,
             properties: {
-              paddingBottom: model.settings.additional.paddingBottom,
+              verticalPadding: model.settings.additional.verticalPadding,
               wordWrap: model.settings.additional.wordWrap,
               horizontalAlignment:
                 model.settings.additional.horizontalAlignment,
+              layoutType: model.settings.additional.layoutType,
             },
             validValues: {
-              paddingBottom: {
+              verticalPadding: {
                 numberRange: {
                   min: 0,
                   max: 40,

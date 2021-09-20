@@ -90,9 +90,10 @@ export class DataLabel {
 }
 
 export class Additional {
-  public paddingBottom: number = 5;
+  public verticalPadding: number = 5;
   public wordWrap: boolean = false;
   public horizontalAlignment: string = "center";
+  public layoutType: string = "horizontal";
 }
 
 export class CategoryLabel {

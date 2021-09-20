@@ -309,14 +309,23 @@ export class Card {
           this.model.settings.additionalItems[j]
         );
         textProperties.text = v.displayName;
-        let additionalCategoryWidth =
-          (svgRect.width -
-            this.maxMainMeasureWidth -
-            // this.model.settings.measureComparison.paddingRight -
-            this.model.settings.multiple.spaceBeforeFirstComponent -
-            (array.length - 1) *
-              this.model.settings.multiple.spaceBetweenCardComponent) /
-          array.length;
+        let additionalCategoryWidth: number;
+        if (this.model.settings.additional.layoutType == "horizontal") {
+          additionalCategoryWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              // this.model.settings.measureComparison.paddingRight -
+              this.model.settings.multiple.spaceBeforeFirstComponent -
+              (array.length - 1) *
+                this.model.settings.multiple.spaceBetweenCardComponent) /
+            array.length;
+        } else {
+          additionalCategoryWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              this.model.settings.multiple.spaceBeforeFirstComponent) /
+            2;
+        }
 
         this.updateLabelStyles(
           additionalCategoryLabel,
@@ -349,14 +358,40 @@ export class Card {
         let textAnchor = additionalMeasureContainer[j]
           .select("text")
           .attr("text-anchor");
-        let x = Number(
-          transform(additionalMeasureContainer[j].attr("transform")).x
-        );
-        let y =
-          Number(transform(additionalMeasureContainer[j].attr("transform")).y) -
-          additionalCategoryLabelSize.height -
-          this.model.settings.additional.paddingBottom;
+        let x, y: number;
 
+        if (this.model.settings.additional.layoutType == "horizontal") {
+          x = Number(
+            transform(additionalMeasureContainer[j].attr("transform")).x
+          );
+          y =
+            Number(
+              transform(additionalMeasureContainer[j].attr("transform")).y
+            ) -
+            additionalCategoryLabelSize.height -
+            this.model.settings.additional.verticalPadding;
+        } else {
+          console.log(textAnchor);
+
+          let startXPosition =
+            this.maxMainMeasureWidth +
+            this.model.settings.multiple.spaceBeforeFirstComponent +
+            additionalCategoryWidth;
+          switch (textAnchor) {
+            case "middle":
+              x = startXPosition + additionalCategoryWidth / 2;
+              break;
+            case "start":
+              x = startXPosition;
+              break;
+            case "end":
+              x = startXPosition + additionalCategoryWidth;
+              break;
+          }
+          y = Number(
+            transform(additionalMeasureContainer[j].attr("transform")).y
+          );
+        }
         additionalCategoryLabel.select("text").attr("text-anchor", textAnchor);
         additionalCategoryLabel
           .select("text")
@@ -387,15 +422,31 @@ export class Card {
         );
         textProperties.text =
           this.model.dataGroups[i].additionalMeasures[j].dataLabel;
-        let additionalMeasureWidth =
-          (svgRect.width -
-            this.maxMainMeasureWidth -
-            // this.model.settings.measureComparison.paddingRight -
-            this.model.settings.multiple.spaceBeforeFirstComponent -
-            (array.length - 1) *
-              this.model.settings.multiple.spaceBetweenCardComponent) /
-          array.length;
-
+        let additionalMeasureWidth, additionalMeasureHeight: number;
+        if (this.model.settings.additional.layoutType == "horizontal") {
+          additionalMeasureWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              // this.model.settings.measureComparison.paddingRight -
+              this.model.settings.multiple.spaceBeforeFirstComponent -
+              (array.length - 1) *
+                this.model.settings.multiple.spaceBetweenCardComponent) /
+            array.length;
+        } else {
+          additionalMeasureWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              this.model.settings.multiple.spaceBeforeFirstComponent) /
+            2;
+          additionalMeasureHeight =
+            (svgRect.height -
+              this.getSVGRect(this.categoryLabels[i]).height -
+              this.model.settings.categoryLabel.paddingTop -
+              (array.length - 1) *
+                this.model.settings.multiple.spaceBetweenCardComponent -
+              2 * this.model.settings.additional.verticalPadding) /
+            array.length;
+        }
         this.updateLabelStyles(additionalMeasureLabel, {
           fontFamily: this.model.settings.additionalItems[j].fontFamily,
           textSize: this.model.settings.additionalItems[j].textSize,
@@ -412,33 +463,63 @@ export class Card {
           measureValue
         );
 
+        console.log(additionalMeasureWidth);
+
         let additionalMeasureLabelSize = this.getLabelSize(
           additionalMeasureLabel
         );
-        let x: number;
+        let x, y: number;
         let startXMeasures =
           this.maxMainMeasureWidth +
           this.model.settings.multiple.spaceBeforeFirstComponent +
           j * additionalMeasureWidth +
           j * this.model.settings.multiple.spaceBetweenCardComponent;
-        let y =
-          svgRect.height -
-          additionalMeasureLabelSize.height / 2 -
-          this.model.settings.additional.paddingBottom;
-        if (this.model.settings.additional.horizontalAlignment == "center") {
-          x = startXMeasures + additionalMeasureWidth / 2;
-          additionalMeasureLabel.select("text").attr("text-anchor", "middle");
-        } else if (
-          this.model.settings.additional.horizontalAlignment == "left"
-        ) {
-          x = startXMeasures;
-          additionalMeasureLabel.select("text").attr("text-anchor", "start");
-        } else if (
-          this.model.settings.additional.horizontalAlignment == "right"
-        ) {
-          x = startXMeasures + additionalMeasureWidth;
-          additionalMeasureLabel.select("text").attr("text-anchor", "end");
+        let startYMeasures =
+          this.getSVGRect(this.categoryLabels[i]).height +
+          this.model.settings.categoryLabel.paddingTop +
+          this.model.settings.additional.verticalPadding +
+          j * additionalMeasureHeight +
+          j * this.model.settings.multiple.spaceBetweenCardComponent;
+        if (this.model.settings.additional.layoutType == "horizontal") {
+          y =
+            svgRect.height -
+            additionalMeasureLabelSize.height / 2 -
+            this.model.settings.additional.verticalPadding;
+          if (this.model.settings.additional.horizontalAlignment == "center") {
+            x = startXMeasures + additionalMeasureWidth / 2;
+            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
+          } else if (
+            this.model.settings.additional.horizontalAlignment == "left"
+          ) {
+            x = startXMeasures;
+            additionalMeasureLabel.select("text").attr("text-anchor", "start");
+          } else if (
+            this.model.settings.additional.horizontalAlignment == "right"
+          ) {
+            x = startXMeasures + additionalMeasureWidth;
+            additionalMeasureLabel.select("text").attr("text-anchor", "end");
+          }
+        } else {
+          startXMeasures =
+            this.maxMainMeasureWidth +
+            this.model.settings.multiple.spaceBeforeFirstComponent;
+          if (this.model.settings.additional.horizontalAlignment == "center") {
+            x = startXMeasures + additionalMeasureWidth / 2;
+            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
+          } else if (
+            this.model.settings.additional.horizontalAlignment == "left"
+          ) {
+            x = startXMeasures;
+            additionalMeasureLabel.select("text").attr("text-anchor", "start");
+          } else if (
+            this.model.settings.additional.horizontalAlignment == "right"
+          ) {
+            x = startXMeasures + additionalMeasureWidth;
+            additionalMeasureLabel.select("text").attr("text-anchor", "end");
+          }
+          y = startYMeasures + additionalMeasureHeight / 2;
         }
+
         additionalMeasureLabel
           .select("text")
           .style("dominant-baseline", "middle");

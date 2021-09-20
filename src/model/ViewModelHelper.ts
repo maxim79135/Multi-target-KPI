@@ -295,8 +295,8 @@ function calculateAdditionalValue(
           result = invert ? -mainMeasureValue : mainMeasureValue;
         else
           result = invert
-            ? mainMeasureValue - additionalMeasureValue
-            : additionalMeasureValue - mainMeasureValue;
+            ? additionalMeasureValue - mainMeasureValue
+            : mainMeasureValue - additionalMeasureValue;
         break;
       }
       case "percentageChangeOver": {
@@ -452,136 +452,138 @@ export function visualTransform(
             additionalMeasure.labelFill = additionalSettings.unmatchedColor;
           }
 
-          let color1, color2, color3: string;
-          switch (additionalSettings.componentTypeForColor) {
-            case "measure":
-              color1 = updateAdditionalMeasureColor(
-                additionalSettings,
-                value,
-                "value1",
-                additionalSettings.comparisonOperator1,
-                "condition1",
-                "assignColor1"
-              );
-              color2 = updateAdditionalMeasureColor(
-                additionalSettings,
-                value,
-                "value2",
-                additionalSettings.comparisonOperator2,
-                "condition2",
-                "assignColor2"
-              );
-              color3 = updateAdditionalMeasureColor(
-                additionalSettings,
-                value,
-                "value3",
-                additionalSettings.comparisonOperator3,
-                "condition3",
-                "assignColor3"
-              );
+          if (additionalSettings.conditionFormatting) {
+            let color1, color2, color3: string;
+            switch (additionalSettings.componentTypeForColor) {
+              case "measure":
+                color1 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  value,
+                  "value1",
+                  additionalSettings.comparisonOperator1,
+                  "condition1",
+                  "assignColor1"
+                );
+                color2 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  value,
+                  "value2",
+                  additionalSettings.comparisonOperator2,
+                  "condition2",
+                  "assignColor2"
+                );
+                color3 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  value,
+                  "value3",
+                  additionalSettings.comparisonOperator3,
+                  "condition3",
+                  "assignColor3"
+                );
 
-              if (color1 != undefined) additionalMeasure.labelFill = color1;
-              else if (color2 != undefined)
-                additionalMeasure.labelFill = color2;
-              else if (color3 != undefined)
-                additionalMeasure.labelFill = color3;
-              break;
-            case "changeOver":
-              color1 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor,
-                "value1",
-                additionalSettings.comparisonOperator1,
-                "condition1",
-                "assignColor1"
-              );
-              color2 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor,
-                "value2",
-                additionalSettings.comparisonOperator2,
-                "condition2",
-                "assignColor2"
-              );
-              color3 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor,
-                "value3",
-                additionalSettings.comparisonOperator3,
-                "condition3",
-                "assignColor3"
-              );
+                if (color1 != undefined) additionalMeasure.labelFill = color1;
+                else if (color2 != undefined)
+                  additionalMeasure.labelFill = color2;
+                else if (color3 != undefined)
+                  additionalMeasure.labelFill = color3;
+                break;
+              case "changeOver":
+                color1 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor,
+                  "value1",
+                  additionalSettings.comparisonOperator1,
+                  "condition1",
+                  "assignColor1"
+                );
+                color2 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor,
+                  "value2",
+                  additionalSettings.comparisonOperator2,
+                  "condition2",
+                  "assignColor2"
+                );
+                color3 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor,
+                  "value3",
+                  additionalSettings.comparisonOperator3,
+                  "condition3",
+                  "assignColor3"
+                );
 
-              if (color1 != undefined) additionalMeasure.labelFill = color1;
-              else if (color2 != undefined)
-                additionalMeasure.labelFill = color2;
-              else if (color3 != undefined)
-                additionalMeasure.labelFill = color3;
-              break;
-            case "percentageChangeOver":
-              color1 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor * 100,
-                "value1",
-                additionalSettings.comparisonOperator1,
-                "condition1",
-                "assignColor1"
-              );
-              color2 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor * 100,
-                "value2",
-                additionalSettings.comparisonOperator2,
-                "condition2",
-                "assignColor2"
-              );
-              color3 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor * 100,
-                "value3",
-                additionalSettings.comparisonOperator3,
-                "condition3",
-                "assignColor3"
-              );
+                if (color1 != undefined) additionalMeasure.labelFill = color1;
+                else if (color2 != undefined)
+                  additionalMeasure.labelFill = color2;
+                else if (color3 != undefined)
+                  additionalMeasure.labelFill = color3;
+                break;
+              case "percentageChangeOver":
+                color1 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor * 100,
+                  "value1",
+                  additionalSettings.comparisonOperator1,
+                  "condition1",
+                  "assignColor1"
+                );
+                color2 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor * 100,
+                  "value2",
+                  additionalSettings.comparisonOperator2,
+                  "condition2",
+                  "assignColor2"
+                );
+                color3 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor * 100,
+                  "value3",
+                  additionalSettings.comparisonOperator3,
+                  "condition3",
+                  "assignColor3"
+                );
 
-              if (color1 != undefined) additionalMeasure.labelFill = color1;
-              else if (color2 != undefined)
-                additionalMeasure.labelFill = color2;
-              else if (color3 != undefined)
-                additionalMeasure.labelFill = color3;
-              break;
-            case "percentageOver":
-              color1 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor * 100,
-                "value1",
-                additionalSettings.comparisonOperator1,
-                "condition1",
-                "assignColor1"
-              );
-              color2 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor * 100,
-                "value2",
-                additionalSettings.comparisonOperator2,
-                "condition2",
-                "assignColor2"
-              );
-              color3 = updateAdditionalMeasureColor(
-                additionalSettings,
-                additionalMeasureForColor * 100,
-                "value3",
-                additionalSettings.comparisonOperator3,
-                "condition3",
-                "assignColor3"
-              );
+                if (color1 != undefined) additionalMeasure.labelFill = color1;
+                else if (color2 != undefined)
+                  additionalMeasure.labelFill = color2;
+                else if (color3 != undefined)
+                  additionalMeasure.labelFill = color3;
+                break;
+              case "percentageOver":
+                color1 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor * 100,
+                  "value1",
+                  additionalSettings.comparisonOperator1,
+                  "condition1",
+                  "assignColor1"
+                );
+                color2 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor * 100,
+                  "value2",
+                  additionalSettings.comparisonOperator2,
+                  "condition2",
+                  "assignColor2"
+                );
+                color3 = updateAdditionalMeasureColor(
+                  additionalSettings,
+                  additionalMeasureForColor * 100,
+                  "value3",
+                  additionalSettings.comparisonOperator3,
+                  "condition3",
+                  "assignColor3"
+                );
 
-              if (color1 != undefined) additionalMeasure.labelFill = color1;
-              else if (color2 != undefined)
-                additionalMeasure.labelFill = color2;
-              else if (color3 != undefined)
-                additionalMeasure.labelFill = color3;
-              break;
+                if (color1 != undefined) additionalMeasure.labelFill = color1;
+                else if (color2 != undefined)
+                  additionalMeasure.labelFill = color2;
+                else if (color3 != undefined)
+                  additionalMeasure.labelFill = color3;
+                break;
+            }
           }
 
           switch (additionalSettings.componentType) {
