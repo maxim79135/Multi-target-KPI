@@ -299,6 +299,16 @@ export class Card {
         .classed(CardClassNames.AdditionalCategoryContainer + i, true);
       let additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
       let additionalMeasureContainer = this.additionalMeasureContainers[i];
+      let minYPos = Math.min.apply(
+        Math,
+        additionalMeasureContainer.map((v, k) =>
+          Math.abs(
+            this.getSVGRect(svg).y -
+              this.getSVGRect(additionalMeasureContainer[k]).top
+          )
+        )
+      );
+      console.log(minYPos);
 
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         let additionalCategoryLabel = additionalCategoryContainter
@@ -364,12 +374,10 @@ export class Card {
           x = Number(
             transform(additionalMeasureContainer[j].attr("transform")).x
           );
-          y =
-            Number(
-              transform(additionalMeasureContainer[j].attr("transform")).y
-            ) -
-            additionalCategoryLabelSize.height -
-            this.model.settings.additional.verticalPadding;
+          y = minYPos - 5;
+          additionalCategoryLabel
+            .select("text")
+            .style("dominant-baseline", "text-bottom");
         } else {
           let startXPosition =
             this.maxMainMeasureWidth +
@@ -389,11 +397,11 @@ export class Card {
           y = Number(
             transform(additionalMeasureContainer[j].attr("transform")).y
           );
+          additionalCategoryLabel
+            .select("text")
+            .style("dominant-baseline", "middle");
         }
         additionalCategoryLabel.select("text").attr("text-anchor", textAnchor);
-        additionalCategoryLabel
-          .select("text")
-          .style("dominant-baseline", "middle");
         additionalCategoryLabel.attr("transform", translate(x, y));
         additionalCategoryLabels.push(additionalCategoryLabel);
       });
@@ -479,7 +487,7 @@ export class Card {
         if (this.model.settings.additional.layoutType == "horizontal") {
           y =
             svgRect.height -
-            additionalMeasureLabelSize.height / 2 -
+            // additionalMeasureLabelSize.height / 2 -
             this.model.settings.additional.verticalPadding;
           if (this.model.settings.additional.horizontalAlignment == "center") {
             x = startXMeasures + additionalMeasureWidth / 2;
@@ -494,6 +502,9 @@ export class Card {
           ) {
             x = startXMeasures + additionalMeasureWidth;
             additionalMeasureLabel.select("text").attr("text-anchor", "end");
+            additionalMeasureLabel
+              .select("text")
+              .style("dominant-baseline", "text-bottom");
           }
         } else {
           startXMeasures =
@@ -514,11 +525,11 @@ export class Card {
             additionalMeasureLabel.select("text").attr("text-anchor", "end");
           }
           y = startYMeasures + additionalMeasureHeight / 2;
+          additionalMeasureLabel
+            .select("text")
+            .style("dominant-baseline", "middle");
         }
 
-        additionalMeasureLabel
-          .select("text")
-          .style("dominant-baseline", "middle");
         additionalMeasureLabel.attr("transform", translate(x, y));
         additionalMeasureLabels.push(additionalMeasureLabel);
       });
