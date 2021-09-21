@@ -94,6 +94,8 @@ export class Additional {
   public wordWrap: boolean = false;
   public horizontalAlignment: string = "center";
   public layoutType: string = "horizontal";
+  public verticalTextAnchor: string = "middle";
+  public textAnchor: string = "right";
 }
 
 export class CategoryLabel {

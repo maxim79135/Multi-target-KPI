@@ -706,7 +706,58 @@
                                 "displayName": "Vertical",
                                 "displayNameKey": "vertical",
                                 "value": "vertical"
-                            }   
+                            }
+                        ]
+                    }
+                },
+                "verticalTextAnchor": {
+                    "displayName": "Vertical text anchor",
+                    "displayNameKey": "verticalTextAnchor",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Top",
+                                "displayNameKey": "top",
+                                "value": "top"
+                            },
+                            {
+                                "displayName": "Middle",
+                                "displayNameKey": "middle",
+                                "value": "middle"
+                            },
+                            {
+                                "displayName": "Bottom",
+                                "displayNameKey": "bottom",
+                                "value": "bottom"
+                            }
+                        ]
+                    }
+                },
+                "textAnchor": {
+                    "displayName": "Text anchor",
+                    "displayNameKey": "textAnchor",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Top",
+                                "displayNameKey": "top",
+                                "value": "top"
+                            },
+                            {
+                                "displayName": "Bottom",
+                                "displayNameKey": "bottom",
+                                "value": "bottom"
+                            },
+                            {
+                                "displayName": "Left",
+                                "displayNameKey": "left",
+                                "value": "left"
+                            },
+                            {
+                                "displayName": "Right",
+                                "displayNameKey": "right",
+                                "value": "right"
+                            }
                         ]
                     }
                 },

@@ -258,6 +258,15 @@ export class CardKPI implements IVisual {
             },
             selector: null,
           });
+        if (model.settings.additional.layoutType == "vertical")
+          enumerationObject.instances.push({
+            objectName,
+            properties: {
+              verticalTextAnchor: model.settings.additional.verticalTextAnchor,
+              textAnchor: model.settings.additional.textAnchor,
+            },
+            selector: null,
+          });
 
         for (let i = 0; i < model.settings.additionalItems.length; i++) {
           const displayName: string =
