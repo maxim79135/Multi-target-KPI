@@ -552,13 +552,6 @@
                     "type": {
                         "integer": true
                     }
-                },
-                "spaceBetweenCardComponent": {
-                    "displayName": "Space between the card component",
-                    "displayNameKey": "spaceBetweenCardComponent",
-                    "type": {
-                        "integer": true
-                    }
                 }
             }
         },
@@ -669,9 +662,44 @@
                         ]
                     }
                 },
-                "verticalPadding": {
-                    "displayName": "Vertical padding",
-                    "displayNameKey": "verticalPadding",
+                "percentageWidth": {
+                    "displayName": "Percentage width",
+                    "displayNameKey": "percentageWidth",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "paddingTop": {
+                    "displayName": "Padding top",
+                    "displayNameKey": "paddingTop",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "paddingBottom": {
+                    "displayName": "Padding bottom",
+                    "displayNameKey": "paddingBottom",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "paddingLeft": {
+                    "displayName": "Padding left",
+                    "displayNameKey": "paddingLeft",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "paddingRight": {
+                    "displayName": "Padding right",
+                    "displayNameKey": "paddingRight",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "marginOfMeasure": {
+                    "displayName": "Margin of measure",
+                    "displayNameKey": "marginOfMeasure",
                     "type": {
                         "integer": true
                     }

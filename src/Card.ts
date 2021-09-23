@@ -56,6 +56,9 @@ export class Card {
   private cardsPerRow: number;
   private numberOfRows: number;
   private maxMainMeasureWidth: number;
+  private additionalMeasureWidth: number;
+  private additionalCategoryWidth: number;
+  private additionalMeasureContainerWidth: number;
 
   private model: ICardViewModel;
 
@@ -139,6 +142,11 @@ export class Card {
       let svgRect = this.getSVGRect(this.svg[0]);
       this.maxMainMeasureWidth =
         (svgRect.width * this.maxMainMeasureWidth) / 100;
+      this.additionalMeasureContainerWidth =
+        svgRect.width -
+        this.maxMainMeasureWidth -
+        this.model.settings.additional.paddingLeft -
+        this.model.settings.additional.paddingRight;
     }
   }
 
@@ -317,31 +325,33 @@ export class Card {
           this.model.settings.additionalItems[j]
         );
         textProperties.text = v.displayName;
-        let additionalCategoryWidth: number;
         if (this.model.settings.additional.layoutType == "horizontal") {
-          additionalCategoryWidth =
+          this.additionalCategoryWidth =
             (svgRect.width -
               this.maxMainMeasureWidth -
-              // this.model.settings.measureComparison.paddingRight -
-              this.model.settings.multiple.spaceBeforeFirstComponent -
+              this.model.settings.additional.paddingRight -
+              this.model.settings.additional.paddingLeft -
               (array.length - 1) *
-                this.model.settings.multiple.spaceBetweenCardComponent) /
+                this.model.settings.additional.marginOfMeasure) /
             array.length;
         } else {
           if (
             this.model.settings.additional.textAnchor == "left" ||
             this.model.settings.additional.textAnchor == "right"
           ) {
-            additionalCategoryWidth =
-              (svgRect.width -
+            this.additionalCategoryWidth =
+              ((svgRect.width -
                 this.maxMainMeasureWidth -
-                this.model.settings.multiple.spaceBeforeFirstComponent) /
-              2;
+                this.model.settings.additional.paddingLeft -
+                this.model.settings.additional.paddingRight) *
+                (100 - this.model.settings.additional.percentageWidth)) /
+              100;
           } else {
-            additionalCategoryWidth =
+            this.additionalCategoryWidth =
               svgRect.width -
               this.maxMainMeasureWidth -
-              this.model.settings.multiple.spaceBeforeFirstComponent;
+              this.model.settings.additional.paddingLeft -
+              this.model.settings.additional.paddingRight;
           }
         }
 
@@ -356,13 +366,13 @@ export class Card {
             additionalCategoryLabel,
             textProperties,
             v.displayName,
-            additionalCategoryWidth,
+            this.additionalCategoryWidth,
             maxDataHeight
           );
         } else {
           let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
             textProperties,
-            additionalCategoryWidth
+            this.additionalCategoryWidth
           );
           this.updateLabelValueWithoutWrapping(
             additionalCategoryLabel,
@@ -391,11 +401,10 @@ export class Card {
           ) {
             startXPosition =
               this.maxMainMeasureWidth +
-              this.model.settings.multiple.spaceBeforeFirstComponent +
+              this.model.settings.additional.paddingLeft +
               (this.model.settings.additional.textAnchor == "left"
                 ? 0
-                : additionalCategoryWidth +
-                  this.model.settings.multiple.spaceBeforeFirstComponent);
+                : this.additionalMeasureWidth);
             y = Number(
               transform(additionalMeasureContainer[j].attr("transform")).y
             );
@@ -405,7 +414,7 @@ export class Card {
           } else {
             startXPosition =
               this.maxMainMeasureWidth +
-              this.model.settings.multiple.spaceBeforeFirstComponent;
+              this.model.settings.additional.paddingLeft;
             y =
               this.model.settings.additional.textAnchor == "top"
                 ? Math.abs(
@@ -419,13 +428,13 @@ export class Card {
           }
           switch (textAnchor) {
             case "middle":
-              x = startXPosition + additionalCategoryWidth / 2;
+              x = startXPosition + this.additionalCategoryWidth / 2;
               break;
             case "start":
               x = startXPosition;
               break;
             case "end":
-              x = startXPosition + additionalCategoryWidth;
+              x = startXPosition + this.additionalCategoryWidth;
               break;
           }
         }
@@ -456,52 +465,66 @@ export class Card {
         );
         textProperties.text =
           this.model.dataGroups[i].additionalMeasures[j].dataLabel;
-        let additionalMeasureWidth: number, additionalMeasureHeight: number;
+        let additionalMeasureHeight: number;
         if (this.model.settings.additional.layoutType == "horizontal") {
-          additionalMeasureWidth =
+          this.additionalMeasureWidth =
             (svgRect.width -
               this.maxMainMeasureWidth -
-              // this.model.settings.measureComparison.paddingRight -
-              this.model.settings.multiple.spaceBeforeFirstComponent -
+              this.model.settings.additional.paddingRight -
+              this.model.settings.additional.paddingLeft -
               (array.length - 1) *
-                this.model.settings.multiple.spaceBetweenCardComponent) /
+                this.model.settings.additional.marginOfMeasure) /
             array.length;
         } else {
+          let verticalPadding: number;
+          if (array.length == 3 || array.length == 6) {
+            verticalPadding =
+              this.model.settings.additional.paddingTop +
+              this.model.settings.additional.paddingBottom;
+          } else {
+            switch (this.model.settings.additional.verticalTextAnchor) {
+              case "top":
+                verticalPadding = this.model.settings.additional.paddingTop;
+                break;
+              case "middle":
+                verticalPadding =
+                  this.model.settings.additional.paddingTop +
+                  this.model.settings.additional.paddingBottom;
+                break;
+              case "bottom":
+                verticalPadding = this.model.settings.additional.paddingBottom;
+            }
+          }
           if (
             this.model.settings.additional.textAnchor == "left" ||
             this.model.settings.additional.textAnchor == "right"
           ) {
-            additionalMeasureWidth =
-              (svgRect.width -
-                this.maxMainMeasureWidth -
-                this.model.settings.multiple.spaceBeforeFirstComponent) /
-              2;
+            this.additionalMeasureWidth =
+              (this.additionalMeasureContainerWidth *
+                this.model.settings.additional.percentageWidth) /
+              100;
             additionalMeasureHeight =
               (svgRect.height -
                 this.getSVGRect(this.categoryLabels[i]).height -
                 this.model.settings.categoryLabel.paddingTop -
                 (array.length - 1) *
-                  this.model.settings.multiple.spaceBetweenCardComponent -
-                2 * this.model.settings.additional.verticalPadding) /
+                  this.model.settings.additional.marginOfMeasure -
+                verticalPadding) /
               (this.model.settings.additional.verticalTextAnchor == "middle"
                 ? array.length
                 : 3);
           } else {
-            additionalMeasureWidth =
-              svgRect.width -
-              this.maxMainMeasureWidth -
-              this.model.settings.multiple.spaceBeforeFirstComponent;
+            this.additionalMeasureWidth = this.additionalMeasureContainerWidth;
             additionalMeasureHeight =
               (svgRect.height -
                 this.getSVGRect(this.categoryLabels[i]).height -
                 this.model.settings.categoryLabel.paddingTop -
                 (array.length - 1) *
-                  this.model.settings.multiple.spaceBetweenCardComponent -
-                2 * this.model.settings.additional.verticalPadding) /
+                  this.model.settings.additional.marginOfMeasure -
+                verticalPadding) /
               (this.model.settings.additional.verticalTextAnchor == "middle"
                 ? 2 * array.length
                 : 6);
-            console.log(additionalMeasureHeight);
           }
         }
         this.updateLabelStyles(additionalMeasureLabel, {
@@ -513,7 +536,7 @@ export class Card {
         });
         let measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
-          additionalMeasureWidth
+          this.additionalMeasureWidth
         );
         this.updateLabelValueWithoutWrapping(
           additionalMeasureLabel,
@@ -528,12 +551,12 @@ export class Card {
         if (this.model.settings.additional.layoutType == "horizontal") {
           startXMeasures =
             this.maxMainMeasureWidth +
-            this.model.settings.multiple.spaceBeforeFirstComponent +
-            j * additionalMeasureWidth +
-            j * this.model.settings.multiple.spaceBetweenCardComponent;
-          y = svgRect.height - this.model.settings.additional.verticalPadding;
+            this.model.settings.additional.paddingLeft +
+            j * this.additionalMeasureWidth +
+            j * this.model.settings.additional.marginOfMeasure;
+          y = svgRect.height - this.model.settings.additional.paddingBottom;
           if (this.model.settings.additional.horizontalAlignment == "center") {
-            x = startXMeasures + additionalMeasureWidth / 2;
+            x = startXMeasures + this.additionalMeasureWidth / 2;
             additionalMeasureLabel.select("text").attr("text-anchor", "middle");
           } else if (
             this.model.settings.additional.horizontalAlignment == "left"
@@ -543,7 +566,7 @@ export class Card {
           } else if (
             this.model.settings.additional.horizontalAlignment == "right"
           ) {
-            x = startXMeasures + additionalMeasureWidth;
+            x = startXMeasures + this.additionalMeasureWidth;
             additionalMeasureLabel.select("text").attr("text-anchor", "end");
             additionalMeasureLabel
               .select("text")
@@ -556,39 +579,42 @@ export class Card {
           ) {
             startXMeasures =
               this.maxMainMeasureWidth +
-              this.model.settings.multiple.spaceBeforeFirstComponent +
+              this.model.settings.additional.paddingLeft +
               (this.model.settings.additional.textAnchor == "left"
-                ? additionalMeasureWidth +
-                  this.model.settings.multiple.spaceBeforeFirstComponent
+                ? (this.additionalMeasureContainerWidth *
+                    (100 - this.model.settings.additional.percentageWidth)) /
+                  100
                 : 0);
             startYMeasures =
-              this.getSVGRect(this.categoryLabels[i]).height +
               this.model.settings.categoryLabel.paddingTop +
-              this.model.settings.additional.verticalPadding +
+              this.getSVGRect(this.categoryLabels[i]).height +
+              (this.model.settings.additional.verticalTextAnchor !== "top"
+                ? this.model.settings.additional.paddingTop
+                : 0) +
               (j +
                 (this.model.settings.additional.verticalTextAnchor == "bottom"
                   ? 3 - array.length
                   : 0)) *
                 additionalMeasureHeight +
-              j * this.model.settings.multiple.spaceBetweenCardComponent;
+              j * this.model.settings.additional.marginOfMeasure;
           } else {
             startXMeasures =
               this.maxMainMeasureWidth +
-              this.model.settings.multiple.spaceBeforeFirstComponent;
+              this.model.settings.additional.paddingLeft;
             startYMeasures =
               this.getSVGRect(this.categoryLabels[i]).height +
               this.model.settings.categoryLabel.paddingTop +
-              this.model.settings.additional.verticalPadding +
+              this.model.settings.additional.paddingTop +
               (j * 2 +
                 (this.model.settings.additional.textAnchor == "top" ? 1 : 0) +
                 (this.model.settings.additional.verticalTextAnchor == "bottom"
                   ? 1
                   : 0)) *
                 additionalMeasureHeight +
-              j * this.model.settings.multiple.spaceBetweenCardComponent;
+              j * this.model.settings.additional.marginOfMeasure;
           }
           if (this.model.settings.additional.horizontalAlignment == "center") {
-            x = startXMeasures + additionalMeasureWidth / 2;
+            x = startXMeasures + this.additionalMeasureWidth / 2;
             additionalMeasureLabel.select("text").attr("text-anchor", "middle");
           } else if (
             this.model.settings.additional.horizontalAlignment == "left"
@@ -598,7 +624,7 @@ export class Card {
           } else if (
             this.model.settings.additional.horizontalAlignment == "right"
           ) {
-            x = startXMeasures + additionalMeasureWidth;
+            x = startXMeasures + this.additionalMeasureWidth;
             additionalMeasureLabel.select("text").attr("text-anchor", "end");
           }
           y = startYMeasures + additionalMeasureHeight / 2;

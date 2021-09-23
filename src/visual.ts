@@ -204,8 +204,6 @@ export class CardKPI implements IVisual {
             cardsMargin: model.settings.multiple.cardsMargin,
             spaceBeforeFirstComponent:
               model.settings.multiple.spaceBeforeFirstComponent,
-            spaceBetweenCardComponent:
-              model.settings.multiple.spaceBetweenCardComponent,
           },
           validValues: {
             cardsPerRow: {
@@ -226,12 +224,6 @@ export class CardKPI implements IVisual {
                 max: 100,
               },
             },
-            spaceBetweenCardComponent: {
-              numberRange: {
-                min: 0,
-                max: 100,
-              },
-            },
           },
           selector: null,
         });
@@ -242,14 +234,48 @@ export class CardKPI implements IVisual {
           enumerationObject.instances.push({
             objectName,
             properties: {
-              verticalPadding: model.settings.additional.verticalPadding,
+              marginOfMeasure: model.settings.additional.marginOfMeasure,
+              paddingTop: model.settings.additional.paddingTop,
+              paddingBottom: model.settings.additional.paddingBottom,
+              paddingLeft: model.settings.additional.paddingLeft,
+              paddingRight: model.settings.additional.paddingRight,
               wordWrap: model.settings.additional.wordWrap,
               horizontalAlignment:
                 model.settings.additional.horizontalAlignment,
               layoutType: model.settings.additional.layoutType,
             },
             validValues: {
+              marginOfMeasure: {
+                numberRange: {
+                  min: 0,
+                  max: 40,
+                },
+              },
               verticalPadding: {
+                numberRange: {
+                  min: 0,
+                  max: 40,
+                },
+              },
+              paddingTop: {
+                numberRange: {
+                  min: 0,
+                  max: 40,
+                },
+              },
+              paddingBottom: {
+                numberRange: {
+                  min: 0,
+                  max: 40,
+                },
+              },
+              paddingLeft: {
+                numberRange: {
+                  min: 0,
+                  max: 40,
+                },
+              },
+              paddingRight: {
                 numberRange: {
                   min: 0,
                   max: 40,
@@ -264,6 +290,15 @@ export class CardKPI implements IVisual {
             properties: {
               verticalTextAnchor: model.settings.additional.verticalTextAnchor,
               textAnchor: model.settings.additional.textAnchor,
+              percentageWidth: model.settings.additional.percentageWidth,
+            },
+            validValues: {
+              percentageWidth: {
+                numberRange: {
+                  min: 30,
+                  max: 70,
+                },
+              },
             },
             selector: null,
           });

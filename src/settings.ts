@@ -64,7 +64,6 @@ export class Multiple {
   public cardsPerRow: number = 5;
   public cardsMargin: number = 5;
   public spaceBeforeFirstComponent: number = 15;
-  public spaceBetweenCardComponent: number = 15;
 }
 
 export class Card {
@@ -90,12 +89,17 @@ export class DataLabel {
 }
 
 export class Additional {
-  public verticalPadding: number = 5;
+  public paddingTop: number = 5;
+  public paddingBottom: number = 5;
+  public paddingLeft: number = 5;
+  public paddingRight: number = 5;
   public wordWrap: boolean = false;
   public horizontalAlignment: string = "center";
   public layoutType: string = "horizontal";
   public verticalTextAnchor: string = "middle";
   public textAnchor: string = "right";
+  public marginOfMeasure: number = 5;
+  public percentageWidth: number = 50;
 }
 
 export class CategoryLabel {
