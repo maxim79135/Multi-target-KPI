@@ -45,13 +45,15 @@ export function prepareMeasureText(
           allowFormatBeautification: false,
           cultureSelector: culture,
         });
+        valueFormatted = valueFormatted.replace(",", ".");
+        valueFormatted = Number(valueFormatted).toFixed(precision);
+
         if (culture != "en-US") {
           valueFormatted = localizeUnit(valueFormatted, "K", culture);
           valueFormatted = localizeUnit(valueFormatted, "M", culture);
           valueFormatted = localizeUnit(valueFormatted, "bn", culture);
           valueFormatted = localizeUnit(valueFormatted, "T", culture);
         }
-
         if (addPlusforPositiveValue && (value as number) > 0)
           valueFormatted = "+" + valueFormatted;
       }
