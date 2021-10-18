@@ -45,7 +45,7 @@ export function prepareMeasureText(
           allowFormatBeautification: false,
           cultureSelector: culture,
         });
-        if (!isNaN(value)) {
+        if (!isNaN(value) && displayUnit == 1) {
           valueFormatted = valueFormatted.replace(",", ".");
           valueFormatted = Number(valueFormatted).toFixed(precision);
         }
