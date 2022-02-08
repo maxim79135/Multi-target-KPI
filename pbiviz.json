@@ -4,7 +4,7 @@
        "displayName":"cardKPI",
        "guid":"cardKPI",
        "visualClassName":"CardKPI",
-       "version":"1.0.2",
+       "version":"1.0.3",
        "description":"Card KPI",
        "supportUrl":"asd",
        "gitHubUrl":""

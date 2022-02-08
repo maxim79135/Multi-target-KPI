@@ -9,14 +9,24 @@ import {
   interfaces,
 } from "powerbi-visuals-utils-formattingutils";
 import { manipulation } from "powerbi-visuals-utils-svgutils";
+import "regenerator-runtime/runtime";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 
 import { BaseType, select, Selection } from "d3-selection";
 import powerbi from "powerbi-visuals-api";
 import { CardSettings } from "./settings";
 import { TextProperties } from "powerbi-visuals-utils-formattingutils/lib/src/interfaces";
-import { ICardViewModel, ILabelProperties } from "./model/ViewModel";
-
+import {
+  ICardViewModel,
+  ILabelProperties,
+  IAdditionalMeasure,
+  IDataGroup,
+} from "./model/ViewModel";
+import {
+  createTooltipServiceWrapper,
+  ITooltipServiceWrapper,
+} from "powerbi-visuals-utils-tooltiputils";
+import VisualTooltipDataItem = powerbi.extensibility.VisualTooltipDataItem;
 import translate = manipulation.translate;
 import transform = manipulation.parseTranslateTransform;
 
@@ -33,12 +43,13 @@ export enum CardClassNames {
 }
 
 export class Card {
+  private tooltipServiceWrapper: ITooltipServiceWrapper;
   private root: Selection<BaseType, any, any, any>;
   private cardsContainer: Selection<BaseType, any, any, any>;
   private cards: Selection<BaseType, any, any, any>[];
   private svg: Selection<BaseType, any, any, any>[];
   private categoryLabels: Selection<BaseType, any, any, any>[];
-  private dataLabels: Selection<BaseType, any, any, any>[];
+  public dataLabels: Selection<BaseType, any, any, any>[];
   private additionalCategoryContainers: Array<
     Selection<BaseType, any, any, any>[]
   >;
@@ -67,6 +78,10 @@ export class Card {
     this.cardsContainer = this.root
       .append("div")
       .classed(CardClassNames.CardsContainer, true);
+    this.tooltipServiceWrapper = createTooltipServiceWrapper(
+      target.host.tooltipService,
+      target.element
+    );
   }
 
   public setModel(model: ICardViewModel) {
@@ -167,6 +182,56 @@ export class Card {
       this.createAdditionalCategoryLabel();
     }
     this.createDataLabel();
+  }
+
+  public createTooltip() {
+    let cardSelection = this.cardsContainer
+      .selectAll(".card")
+      .data(this.model.dataGroups);
+    let cardSelectionMerged = cardSelection
+      .enter()
+      .append("rect")
+      .merge(<any>cardSelection);
+
+    this.tooltipServiceWrapper.addTooltip(
+      cardSelectionMerged.select(".additional-measure-container"),
+      (datapoint: IDataGroup) => this.getTooltipData(datapoint, "additional")
+    );
+
+    this.tooltipServiceWrapper.addTooltip(
+      cardSelectionMerged.select(".data"),
+      (datapoint: IDataGroup) => this.getTooltipData(datapoint, "main")
+    );
+  }
+
+  private getTooltipData(
+    values: IDataGroup,
+    type: string
+  ): VisualTooltipDataItem[] {
+    let tooltipData: VisualTooltipDataItem[] = [];
+
+    if (type == "additional") {
+      let additionalMeasures = values.additionalMeasures;
+      for (let i = 0; i < additionalMeasures.length; i++) {
+        tooltipData.push({
+          displayName: additionalMeasures[i].displayName,
+          value: additionalMeasures[i].dataLabel,
+        });
+      }
+    } else if (type == "main") {
+      tooltipData.push({
+        displayName: values.displayName,
+        value: values.mainMeasureDataLabel,
+      });
+    }
+    for (let i = 0; i < values.tooltipValues.length; i++) {
+      tooltipData.push({
+        displayName: values.tooltipValues[i].displayName,
+        value: values.tooltipValues[i].dataLabel,
+      });
+    }
+
+    return tooltipData;
   }
 
   private createCategoryLabel() {

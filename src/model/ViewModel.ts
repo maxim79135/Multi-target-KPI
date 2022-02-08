@@ -26,6 +26,8 @@
 "use strict";
 
 import { CardSettings } from "../settings";
+import powerbi from "powerbi-visuals-api";
+import ISelectionId = powerbi.visuals.ISelectionId;
 
 export interface IAdditionalMeasure {
   displayName?: string;
@@ -34,6 +36,7 @@ export interface IAdditionalMeasure {
   calculatedValue?: number;
   dataLabel?: string;
   labelFill?: string;
+  selectionId?: ISelectionId;
 }
 export interface IDataGroup {
   displayName?: string;
@@ -41,7 +44,14 @@ export interface IDataGroup {
   mainMeasureDataLabel?: string;
   isPercentage?: boolean;
   additionalMeasures?: IAdditionalMeasure[];
+  tooltipValues?: ITooltipValue[];
 }
+
+export interface ITooltipValue {
+  displayName: string;
+  dataLabel: string;
+}
+
 export interface ICardViewModel {
   settings: CardSettings;
   dataGroups: IDataGroup[];

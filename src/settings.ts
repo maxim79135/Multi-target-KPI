@@ -62,7 +62,7 @@ export class AdditionalItem {
 }
 export class Multiple {
   public cardsPerRow: number = 5;
-  public cardsMargin: number = 5;
+  public cardsMargin: number = 15;
   public spaceBeforeFirstComponent: number = 15;
 }
 
@@ -89,10 +89,10 @@ export class DataLabel {
 }
 
 export class Additional {
-  public paddingTop: number = 5;
-  public paddingBottom: number = 5;
-  public paddingLeft: number = 5;
-  public paddingRight: number = 5;
+  public paddingTop: number = 0;
+  public paddingBottom: number = 0;
+  public paddingLeft: number = 0;
+  public paddingRight: number = 0;
   public wordWrap: boolean = false;
   public horizontalAlignment: string = "center";
   public layoutType: string = "horizontal";
@@ -105,8 +105,8 @@ export class Additional {
 export class CategoryLabel {
   public show: boolean = true;
   public horizontalAlignment: string = "center";
-  public paddingTop: number = 5;
-  public paddingSide: number = 5;
+  public paddingTop: number = 0;
+  public paddingSide: number = 0;
   public color: string = "#333333";
   public textSize: number = 15;
   public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";

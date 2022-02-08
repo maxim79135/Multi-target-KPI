@@ -60,6 +60,7 @@ export class CardKPI implements IVisual {
     this.card.updateViewport(options.viewport);
     this.card.createCardContainer();
     this.card.createLabels();
+    this.card.createTooltip();
   }
 
   /**
@@ -202,8 +203,8 @@ export class CardKPI implements IVisual {
           properties: {
             cardsPerRow: model.settings.multiple.cardsPerRow,
             cardsMargin: model.settings.multiple.cardsMargin,
-            spaceBeforeFirstComponent:
-              model.settings.multiple.spaceBeforeFirstComponent,
+            // spaceBeforeFirstComponent:
+            //   model.settings.multiple.spaceBeforeFirstComponent,
           },
           validValues: {
             cardsPerRow: {
@@ -230,6 +231,8 @@ export class CardKPI implements IVisual {
         break;
 
       case "additional":
+        console.log(model.settings.additional);
+        
         model.settings.additionalItems.length > 0 &&
           enumerationObject.instances.push({
             objectName,

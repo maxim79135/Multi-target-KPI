@@ -45,11 +45,6 @@ export function prepareMeasureText(
           allowFormatBeautification: false,
           cultureSelector: culture,
         });
-        if (!isNaN(value) && displayUnit == 1) {
-          valueFormatted = valueFormatted.replace(",", ".");
-          valueFormatted = Number(valueFormatted).toFixed(precision);
-        }
-
         if (culture != "en-US") {
           valueFormatted = localizeUnit(valueFormatted, "K", culture);
           valueFormatted = localizeUnit(valueFormatted, "M", culture);

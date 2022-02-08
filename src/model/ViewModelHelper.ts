@@ -26,8 +26,13 @@
 "use strict";
 
 import powerbi from "powerbi-visuals-api";
-import { CardSettings, AdditionalItem } from "../settings";
-import { IAdditionalMeasure, ICardViewModel, IDataGroup } from "./ViewModel";
+import { CardSettings, AdditionalItem, DataLabel } from "../settings";
+import {
+  IAdditionalMeasure,
+  ICardViewModel,
+  IDataGroup,
+  ITooltipValue,
+} from "./ViewModel";
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { getValue } from "../utils/objectEnumerationUtility";
 import { prepareMeasureText } from "../utils/dataLabelUtility";
@@ -336,7 +341,7 @@ function calculateAdditionalValue(
         break;
       }
     }
-  return result;
+  return Number(Number(result).toFixed(4));
 }
 
 function comparisonValues(
@@ -397,7 +402,7 @@ export function visualTransform(
     let categories = category ? category.values : [""];
 
     for (let i = 0; i < categories.length; i++) {
-      let dataGroup: IDataGroup = { additionalMeasures: [] };
+      let dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
 
       for (let ii = 0; ii < dataCategorical.values.length; ii++) {
         let dataValue = dataCategorical.values[ii];
@@ -451,6 +456,10 @@ export function visualTransform(
           if (!additionalSettings.conditionFormatting) {
             additionalMeasure.labelFill = additionalSettings.unmatchedColor;
           }
+          additionalMeasure.selectionId = host
+            .createSelectionIdBuilder()
+            .withCategory(category, ii)
+            .createSelectionId();
 
           if (additionalSettings.conditionFormatting) {
             let color1, color2, color3: string;
@@ -663,6 +672,22 @@ export function visualTransform(
           }
 
           dataGroup.additionalMeasures.push(additionalMeasure);
+        }
+        if (dataValue.source.roles["tooltips"]) {
+          dataGroup.tooltipValues.push({
+            displayName: dataValue.source.displayName,
+            dataLabel: prepareMeasureText(
+              value,
+              getValueType(valueType),
+              dataValue.source.format,
+              1,
+              0,
+              false,
+              false,
+              "",
+              "ru-RU"
+            ),
+          });
         }
       }
       dataGroups.push(dataGroup);
