@@ -309,6 +309,24 @@
                         }
                     }
                 },
+                "position": {
+                    "displayName": "Position",
+                    "displayNameKey": "position",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Top center",
+                                "displayNameKey": "topCenter",
+                                "value": "topCenter"
+                            },
+                            {
+                                "displayName": "Above main measure",
+                                "displayNameKey": "aboveMainMeasure",
+                                "value": "aboveMainMeasure"
+                            }
+                        ]
+                    }
+                },
                 "paddingTop": {
                     "displayName": "Padding top",
                     "displayNameKey": "paddngTop",
@@ -474,6 +492,12 @@
             "displayName": "Card",
             "displayNameKey": "card",
             "properties": {
+                "show": {
+                    "displayName": "Show Category Label",
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "backFill": {
                     "displayName": "Background color",
                     "type": {
@@ -484,6 +508,13 @@
                                 }
                             }
                         }
+                    }
+                },
+                "transparency": {
+                    "displayName": "Transparency",
+                    "displayNameKey": "transparency",
+                    "type": {
+                        "numeric": true
                     }
                 },
                 "borderShow": {
@@ -875,6 +906,156 @@
                     "displayNameKey": "blankAndNaNReplaceText",
                     "type": {
                         "text": true
+                    }
+                }
+            }
+        },
+        "additionalCategory": {
+            "displayName": "Additional categories",
+            "properties": {
+                "fontFamily": {
+                    "displayName": "Font family",
+                    "displayNameKey": "fontFamily",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "DIN",
+                                "value": "wf_standard-font, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "\"Arial Black\""
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "\"Arial Unicode MS\""
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "\"Cambria Math\""
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "\"Comic Sans MS\""
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "\"Courier New\""
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "\"Lucida Sans Unicode\""
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "\"Times New Roman\""
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "\"Trebuchet MS\""
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
+                    }
+                },
+                "wordWrap": {
+                    "displayName": "Word wrap",
+                    "displayNameKey": "wordWrap",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "textSize": {
+                    "displayName": "Text Size",
+                    "displayNameKey": "textSize",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "isItalic": {
+                    "displayName": "Italic",
+                    "displayNameKey": "italic",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isBold": {
+                    "displayName": "Bold",
+                    "displayNameKey": "bold",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "color": {
+                    "displayName": "Font color",
+                    "displayNameKey": "color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
                 }
             }

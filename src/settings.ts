@@ -60,6 +60,16 @@ export class AdditionalItem {
   public assignColor3: string = "#333333";
   public invertVarianceForColor: boolean = false;
 }
+
+export class AdditionalCategory {
+  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
+  public wordWrap: boolean = false;
+  public textSize: number = 8;
+  public isItalic: boolean = false;
+  public isBold: boolean = false;
+  public color: string = "#333333";
+}
+
 export class Multiple {
   public cardsPerRow: number = 5;
   public cardsMargin: number = 15;
@@ -68,10 +78,12 @@ export class Multiple {
 
 export class Card {
   public backFill: string = null;
+  public transparency: number = 1;
   public borderShow: boolean = false;
   public borderFill: string = "#000000";
   public borderType: string = "solid";
   public borderWeight: number = 1;
+  public show: boolean = false;
 }
 export class DataLabel {
   public color: string = "#333333";
@@ -104,6 +116,7 @@ export class Additional {
 
 export class CategoryLabel {
   public show: boolean = true;
+  public position: string = "topCenter";
   public horizontalAlignment: string = "center";
   public paddingTop: number = 0;
   public paddingSide: number = 0;
@@ -122,4 +135,5 @@ export class CardSettings extends DataViewObjectsParser {
   public additionalItems: AdditionalItem[] = [];
   public dataLabel: DataLabel = new DataLabel();
   public categoryLabel: CategoryLabel = new CategoryLabel();
+  public additionalCategory: AdditionalCategory = new AdditionalCategory();
 }

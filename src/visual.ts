@@ -86,6 +86,7 @@ export class CardKPI implements IVisual {
             show: model.settings.categoryLabel.show,
             horizontalAlignment:
               model.settings.categoryLabel.horizontalAlignment,
+            position: model.settings.categoryLabel.position,
             paddingTop: model.settings.categoryLabel.paddingTop,
             paddingSide: model.settings.categoryLabel.paddingSide,
             color: model.settings.categoryLabel.color,
@@ -166,7 +167,9 @@ export class CardKPI implements IVisual {
         objectEnumeration.push({
           objectName: objectName,
           properties: {
+            show: model.settings.card.show,
             backFill: model.settings.card.backFill,
+            transparency: model.settings.card.transparency,
             borderShow: model.settings.card.borderShow,
           },
           propertyInstanceKind: {
@@ -231,8 +234,6 @@ export class CardKPI implements IVisual {
         break;
 
       case "additional":
-        console.log(model.settings.additional);
-        
         model.settings.additionalItems.length > 0 &&
           enumerationObject.instances.push({
             objectName,
@@ -341,6 +342,27 @@ export class CardKPI implements IVisual {
           });
         }
         return enumerationObject;
+
+      case "additionalCategory":
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            wordWrap: model.settings.additionalCategory.wordWrap,
+            textSize: model.settings.additionalCategory.textSize,
+            color: model.settings.additionalCategory.color,
+            fontFamily: model.settings.additionalCategory.fontFamily,
+            isItalic: model.settings.additionalCategory.isItalic,
+            isBold: model.settings.additionalCategory.isBold,
+          },
+          propertyInstanceKind: {
+            color: VisualEnumerationInstanceKinds.ConstantOrRule,
+          },
+          altConstantValueSelector: null,
+          selector: dataViewWildcard.createDataViewWildcardSelector(
+            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+          ),
+        });
+        break;
 
       case "additionalMeasureColors":
         for (let i = 0; i < model.settings.additionalItems.length; i++) {

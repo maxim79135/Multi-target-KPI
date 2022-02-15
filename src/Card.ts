@@ -107,7 +107,8 @@ export class Card {
     this.cardViewport = {
       width: Math.floor(
         (viewport.width -
-          (this.cardMargin.left + this.cardMargin.right) * this.cardsPerRow) /
+          (this.cardMargin.left + this.cardMargin.right) *
+            (this.cardsPerRow - 1)) /
           this.cardsPerRow
       ),
       height: Math.floor(
@@ -125,26 +126,33 @@ export class Card {
     this.svg = [];
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
+      let marginRight =
+        i < this.model.dataGroups.length - 1 ? this.cardMargin.right : 0;
       let cardContainer = this.cardsContainer
         .append("div")
         .classed(CardClassNames.CardContainer + i, true)
         .style("margin-left", this.cardMargin.left + "px")
-        .style("margin-right", this.cardMargin.right + "px")
+        .style("margin-right", marginRight + "px")
         .style("margin-top", this.cardMargin.top + "px")
         .style("margin-bottom", this.cardMargin.bottom + "px")
         .style("width", this.cardViewport.width + "px")
-        .style("height", this.cardViewport.height + "px")
-        .style("background", this.model.settings.card.backFill)
-        .style(
-          "border",
-          this.model.settings.card.borderShow
-            ? this.model.settings.card.borderWeight +
-                "px " +
-                this.model.settings.card.borderType +
-                " " +
-                this.model.settings.card.borderFill
-            : ""
-        );
+        .style("height", this.cardViewport.height + "px");
+      if (this.model.settings.card.show) {
+        let backgroundColor = d3.color(this.model.settings.card.backFill);
+        backgroundColor.opacity = this.model.settings.card.transparency / 100;
+        cardContainer
+          .style("background-color", backgroundColor.formatRgb())
+          .style(
+            "border",
+            this.model.settings.card.borderShow
+              ? this.model.settings.card.borderWeight +
+                  "px " +
+                  this.model.settings.card.borderType +
+                  " " +
+                  this.model.settings.card.borderFill
+              : ""
+          );
+      }
       this.cards.push(cardContainer);
       this.svg.push(
         cardContainer
@@ -195,7 +203,12 @@ export class Card {
 
     this.tooltipServiceWrapper.addTooltip(
       cardSelectionMerged.select(".additional-measure-container"),
-      (datapoint: IDataGroup) => this.getTooltipData(datapoint, "additional")
+      (datapoint: IDataGroup) => this.getTooltipData(datapoint, "additional"),
+      (datapoint: IDataGroup) => {
+        // console.log(datapoint.additionalMeasures[1].selectionId);
+
+        return datapoint.additionalMeasures[0].selectionId;
+      }
     );
 
     this.tooltipServiceWrapper.addTooltip(
@@ -271,7 +284,11 @@ export class Card {
         this.model.settings.categoryLabel.paddingTop + categoryLabelSize.height;
 
       if (this.model.settings.categoryLabel.horizontalAlignment == "center") {
-        x = svgRect.width / 2;
+        if (this.model.settings.categoryLabel.position == "aboveMainMeasure") {
+          x = this.maxMainMeasureWidth / 2;
+        } else {
+          x = svgRect.width / 2;
+        }
         categoryLabel.select("text").attr("text-anchor", "middle");
       } else if (
         this.model.settings.categoryLabel.horizontalAlignment == "left"
@@ -281,7 +298,13 @@ export class Card {
       } else if (
         this.model.settings.categoryLabel.horizontalAlignment == "right"
       ) {
-        x = svgRect.width - this.model.settings.categoryLabel.paddingSide;
+        if (this.model.settings.categoryLabel.position == "aboveMainMeasure") {
+          x =
+            this.maxMainMeasureWidth -
+            this.model.settings.categoryLabel.paddingSide;
+        } else {
+          x = svgRect.width - this.model.settings.categoryLabel.paddingSide;
+        }
         categoryLabel.select("text").attr("text-anchor", "end");
       }
 
@@ -374,11 +397,8 @@ export class Card {
       let additionalMeasureContainer = this.additionalMeasureContainers[i];
       let minYPos = Math.min.apply(
         Math,
-        additionalMeasureContainer.map((v, k) =>
-          Math.abs(
-            this.getSVGRect(svg).y -
-              this.getSVGRect(additionalMeasureContainer[k]).top
-          )
+        additionalMeasureContainer.map((v) =>
+          Math.abs(this.getSVGRect(svg).y - this.getSVGRect(v).top)
         )
       );
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
@@ -387,7 +407,7 @@ export class Card {
           .classed(CardClassNames.AdditionalCategoryLabel + i + j, true);
         additionalCategoryLabel.append("text");
         let textProperties = this.getTextProperties(
-          this.model.settings.additionalItems[j]
+          this.model.settings.additionalCategory
         );
         textProperties.text = v.displayName;
         if (this.model.settings.additional.layoutType == "horizontal") {
@@ -422,10 +442,10 @@ export class Card {
 
         this.updateLabelStyles(
           additionalCategoryLabel,
-          this.model.settings.additionalItems[j]
+          this.model.settings.additionalCategory
         );
 
-        if (this.model.settings.additional.wordWrap) {
+        if (this.model.settings.additionalCategory.wordWrap) {
           let maxDataHeight = svgRect.height / 2;
           this.updateLabelValueWithWrapping(
             additionalCategoryLabel,
@@ -448,13 +468,13 @@ export class Card {
         let textAnchor = additionalMeasureContainer[j]
           .select("text")
           .attr("text-anchor");
-        let x, y: number;
+        let x: number, y: number;
 
         if (this.model.settings.additional.layoutType == "horizontal") {
           x = Number(
             transform(additionalMeasureContainer[j].attr("transform")).x
           );
-          y = minYPos - 5;
+          y = minYPos - this.getLabelSize(additionalCategoryLabel).height / 2;
           additionalCategoryLabel
             .select("text")
             .style("dominant-baseline", "text-bottom");

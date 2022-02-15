@@ -671,6 +671,12 @@ export function visualTransform(
             }
           }
 
+          // add selection Id
+          additionalMeasure.selectionId = host
+            .createSelectionIdBuilder()
+            .withMeasure(Number(ii).toString())
+            .createSelectionId();
+
           dataGroup.additionalMeasures.push(additionalMeasure);
         }
         if (dataValue.source.roles["tooltips"]) {
