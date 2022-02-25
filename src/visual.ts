@@ -84,6 +84,7 @@ export class CardKPI implements IVisual {
           objectName: objectName,
           properties: {
             show: model.settings.categoryLabel.show,
+            labelAsMeasurename: model.settings.categoryLabel.labelAsMeasurename,
             horizontalAlignment:
               model.settings.categoryLabel.horizontalAlignment,
             position: model.settings.categoryLabel.position,
@@ -139,8 +140,8 @@ export class CardKPI implements IVisual {
             },
             percentageWidth: {
               numberRange: {
-                min: 30,
-                max: 70,
+                min: 10,
+                max: 90,
               },
             },
           },
@@ -246,6 +247,12 @@ export class CardKPI implements IVisual {
               wordWrap: model.settings.additional.wordWrap,
               horizontalAlignment:
                 model.settings.additional.horizontalAlignment,
+              textSize: model.settings.additional.textSize,
+              fontFamily: model.settings.additional.fontFamily,
+              isItalic: model.settings.additional.isItalic,
+              isBold: model.settings.additional.isBold,
+              backFill: model.settings.additional.backFill,
+              transparency: model.settings.additional.transparency,
               layoutType: model.settings.additional.layoutType,
             },
             validValues: {
@@ -286,6 +293,9 @@ export class CardKPI implements IVisual {
                 },
               },
             },
+            propertyInstanceKind: {
+              backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
+            },
             selector: null,
           });
         if (model.settings.additional.layoutType == "vertical")
@@ -306,40 +316,48 @@ export class CardKPI implements IVisual {
             },
             selector: null,
           });
+        enumerationObject.instances.push({
+          objectName,
+          properties: {
+            showAdditionalOptions:
+              model.settings.additional.showAdditionalOptions,
+          },
+          selector: null,
+        });
 
-        for (let i = 0; i < model.settings.additionalItems.length; i++) {
-          const displayName: string =
-            model.settings.additionalItems[i].measureDisplayName;
-          const containerIdx: number =
-            enumerationObject.containers.push({ displayName }) - 1;
-          enumerationObject.instances.push({
-            containerIdx,
-            objectName,
-
-            properties: {
-              componentType: model.settings.additionalItems[i].componentType,
-              invertVariance: model.settings.additionalItems[i].invertVariance,
-              textSize: model.settings.additionalItems[i].textSize,
-              fontFamily: model.settings.additionalItems[i].fontFamily,
-              isItalic: model.settings.additionalItems[i].isItalic,
-              isBold: model.settings.additionalItems[i].isBold,
-              displayUnit: model.settings.additionalItems[i].displayUnit,
-              decimalPlaces: model.settings.additionalItems[i].decimalPlaces,
-              suppressBlankAndNaN:
-                model.settings.additionalItems[i].suppressBlankAndNaN,
-              blankAndNaNReplaceText:
-                model.settings.additionalItems[i].blankAndNaNReplaceText,
-            },
-            validValues: {
-              decimalPlaces: {
-                numberRange: {
-                  min: 0,
-                  max: 9,
+        if (model.settings.additional.showAdditionalOptions) {
+          for (let i = 0; i < model.settings.additionalItems.length; i++) {
+            const displayName: string =
+              model.settings.additionalItems[i].measureDisplayName;
+            const containerIdx: number =
+              enumerationObject.containers.push({ displayName }) - 1;
+            enumerationObject.instances.push({
+              containerIdx,
+              objectName,
+              properties: {
+                componentType: model.settings.additionalItems[i].componentType,
+                invertVariance:
+                  model.settings.additionalItems[i].invertVariance,
+                displayUnit: model.settings.additionalItems[i].displayUnit,
+                decimalPlaces: model.settings.additionalItems[i].decimalPlaces,
+                suppressBlankAndNaN:
+                  model.settings.additionalItems[i].suppressBlankAndNaN,
+                blankAndNaNReplaceText:
+                  model.settings.additionalItems[i].blankAndNaNReplaceText,
+              },
+              validValues: {
+                decimalPlaces: {
+                  numberRange: {
+                    min: 0,
+                    max: 9,
+                  },
                 },
               },
-            },
-            selector: { metadata: model.settings.additionalItems[i].metadata },
-          });
+              selector: {
+                metadata: model.settings.additionalItems[i].metadata,
+              },
+            });
+          }
         }
         return enumerationObject;
 
@@ -370,6 +388,29 @@ export class CardKPI implements IVisual {
             model.settings.additionalItems[i].measureDisplayName;
           const containerIdx: number =
             enumerationObject.containers.push({ displayName }) - 1;
+          let componentTypeForColor =
+            model.settings.additionalItems[i].componentTypeForColor;
+          if (componentTypeForColor == "f(x)") {
+            enumerationObject.instances.push({
+              containerIdx,
+              objectName,
+              properties: {
+                unmatchedColor:
+                  model.settings.additionalItems[i].unmatchedColor,
+                conditionFormatting:
+                  model.settings.additionalItems[i].conditionFormatting,
+                componentTypeForColor:
+                  model.settings.additionalItems[i].componentTypeForColor,
+              },
+              propertyInstanceKind: {
+                unmatchedColor: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              selector: {
+                metadata: model.settings.additionalItems[i].metadata,
+              },
+            });
+            return enumerationObject;
+          }
           enumerationObject.instances.push({
             containerIdx,
             objectName,

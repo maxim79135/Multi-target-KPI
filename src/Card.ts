@@ -14,14 +14,8 @@ import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructor
 
 import { BaseType, select, Selection } from "d3-selection";
 import powerbi from "powerbi-visuals-api";
-import { CardSettings } from "./settings";
 import { TextProperties } from "powerbi-visuals-utils-formattingutils/lib/src/interfaces";
-import {
-  ICardViewModel,
-  ILabelProperties,
-  IAdditionalMeasure,
-  IDataGroup,
-} from "./model/ViewModel";
+import { ICardViewModel, IDataGroup } from "./model/ViewModel";
 import {
   createTooltipServiceWrapper,
   ITooltipServiceWrapper,
@@ -127,7 +121,7 @@ export class Card {
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let marginRight =
-        i < this.model.dataGroups.length - 1 ? this.cardMargin.right : 0;
+        (i + 1) % this.cardsPerRow == 0 && i != 0 ? 0 : this.cardMargin.right;
       let cardContainer = this.cardsContainer
         .append("div")
         .classed(CardClassNames.CardContainer + i, true)
@@ -139,7 +133,8 @@ export class Card {
         .style("height", this.cardViewport.height + "px");
       if (this.model.settings.card.show) {
         let backgroundColor = d3.color(this.model.settings.card.backFill);
-        backgroundColor.opacity = this.model.settings.card.transparency / 100;
+        backgroundColor.opacity =
+          1 - this.model.settings.card.transparency / 100;
         cardContainer
           .style("background-color", backgroundColor.formatRgb())
           .style(
@@ -278,7 +273,7 @@ export class Card {
         );
         this.updateLabelValueWithoutWrapping(categoryLabel, categoryValue);
       }
-      let categoryLabelSize = this.getLabelSize(categoryLabel);
+      let categoryLabelSize = this.getSVGRect(categoryLabel);
       let x: number;
       let y: number =
         this.model.settings.categoryLabel.paddingTop + categoryLabelSize.height;
@@ -332,7 +327,7 @@ export class Card {
         this.maxMainMeasureWidth
       );
       this.updateLabelValueWithoutWrapping(dataLabel, categoryValue);
-      let dataLabelSize = this.getLabelSize(dataLabel);
+      let dataLabelSize = this.getSVGRect(dataLabel);
 
       let x: number, y: number;
 
@@ -343,37 +338,33 @@ export class Card {
         this.maxMainMeasureWidth = svgRect.width;
       if (this.model.settings.dataLabel.horizontalAlignment == "center") {
         x = this.maxMainMeasureWidth / 2;
-        dataLabel.select("text").attr("text-anchor", "middle");
       } else if (this.model.settings.dataLabel.horizontalAlignment == "left") {
         x = dataLabelSize.width / 2;
-        dataLabel.select("text").attr("text-anchor", "start");
       } else if (this.model.settings.dataLabel.horizontalAlignment == "right") {
         x = this.maxMainMeasureWidth - dataLabelSize.width / 2;
-        dataLabel.select("text").attr("text-anchor", "end");
       }
 
       if (this.categoryLabels.length == 0) {
         y = svgRect.height / 2;
       } else {
-        let categoryLabelSize = this.getLabelSize(this.categoryLabels[i]);
-        let startYPos =
-          this.model.settings.categoryLabel.paddingTop +
-          categoryLabelSize.height +
-          (svgRect.height -
-            this.model.settings.categoryLabel.paddingTop -
-            categoryLabelSize.height) /
-            2;
+        let categoryLabelSize = this.getSVGRect(this.categoryLabels[i]);
         if (this.model.settings.dataLabel.verticalAlignment == "middle") {
-          y = startYPos;
-          dataLabel.select("text").style("dominant-baseline", "middle");
+          y =
+            this.model.settings.categoryLabel.paddingTop +
+            categoryLabelSize.height +
+            (svgRect.height -
+              this.model.settings.categoryLabel.paddingTop -
+              categoryLabelSize.height) /
+              2;
         } else if (this.model.settings.dataLabel.verticalAlignment == "top") {
-          y = startYPos - dataLabelSize.height;
-          dataLabel.select("text").style("dominant-baseline", "text-top");
+          y =
+            this.model.settings.categoryLabel.paddingTop +
+            categoryLabelSize.height +
+            dataLabelSize.height / 2;
         } else if (
           this.model.settings.dataLabel.verticalAlignment == "bottom"
         ) {
           y = svgRect.height - dataLabelSize.height / 2;
-          dataLabel.select("text").style("dominant-baseline", "text-bottom");
         }
       }
 
@@ -474,7 +465,7 @@ export class Card {
           x = Number(
             transform(additionalMeasureContainer[j].attr("transform")).x
           );
-          y = minYPos - this.getLabelSize(additionalCategoryLabel).height / 2;
+          y = minYPos - this.getSVGRect(additionalCategoryLabel).height / 2;
           additionalCategoryLabel
             .select("text")
             .style("dominant-baseline", "text-bottom");
@@ -538,6 +529,11 @@ export class Card {
       let additionalMeasureContainter = svg
         .append("g")
         .classed(CardClassNames.AdditionalMeasureContainer + i, true);
+
+      // background color
+      let backgroundColor = d3.color(this.model.settings.additional.backFill);
+      backgroundColor.opacity =
+        1 - this.model.settings.additional.transparency / 100;
       let additionalMeasureLabels = [];
 
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
@@ -613,10 +609,10 @@ export class Card {
           }
         }
         this.updateLabelStyles(additionalMeasureLabel, {
-          fontFamily: this.model.settings.additionalItems[j].fontFamily,
-          textSize: this.model.settings.additionalItems[j].textSize,
-          isItalic: this.model.settings.additionalItems[j].isItalic,
-          isBold: this.model.settings.additionalItems[j].isBold,
+          fontFamily: this.model.settings.additional.fontFamily,
+          textSize: this.model.settings.additional.textSize,
+          isItalic: this.model.settings.additional.isItalic,
+          isBold: this.model.settings.additional.isBold,
           color: this.model.dataGroups[i].additionalMeasures[j].labelFill,
         });
         let measureValue = TextMeasurementService.getTailoredTextOrDefault(
@@ -793,26 +789,6 @@ export class Card {
       return true;
     } else {
       return false;
-    }
-  }
-
-  private getLabelSize(
-    labelGroup: Selection<BaseType, any, any, any>
-  ): SVGRect {
-    if (this.elementExist(labelGroup)) {
-      return <SVGRect>(<any>labelGroup.node()).getBBox();
-    } else {
-      return {
-        width: 0,
-        height: 0,
-        x: 0,
-        y: 0,
-        bottom: 0,
-        top: 0,
-        left: 0,
-        right: 0,
-        toJSON: null,
-      };
     }
   }
 

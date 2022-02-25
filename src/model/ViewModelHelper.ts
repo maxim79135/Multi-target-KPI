@@ -66,22 +66,6 @@ function getAdditionalSettings(
         additionalSetting.componentType
       )
     );
-    additionalSetting.textSize = <number>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "textSize",
-        additionalSetting.textSize
-      )
-    );
-    additionalSetting.fontFamily = <string>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "fontFamily",
-        additionalSetting.fontFamily
-      )
-    );
     additionalSetting.displayUnit = <number>(
       getValue(
         value.source.objects,
@@ -120,22 +104,6 @@ function getAdditionalSettings(
         "additional",
         "blankAndNaNReplaceText",
         additionalSetting.blankAndNaNReplaceText
-      )
-    );
-    additionalSetting.isBold = <boolean>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "isBold",
-        additionalSetting.isBold
-      )
-    );
-    additionalSetting.isItalic = <boolean>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "isItalic",
-        additionalSetting.isItalic
       )
     );
     additionalSetting.componentTypeForColor = <string>(
@@ -409,9 +377,17 @@ export function visualTransform(
         let value: any = dataValue.values[i];
         let valueType = dataValue.source.type;
         if (dataValue.source.roles["Main Measure"]) {
-          dataGroup.displayName = category
-            ? categories[i].toString()
-            : dataValue.source.displayName;
+          if (categories[i]) {
+            if (settings.categoryLabel.labelAsMeasurename) {
+              dataGroup.displayName = dataValue.source.displayName;
+            } else {
+              dataGroup.displayName = category
+                ? categories[i].toString()
+                : dataValue.source.displayName;
+            }
+          } else {
+            dataGroup.displayName = "";
+          }
           dataGroup.mainMeasureValue =
             valueType.numeric || valueType.integer ? value : null;
           dataGroup.mainMeasureDataLabel = prepareMeasureText(
@@ -456,14 +432,13 @@ export function visualTransform(
           if (!additionalSettings.conditionFormatting) {
             additionalMeasure.labelFill = additionalSettings.unmatchedColor;
           }
-          additionalMeasure.selectionId = host
-            .createSelectionIdBuilder()
-            .withCategory(category, ii)
-            .createSelectionId();
 
           if (additionalSettings.conditionFormatting) {
             let color1, color2, color3: string;
             switch (additionalSettings.componentTypeForColor) {
+              case "f(x)":
+                additionalMeasure.labelFill = additionalSettings.unmatchedColor;
+                break;
               case "measure":
                 color1 = updateAdditionalMeasureColor(
                   additionalSettings,

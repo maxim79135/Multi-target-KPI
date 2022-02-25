@@ -39,9 +39,6 @@
                     },
                     "additional": {
                         "max": 3
-                    },
-                    "tooltips": {
-                        "max": 3
                     }
                 }
             ],
@@ -296,6 +293,13 @@
             "properties": {
                 "show": {
                     "displayName": "Show Category Label",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "labelAsMeasurename": {
+                    "displayName": "Show measure name instead of category",
+                    "displayNameKey": "labelAsMeasurename",
                     "type": {
                         "bool": true
                     }
@@ -820,6 +824,13 @@
                         ]
                     }
                 },
+                "showAdditionalOptions": {
+                    "displayName": "Show additional options",
+                    "displayNameKey": "showAdditionalOptions",
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "componentType": {
                     "displayName": "Component type",
                     "displayNameKey": "componentType",
@@ -876,6 +887,25 @@
                     "displayNameKey": "bold",
                     "type": {
                         "bool": true
+                    }
+                },
+                "backFill": {
+                    "displayName": "Background color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": {
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "transparency": {
+                    "displayName": "Transparency",
+                    "displayNameKey": "transparency",
+                    "type": {
+                        "numeric": true
                     }
                 },
                 "displayUnit": {
@@ -1088,6 +1118,11 @@
                                 "displayName": "Percentage change over Main Measure",
                                 "displayNameKey": "percentageChangeOver",
                                 "value": "percentageChangeOver"
+                            },
+                            {
+                                "displayName": "F(x)",
+                                "displayNameKey": "fx",
+                                "value": "f(x)"
                             }
                         ]
                     }

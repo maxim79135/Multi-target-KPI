@@ -34,10 +34,6 @@ export class AdditionalItem {
   public measureDisplayName: string;
   public metadata: string;
   public componentType: string = "measure";
-  public textSize: number = 8;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
   public displayUnit: number = 0;
   public decimalPlaces: number = 0;
   public suppressBlankAndNaN: boolean = false;
@@ -78,7 +74,7 @@ export class Multiple {
 
 export class Card {
   public backFill: string = null;
-  public transparency: number = 1;
+  public transparency: number = 0;
   public borderShow: boolean = false;
   public borderFill: string = "#000000";
   public borderType: string = "solid";
@@ -107,16 +103,26 @@ export class Additional {
   public paddingRight: number = 0;
   public wordWrap: boolean = false;
   public horizontalAlignment: string = "center";
-  public layoutType: string = "horizontal";
+  public layoutType: string = "vertical";
   public verticalTextAnchor: string = "middle";
   public textAnchor: string = "right";
   public marginOfMeasure: number = 5;
   public percentageWidth: number = 50;
+  public showAdditionalOptions: boolean = false;
+  public backFill: string = null;
+  public transparency: number = 0;
+
+  // text formatting
+  public textSize: number = 8;
+  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
+  public isItalic: boolean = false;
+  public isBold: boolean = false;
 }
 
 export class CategoryLabel {
   public show: boolean = true;
-  public position: string = "topCenter";
+  public labelAsMeasurename: boolean = false;
+  public position: string = "aboveMainMeasure";
   public horizontalAlignment: string = "center";
   public paddingTop: number = 0;
   public paddingSide: number = 0;
