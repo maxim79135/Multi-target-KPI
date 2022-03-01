@@ -180,7 +180,7 @@ export class Card {
     if (
       this.model.dataGroups.length > 0 &&
       this.model.dataGroups[0].additionalMeasures.length > 0
-    ) {
+    ) {      
       this.createAdditionalMeasureLabel();
       this.createAdditionalCategoryLabel();
     }
@@ -279,7 +279,7 @@ export class Card {
         this.model.settings.categoryLabel.paddingTop + categoryLabelSize.height;
 
       if (this.model.settings.categoryLabel.horizontalAlignment == "center") {
-        if (this.model.settings.categoryLabel.position == "aboveMainMeasure") {
+        if (this.model.settings.categoryLabel.position == "aboveMainMeasure" && this.model.dataGroups[i].additionalMeasures.length > 0) {
           x = this.maxMainMeasureWidth / 2;
         } else {
           x = svgRect.width / 2;
@@ -293,7 +293,7 @@ export class Card {
       } else if (
         this.model.settings.categoryLabel.horizontalAlignment == "right"
       ) {
-        if (this.model.settings.categoryLabel.position == "aboveMainMeasure") {
+        if (this.model.settings.categoryLabel.position == "aboveMainMeasure" && this.model.dataGroups[i].additionalMeasures.length > 0) {
           x =
             this.maxMainMeasureWidth -
             this.model.settings.categoryLabel.paddingSide;
@@ -309,6 +309,8 @@ export class Card {
   }
 
   private createDataLabel() {
+    console.log(this.model.dataGroups);
+    
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
       let dataLabel = svg
@@ -531,9 +533,9 @@ export class Card {
         .classed(CardClassNames.AdditionalMeasureContainer + i, true);
 
       // background color
-      let backgroundColor = d3.color(this.model.settings.additional.backFill);
-      backgroundColor.opacity =
-        1 - this.model.settings.additional.transparency / 100;
+      // let backgroundColor = d3.color(this.model.settings.additional.backFill);
+      // backgroundColor.opacity =
+      //   1 - this.model.settings.additional.transparency / 100;
       let additionalMeasureLabels = [];
 
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {

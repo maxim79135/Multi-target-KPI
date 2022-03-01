@@ -386,7 +386,8 @@ export function visualTransform(
                 : dataValue.source.displayName;
             }
           } else {
-            dataGroup.displayName = "";
+            if (category) dataGroup.displayName = "";
+            else dataGroup.displayName = dataValue.source.displayName;
           }
           dataGroup.mainMeasureValue =
             valueType.numeric || valueType.integer ? value : null;

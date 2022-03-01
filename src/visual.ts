@@ -251,8 +251,8 @@ export class CardKPI implements IVisual {
               fontFamily: model.settings.additional.fontFamily,
               isItalic: model.settings.additional.isItalic,
               isBold: model.settings.additional.isBold,
-              backFill: model.settings.additional.backFill,
-              transparency: model.settings.additional.transparency,
+              // backFill: model.settings.additional.backFill,
+              // transparency: model.settings.additional.transparency,
               layoutType: model.settings.additional.layoutType,
             },
             validValues: {
