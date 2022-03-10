@@ -1,5 +1,5 @@
 {
-    "version": "1.0.5",
+    "version": "1.0.5.2",
     "author": {"name":"Max","email":"mdsedov@vyatsu.ru"},
     "resources": [
         {
@@ -8,7 +8,7 @@
             "file": "resources/cardKPI.pbiviz.json"
         }
     ],
-    "visual": {"name":"cardKPI","displayName":"cardKPI","guid":"cardKPI","visualClassName":"CardKPI","version":"1.0.5","description":"Card KPI","supportUrl":"asd","gitHubUrl":""},
+    "visual": {"name":"cardKPI","displayName":"cardKPI","guid":"cardKPI","visualClassName":"CardKPI","version":"1.0.5.2","description":"Card KPI","supportUrl":"asd","gitHubUrl":""},
     "metadata": {
         "pbivizjson": {
             "resourceId": "rId0"

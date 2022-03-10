@@ -646,13 +646,6 @@ export function visualTransform(
               break;
             }
           }
-
-          // add selection Id
-          additionalMeasure.selectionId = host
-            .createSelectionIdBuilder()
-            .withMeasure(Number(ii).toString())
-            .createSelectionId();
-
           dataGroup.additionalMeasures.push(additionalMeasure);
         }
         if (dataValue.source.roles["tooltips"]) {
@@ -672,6 +665,12 @@ export function visualTransform(
           });
         }
       }
+
+      // add selectionId
+      dataGroup.selectionId = host
+        .createSelectionIdBuilder()
+        .withCategory(category, i)
+        .createSelectionId();
       dataGroups.push(dataGroup);
     }
   }

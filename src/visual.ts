@@ -48,6 +48,7 @@ export class CardKPI implements IVisual {
   private card: Card;
   private host: IVisualHost;
   private model: ICardViewModel;
+  private isLandingPageOn: boolean;
 
   constructor(options: VisualConstructorOptions) {
     this.host = options.host;
@@ -61,6 +62,19 @@ export class CardKPI implements IVisual {
     this.card.createCardContainer();
     this.card.createLabels();
     this.card.createTooltip();
+    this.handleLandingPage(options);
+  }
+
+  private handleLandingPage(options: VisualUpdateOptions) {
+    if (!options.dataViews || !options.dataViews[0].categorical) {
+      if (!this.isLandingPageOn) {
+        this.isLandingPageOn = true;
+        this.card.createLandingPage();
+      }
+    } else {
+      this.isLandingPageOn = false;
+      this.card.removeLandingPage();
+    }
   }
 
   /**

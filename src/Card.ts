@@ -180,7 +180,7 @@ export class Card {
     if (
       this.model.dataGroups.length > 0 &&
       this.model.dataGroups[0].additionalMeasures.length > 0
-    ) {      
+    ) {
       this.createAdditionalMeasureLabel();
       this.createAdditionalCategoryLabel();
     }
@@ -197,19 +197,16 @@ export class Card {
       .merge(<any>cardSelection);
 
     this.tooltipServiceWrapper.addTooltip(
-      cardSelectionMerged.select(".additional-measure-container"),
+      cardSelectionMerged.select("svg"),
       (datapoint: IDataGroup) => this.getTooltipData(datapoint, "additional"),
-      (datapoint: IDataGroup) => {
-        // console.log(datapoint.additionalMeasures[1].selectionId);
-
-        return datapoint.additionalMeasures[0].selectionId;
-      }
+      (datapoint: IDataGroup) => datapoint.selectionId
     );
 
-    this.tooltipServiceWrapper.addTooltip(
-      cardSelectionMerged.select(".data"),
-      (datapoint: IDataGroup) => this.getTooltipData(datapoint, "main")
-    );
+    // this.tooltipServiceWrapper.addTooltip(
+    //   cardSelectionMerged.select(".data"),
+    //   (datapoint: IDataGroup) => this.getTooltipData(datapoint, "main"),
+    //   (datapoint: IDataGroup) => datapoint.selectionId
+    // );
   }
 
   private getTooltipData(
@@ -218,20 +215,22 @@ export class Card {
   ): VisualTooltipDataItem[] {
     let tooltipData: VisualTooltipDataItem[] = [];
 
-    if (type == "additional") {
-      let additionalMeasures = values.additionalMeasures;
-      for (let i = 0; i < additionalMeasures.length; i++) {
-        tooltipData.push({
-          displayName: additionalMeasures[i].displayName,
-          value: additionalMeasures[i].dataLabel,
-        });
-      }
-    } else if (type == "main") {
+    // } else if (type == "main") {
+    tooltipData.push({
+      displayName: values.displayName,
+      value: values.mainMeasureDataLabel,
+    });
+    // }
+
+    // if (type == "additional") {
+    let additionalMeasures = values.additionalMeasures;
+    for (let i = 0; i < additionalMeasures.length; i++) {
       tooltipData.push({
-        displayName: values.displayName,
-        value: values.mainMeasureDataLabel,
+        displayName: additionalMeasures[i].displayName,
+        value: additionalMeasures[i].dataLabel,
       });
     }
+
     for (let i = 0; i < values.tooltipValues.length; i++) {
       tooltipData.push({
         displayName: values.tooltipValues[i].displayName,
@@ -279,7 +278,10 @@ export class Card {
         this.model.settings.categoryLabel.paddingTop + categoryLabelSize.height;
 
       if (this.model.settings.categoryLabel.horizontalAlignment == "center") {
-        if (this.model.settings.categoryLabel.position == "aboveMainMeasure" && this.model.dataGroups[i].additionalMeasures.length > 0) {
+        if (
+          this.model.settings.categoryLabel.position == "aboveMainMeasure" &&
+          this.model.dataGroups[i].additionalMeasures.length > 0
+        ) {
           x = this.maxMainMeasureWidth / 2;
         } else {
           x = svgRect.width / 2;
@@ -293,7 +295,10 @@ export class Card {
       } else if (
         this.model.settings.categoryLabel.horizontalAlignment == "right"
       ) {
-        if (this.model.settings.categoryLabel.position == "aboveMainMeasure" && this.model.dataGroups[i].additionalMeasures.length > 0) {
+        if (
+          this.model.settings.categoryLabel.position == "aboveMainMeasure" &&
+          this.model.dataGroups[i].additionalMeasures.length > 0
+        ) {
           x =
             this.maxMainMeasureWidth -
             this.model.settings.categoryLabel.paddingSide;
@@ -309,8 +314,6 @@ export class Card {
   }
 
   private createDataLabel() {
-    console.log(this.model.dataGroups);
-    
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
       let dataLabel = svg
@@ -721,6 +724,29 @@ export class Card {
       });
       this.additionalMeasureContainers.push(additionalMeasureLabels);
     }
+  }
+
+  public createLandingPage() {
+    this.cardsContainer.style("width", "100%").style("height", "100%");
+    let landingPage = this.cardsContainer
+      .append("div")
+      .classed("landingPage", true)
+      .style("width", "100%")
+      .style("height", "100%");
+    let svg = landingPage
+      .append("svg")
+      .style("width", "100%")
+      .style("height", "100%");
+    svg
+      .append("circle")
+      .attr("cx", 100)
+      .attr("cy", 200)
+      .attr("r", 50)
+      .style("fill", "red");
+  }
+
+  public removeLandingPage() {
+    this.cardsContainer.selectAll(".landingPage").remove();
   }
 
   private getTextProperties(properties): TextProperties {

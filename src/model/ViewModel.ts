@@ -36,8 +36,8 @@ export interface IAdditionalMeasure {
   calculatedValue?: number;
   dataLabel?: string;
   labelFill?: string;
-  selectionId?: ISelectionId;
 }
+
 export interface IDataGroup {
   displayName?: string;
   mainMeasureValue?: number;
@@ -45,6 +45,7 @@ export interface IDataGroup {
   isPercentage?: boolean;
   additionalMeasures?: IAdditionalMeasure[];
   tooltipValues?: ITooltipValue[];
+  selectionId?: ISelectionId;
 }
 
 export interface ITooltipValue {
