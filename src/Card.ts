@@ -13,6 +13,7 @@ import "regenerator-runtime/runtime";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 
 import { BaseType, select, Selection } from "d3-selection";
+const getEvent = () => require("d3-selection").event;
 import powerbi from "powerbi-visuals-api";
 import { TextProperties } from "powerbi-visuals-utils-formattingutils/lib/src/interfaces";
 import { ICardViewModel, IDataGroup } from "./model/ViewModel";
@@ -21,6 +22,8 @@ import {
   ITooltipServiceWrapper,
 } from "powerbi-visuals-utils-tooltiputils";
 import VisualTooltipDataItem = powerbi.extensibility.VisualTooltipDataItem;
+import ISelectionManager = powerbi.extensibility.ISelectionManager;
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import translate = manipulation.translate;
 import transform = manipulation.parseTranslateTransform;
 
@@ -37,7 +40,9 @@ export enum CardClassNames {
 }
 
 export class Card {
+  private host: IVisualHost;
   private tooltipServiceWrapper: ITooltipServiceWrapper;
+  private selectionManager: ISelectionManager;
   private root: Selection<BaseType, any, any, any>;
   private cardsContainer: Selection<BaseType, any, any, any>;
   private cards: Selection<BaseType, any, any, any>[];
@@ -69,6 +74,7 @@ export class Card {
 
   constructor(target: VisualConstructorOptions) {
     this.root = select(target.element).classed(CardClassNames.Root, true);
+    this.host = target.host;
     this.cardsContainer = this.root
       .append("div")
       .classed(CardClassNames.CardsContainer, true);
@@ -76,6 +82,7 @@ export class Card {
       target.host.tooltipService,
       target.element
     );
+    this.selectionManager = target.host.createSelectionManager();
   }
 
   public setModel(model: ICardViewModel) {
@@ -131,6 +138,46 @@ export class Card {
         .style("margin-bottom", this.cardMargin.bottom + "px")
         .style("width", this.cardViewport.width + "px")
         .style("height", this.cardViewport.height + "px");
+      this.cardsContainer.on("contextmenu", () => {
+        const mouseEvent: MouseEvent = getEvent();
+        const eventTarget: EventTarget = mouseEvent.target;
+        let dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+
+        this.selectionManager.showContextMenu(
+          dataPoint ? dataPoint.selectionId : {},
+          {
+            x: mouseEvent.clientX,
+            y: mouseEvent.clientY,
+          }
+        );
+        mouseEvent.preventDefault();
+      });
+
+      this.cardsContainer.on("click", () => {
+        if (this.model.dataGroups.length <= 1) return;
+
+        if (this.host.hostCapabilities.allowInteractions) {
+          const mouseEvent: MouseEvent = getEvent();
+          const eventTarget: EventTarget = mouseEvent.target;
+          let dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+          if (!dataPoint) this.selectionManager.clear();
+        }
+      });
+
+      cardContainer.on("click", () => {
+        if (this.model.dataGroups.length <= 1) return;
+
+        if (this.host.hostCapabilities.allowInteractions) {
+          const mouseEvent: MouseEvent = getEvent();
+          const eventTarget: EventTarget = mouseEvent.target;
+          let dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+          const isCtrlPressed: boolean = mouseEvent.ctrlKey;
+          this.selectionManager.select(
+            dataPoint ? dataPoint.selectionId : {},
+            isCtrlPressed
+          );
+        }
+      });
       if (this.model.settings.card.show) {
         let backgroundColor = d3.color(this.model.settings.card.backFill);
         backgroundColor.opacity =
@@ -256,7 +303,7 @@ export class Card {
       textProperties.text = this.model.dataGroups[i].displayName;
       this.updateLabelStyles(categoryLabel, this.model.settings.categoryLabel);
 
-      if (this.model.settings.categoryLabel.wordWrap) {
+      if (this.model.settings.categoryLabel.wordWrap_) {
         let maxDataHeight = svgRect.height / 2;
         this.updateLabelValueWithWrapping(
           categoryLabel,
@@ -344,9 +391,12 @@ export class Card {
       if (this.model.settings.dataLabel.horizontalAlignment == "center") {
         x = this.maxMainMeasureWidth / 2;
       } else if (this.model.settings.dataLabel.horizontalAlignment == "left") {
-        x = dataLabelSize.width / 2;
+        x = dataLabelSize.width / 2 + this.model.settings.dataLabel.paddingSide;
       } else if (this.model.settings.dataLabel.horizontalAlignment == "right") {
-        x = this.maxMainMeasureWidth - dataLabelSize.width / 2;
+        x =
+          this.maxMainMeasureWidth -
+          dataLabelSize.width / 2 -
+          this.model.settings.dataLabel.paddingSide;
       }
 
       if (this.categoryLabels.length == 0) {
@@ -365,11 +415,15 @@ export class Card {
           y =
             this.model.settings.categoryLabel.paddingTop +
             categoryLabelSize.height +
-            dataLabelSize.height / 2;
+            dataLabelSize.height / 2 +
+            this.model.settings.dataLabel.paddingTop;
         } else if (
           this.model.settings.dataLabel.verticalAlignment == "bottom"
         ) {
-          y = svgRect.height - dataLabelSize.height / 2;
+          y =
+            svgRect.height -
+            dataLabelSize.height / 2 -
+            this.model.settings.dataLabel.paddingBottom;
         }
       }
 
@@ -441,7 +495,7 @@ export class Card {
           this.model.settings.additionalCategory
         );
 
-        if (this.model.settings.additionalCategory.wordWrap) {
+        if (this.model.settings.additionalCategory.wordWrap_) {
           let maxDataHeight = svgRect.height / 2;
           this.updateLabelValueWithWrapping(
             additionalCategoryLabel,
@@ -726,33 +780,162 @@ export class Card {
     }
   }
 
-  public createLandingPage() {
+  public async createLandingPage() {
+    this.removeLandingPage();
     this.cardsContainer.style("width", "100%").style("height", "100%");
     let landingPage = this.cardsContainer
       .append("div")
-      .classed("landingPage", true)
-      .style("width", "100%")
-      .style("height", "100%");
-    let svg = landingPage
-      .append("svg")
-      .style("width", "100%")
-      .style("height", "100%");
-    svg
-      .append("circle")
-      .attr("cx", 100)
-      .attr("cy", 200)
-      .attr("r", 50)
-      .style("fill", "red");
+      .classed("landing-page", true)
+      .style("overflow-x", "hidden")
+      .style("overflow-y", "auto")
+      // .style("width", "calc(100%-2rem)")
+      .style("height", this.getSVGRect(this.cardsContainer).height + "px");
+
+    // header
+    let headerContainer = landingPage
+      .append("div")
+      .classed("landing-header-container", true);
+    headerContainer
+      .append("div")
+      .classed("landing-logo-container", true)
+      .append("div")
+      .classed("landing-logo-card", true);
+
+    let headerTextContainer = headerContainer
+      .append("div")
+      .classed("landing-header-text", true);
+    headerTextContainer
+      .append("div")
+      .classed("landing-header1", true)
+      .text("Multi target KPI");
+    headerTextContainer
+      .append("div")
+      .classed("landing-header2", true)
+      .text("by Institute of Business Intelligence");
+
+    // description
+    landingPage
+      .append("div")
+      .classed("landing-description", true)
+      .html(
+        "Crisp-n-clear visualization for your KPIs! <br> \
+        We are developing dashboards for 12 years, and business customers often ask for several indicators for cards: v/s target, previous year and something else. <br> \
+        Also specific labels alignment, which is possible with separate text labels. Instead of this we developed “all-in-one” KPI card and share it with you for free."
+      );
+
+    // main
+    let mainContainer = landingPage
+      .append("div")
+      .classed("landing-main-container", true);
+    mainContainer.append("div").classed("landing-main-card", true);
+    let mainInfo = mainContainer
+      .append("div")
+      .classed("landing-main-info", true);
+    mainInfo
+      .append("div")
+      .classed("landing-main-info-header", true)
+      .text("Key features:");
+    let mainInfoDescription = mainInfo
+      .append("ul")
+      .classed("landing-main-info-description", true);
+    mainInfoDescription
+      .append("li")
+      .text("Up to 3 additional indicators in the single card");
+    mainInfoDescription.append("li").text("Category multiplies");
+    mainInfoDescription
+      .append("li")
+      .text("Pixel perfect alignment setting for non-designers");
+    mainInfoDescription.append("li").text("Built-in (blank) & NaN turn-off");
+    mainInfoDescription.append("li").text("Simple conditional formatting");
+    mainInfo
+      .append("div")
+      .classed("landing-main-info-footer", true)
+      .html(
+        "You will save your time for design and developing supplementary measures. Also you will optimize report performance: it works in a single query. <br> \
+        Start a new level of business dashboarding!"
+      );
+
+    // footer
+    landingPage.append("hr").classed("landgin-footer-hr", true);
+    let footerContainer = landingPage
+      .append("div")
+      .classed("landing-footer-container", true);
+    let footerContactsContainer = footerContainer
+      .append("div")
+      .classed("landing-footer-contacts-container", true);
+    footerContactsContainer
+      .append("div")
+      .classed("landing-footer-contact-header", true)
+      .text("Contacts");
+    let footerContactsEmailContainer = footerContactsContainer
+      .append("div")
+      .classed("landing-footer-contact-email", true);
+    footerContactsEmailContainer
+      .append("a")
+      .attr("href", "https://alexkolokolov.com/en/")
+      .attr("target", "_blank")
+      .attr("rel", "noopener noreferrer")
+      .append("div")
+      .classed("landing-footer-contact-email-icon", true);
+    let email = footerContactsEmailContainer
+      .append("div")
+      .classed("landing-footer-contact-email-text", true);
+    email.append("div").text("Alex Kolokolov");
+    email
+      .append("a")
+      .attr("href", "mailto:dashboard@alexkolokolov.com")
+      .attr("target", "_blank")
+      .append("div")
+      .classed("footer-email", true)
+      .text("Email");
+
+    // icons
+    let footerContactsIconsContainer = footerContainer
+      .append("div")
+      .classed("landing-footer-contact-icon-container", true);
+
+    let footerContactsIcon1 = footerContactsIconsContainer
+      .append("div")
+      .classed("landing-footer-contact-icon1", true);
+    footerContactsIcon1
+      .append("div")
+      .classed("landing-footer-contact-icon1-img", true);
+    footerContactsIcon1
+      .append("div")
+      .classed("landing-footer-contact-icon1-text", true)
+      .text("Go to the instructions");
+
+    let footerContactsIcon2 = footerContactsIconsContainer
+      .append("div")
+      .classed("landing-footer-contact-icon2", true);
+    footerContactsIcon2
+      .append("div")
+      .classed("landing-footer-contact-icon2-img", true);
+    footerContactsIcon2
+      .append("div")
+      .classed("landing-footer-contact-icon2-text", true)
+      .text("View the video instructions");
+
+    let footerContactsIcon3 = footerContactsIconsContainer
+      .append("div")
+      .classed("landing-footer-contact-icon3", true);
+    footerContactsIcon3
+      .append("div")
+      .classed("landing-footer-contact-icon3-img", true);
+    footerContactsIcon3
+      .append("div")
+      .classed("landing-footer-contact-icon3-text", true)
+      .text("Get templates");
   }
 
   public removeLandingPage() {
-    this.cardsContainer.selectAll(".landingPage").remove();
+    this.cardsContainer.selectAll(".landing-page").remove();
   }
 
   private getTextProperties(properties): TextProperties {
     return {
       fontFamily: properties.fontFamily,
-      fontSize: properties.textSize + "px",
+      fontSize: properties.textSize + "pt",
       fontWeight: properties.isBold ? "bold" : "normal",
       fontStyle: properties.isItalic ? "italic" : "normal",
     };
@@ -762,10 +945,14 @@ export class Card {
     label
       .select("text")
       .style("font-family", styles.fontFamily)
-      .style("font-size", styles.textSize + "px")
-      .style("font-style", styles.isItalic === true ? "italic" : "normal")
-      .style("font-weight", styles.isBold === true ? "bold" : "normal")
+      .style("font-size", styles.textSize + "pt")
       .style("fill", styles.color);
+    if (styles.isBold === true) {
+      label.style("font-weight", "bold");
+    }
+    if (styles.isItalic === true) {
+      label.style("font-style", "italic");
+    }
   }
 
   private updateLabelValueWithoutWrapping(

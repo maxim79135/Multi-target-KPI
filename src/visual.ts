@@ -37,6 +37,7 @@ import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 import VisualEnumerationInstanceKinds = powerbi.VisualEnumerationInstanceKinds;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+import IVisualEventService = powerbi.extensibility.IVisualEventService;
 import { dataViewWildcard } from "powerbi-visuals-utils-dataviewutils";
 
 import { Card } from "./Card";
@@ -49,13 +50,16 @@ export class CardKPI implements IVisual {
   private host: IVisualHost;
   private model: ICardViewModel;
   private isLandingPageOn: boolean;
+  private events: IVisualEventService;
 
   constructor(options: VisualConstructorOptions) {
     this.host = options.host;
+    this.events = options.host.eventService;
     this.card = new Card(options);
   }
 
   public update(options: VisualUpdateOptions) {
+    this.events.renderingStarted(options);
     this.model = visualTransform(options, this.host);
     this.card.setModel(this.model);
     this.card.updateViewport(options.viewport);
@@ -63,17 +67,23 @@ export class CardKPI implements IVisual {
     this.card.createLabels();
     this.card.createTooltip();
     this.handleLandingPage(options);
+    this.events.renderingFinished(options);
   }
 
   private handleLandingPage(options: VisualUpdateOptions) {
     if (!options.dataViews || !options.dataViews[0].categorical) {
-      if (!this.isLandingPageOn) {
-        this.isLandingPageOn = true;
-        this.card.createLandingPage();
-      }
+      // if (!this.isLandingPageOn) {
+      this.isLandingPageOn = true;
+      this.card.createLandingPage();
+      //   }
+      // } else {
+      //   this.isLandingPageOn = false;
+      //   this.card.removeLandingPage();
     } else {
-      this.isLandingPageOn = false;
-      this.card.removeLandingPage();
+      if (this.isLandingPageOn) {
+        this.card.removeLandingPage();
+        this.isLandingPageOn = false;
+      }
     }
   }
 
@@ -107,7 +117,7 @@ export class CardKPI implements IVisual {
             color: model.settings.categoryLabel.color,
             textSize: model.settings.categoryLabel.textSize,
             fontFamily: model.settings.categoryLabel.fontFamily,
-            wordWrap: model.settings.categoryLabel.wordWrap,
+            wordWrap_: model.settings.categoryLabel.wordWrap_,
             isItalic: model.settings.categoryLabel.isItalic,
             isBold: model.settings.categoryLabel.isBold,
           },
@@ -136,6 +146,77 @@ export class CardKPI implements IVisual {
             percentageWidth: model.settings.dataLabel.percentageWidth,
             verticalAlignment: model.settings.dataLabel.verticalAlignment,
             horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
+          },
+          validValues: {
+            percentageWidth: {
+              numberRange: {
+                min: 10,
+                max: 90,
+              },
+            },
+          },
+          selector: null,
+        });
+
+        // add dynamic paddings
+        if (model.settings.dataLabel.verticalAlignment == "top") {
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              paddingTop: model.settings.dataLabel.paddingTop,
+            },
+            validValues: {
+              paddingTop: {
+                numberRange: {
+                  min: 0,
+                  max: 15,
+                },
+              },
+            },
+            selector: null,
+          });
+        } else if (model.settings.dataLabel.verticalAlignment == "bottom") {
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              paddingBottom: model.settings.dataLabel.paddingBottom,
+            },
+            validValues: {
+              paddingBottom: {
+                numberRange: {
+                  min: 0,
+                  max: 15,
+                },
+              },
+            },
+            selector: null,
+          });
+        }
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            paddingSide: model.settings.dataLabel.paddingSide,
+          },
+          validValues: {
+            paddingSide: {
+              numberRange: {
+                min: 0,
+                max: 15,
+              },
+            },
+            paddintTop: {
+              numberRange: {
+                min: 0,
+                max: 15,
+              },
+            },
+          },
+          selector: null,
+        });
+
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
             fontFamily: model.settings.dataLabel.fontFamily,
             textSize: model.settings.dataLabel.textSize,
             color: model.settings.dataLabel.color,
@@ -149,13 +230,7 @@ export class CardKPI implements IVisual {
             decimalPlaces: {
               numberRange: {
                 min: 0,
-                max: 9,
-              },
-            },
-            percentageWidth: {
-              numberRange: {
-                min: 10,
-                max: 90,
+                max: 15,
               },
             },
           },
@@ -258,7 +333,7 @@ export class CardKPI implements IVisual {
               paddingBottom: model.settings.additional.paddingBottom,
               paddingLeft: model.settings.additional.paddingLeft,
               paddingRight: model.settings.additional.paddingRight,
-              wordWrap: model.settings.additional.wordWrap,
+              wordWrap_: model.settings.additional.wordWrap_,
               horizontalAlignment:
                 model.settings.additional.horizontalAlignment,
               textSize: model.settings.additional.textSize,
@@ -363,7 +438,7 @@ export class CardKPI implements IVisual {
                 decimalPlaces: {
                   numberRange: {
                     min: 0,
-                    max: 9,
+                    max: 15,
                   },
                 },
               },
@@ -379,7 +454,7 @@ export class CardKPI implements IVisual {
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            wordWrap: model.settings.additionalCategory.wordWrap,
+            wordWrap_: model.settings.additionalCategory.wordWrap_,
             textSize: model.settings.additionalCategory.textSize,
             color: model.settings.additionalCategory.color,
             fontFamily: model.settings.additionalCategory.fontFamily,

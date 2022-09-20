@@ -2,6 +2,7 @@
 
 import powerbi from "powerbi-visuals-api";
 import { valueFormatter } from "powerbi-visuals-utils-formattingutils";
+import ValueTypeDescriptor = powerbi.ValueTypeDescriptor;
 
 const localizedUnits = {
   "ru-RU_K": " тыс.",
@@ -22,9 +23,16 @@ function localizeUnit(value: string, unit: string, culture: string): string {
   } else return value;
 }
 
+function getValueType(valueType: ValueTypeDescriptor): string {
+  let result: string = "";
+  if (valueType.numeric || valueType.integer) result = "numeric";
+  if (valueType.dateTime) result = "dateTime";
+  return result;
+}
+
 export function prepareMeasureText(
   value: any,
-  valueType: string,
+  valueType: ValueTypeDescriptor,
   format: string,
   displayUnit: number,
   precision: number,
@@ -36,7 +44,7 @@ export function prepareMeasureText(
   let valueFormatted: string = "";
   if (suppressBlankAndNaN) valueFormatted = blankAndNaNReplaceText;
   if (!(suppressBlankAndNaN && value == null)) {
-    if ((valueType = "numeric")) {
+    if (getValueType(valueType) == "numeric") {
       if (!(isNaN(value as number) && suppressBlankAndNaN)) {
         valueFormatted = formatMeasure(value as number, {
           format: format,
@@ -54,9 +62,15 @@ export function prepareMeasureText(
         if (addPlusforPositiveValue && (value as number) > 0)
           valueFormatted = "+" + valueFormatted;
       }
+      if (value == null && valueType["primitiveType"] == 3) {
+        if (culture == "en-US") valueFormatted = "Infinity";
+        else if (culture == "ru-RU") valueFormatted = "Бесконечность";
+      }
     } else {
       valueFormatted = formatMeasure(
-        (valueType = "dateTime" ? new Date(value as string) : value),
+        getValueType(valueType) == "dateTime"
+          ? new Date(value as string)
+          : value,
         {
           format: format,
           cultureSelector: culture,
@@ -64,5 +78,9 @@ export function prepareMeasureText(
       );
     }
   }
+
+  if (valueFormatted == "(Blank)" && culture == "ru-RU")
+    valueFormatted = "(Пусто)";
+
   return valueFormatted;
 }

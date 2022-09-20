@@ -1,14 +1,14 @@
 {
-    "version": "1.0.5.2",
-    "author": {"name":"Max","email":"mdsedov@vyatsu.ru"},
+    "version": "1.1.0.2",
+    "author": {"name":"Maxim Sedov","email":"maxim79135@gmail.com"},
     "resources": [
         {
             "resourceId": "rId0",
             "sourceType": 5,
-            "file": "resources/cardKPI.pbiviz.json"
+            "file": "resources/Multi_target_KPI_dev.pbiviz.json"
         }
     ],
-    "visual": {"name":"cardKPI","displayName":"cardKPI","guid":"cardKPI","visualClassName":"CardKPI","version":"1.0.5.2","description":"Card KPI","supportUrl":"asd","gitHubUrl":""},
+    "visual": {"name":"Multi target KPI_dev","displayName":"Multi target KPI","guid":"Multi_target_KPI_dev","visualClassName":"CardKPI","version":"1.1.0.2","description":"This card is designed to display the main indicator with several deviation indicators with advanced color formatting settings.","supportUrl":"asd","gitHubUrl":""},
     "metadata": {
         "pbivizjson": {
             "resourceId": "rId0"

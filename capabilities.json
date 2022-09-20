@@ -2,24 +2,28 @@
     "dataRoles": [
         {
             "displayName": "Main measure",
+            "description": "(Required). Set the measure display in the field. You can only add one value.",
             "displayNameKey": "mainMeasure",
             "name": "Main Measure",
             "kind": "Measure"
         },
         {
             "displayName": "Category",
+            "description": "You can set a field that will split the card and all values (main measure, additional and hint values) into several. Keep in mind that if some values cannot be divided into categories, then the same value will be output for all cards.",
             "displayNameKey": "category",
             "name": "category",
             "kind": "Grouping"
         },
         {
             "displayName": "Additional measures",
+            "description": "Add additional measures for which you can configure conditional color formatting. These can be indicators of deviations. You can add no more than 3 measures.",
             "displayNameKey": "additionalMeasures",
             "name": "additional",
             "kind": "Measure"
         },
         {
             "displayName": "Tooltips",
+            "description": "Add additional measures that will be included in the tooltip of the card.",
             "displayNameKey": "tooltips",
             "name": "tooltips",
             "kind": "Measure"
@@ -40,15 +44,23 @@
                     "additional": {
                         "max": 3
                     }
+                },
+                {
+                    "Main Measure": {
+                        "min": 1
+                    },
+                    "category": {
+                        "max": 0
+                    },
+                    "additional": {
+                        "max": 0
+                    }
                 }
             ],
             "categorical": {
                 "categories": {
                     "for": {
                         "in": "category"
-                    },
-                    "dataReductionAlgorithm": {
-                        "top": {}
                     }
                 },
                 "values": {
@@ -74,19 +86,54 @@
         }
     ],
     "objects": {
+        "general": {
+            "properties": {
+                "formatString": {
+                    "type": {
+                        "formatting": {
+                            "formatString": true
+                        }
+                    }
+                }
+            }
+        },
         "dataLabel": {
             "displayName": "Main data label",
             "displayNameKey": "maindatalabel",
             "properties": {
                 "percentageWidth": {
                     "displayName": "Percentage width",
+                    "description": "The percentage width allows you to adjust the proportion of width occupied by the main measure. Takes a value from 10 to 90.",
                     "displayNameKey": "percentageWidth",
                     "type": {
                         "numeric": true
                     }
                 },
+                "paddingTop": {
+                    "displayName": "Padding top",
+                    "displayNameKey": "paddingTop",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "paddingBottom": {
+                    "displayName": "Padding bottom",
+                    "displayNameKey": "paddingBottom",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "paddingSide": {
+                    "displayName": "Padding side",
+                    "description": "Set the value from 0 to 15 to adjust the offset of the main measurement value from the left or right edge of the card border.",
+                    "displayNameKey": "paddingSide",
+                    "type": {
+                        "integer": true
+                    }
+                },
                 "verticalAlignment": {
                     "displayName": "Vertical alignment",
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
                     "displayNameKey": "verticalAlignment",
                     "type": {
                         "enumeration": [
@@ -110,6 +157,7 @@
                 },
                 "horizontalAlignment": {
                     "displayName": "Horizontal alignment",
+                    "description": "Set 1 of 3 alignment types for the value of the main measure: left, center, right.",
                     "displayNameKey": "alignment",
                     "type": {
                         "formatting": {
@@ -119,6 +167,7 @@
                 },
                 "color": {
                     "displayName": "Color",
+                    "description": "The default color of the main measure value. If you use conditional formatting and none of the conditions are met, then this color will be visible.",
                     "displayNameKey": "fontColor",
                     "type": {
                         "fill": {
@@ -130,6 +179,7 @@
                 },
                 "displayUnit": {
                     "displayName": "Display Unit",
+                    "description": "Specify display unit.",
                     "displayNameKey": "displayUnit",
                     "type": {
                         "formatting": {
@@ -139,6 +189,7 @@
                 },
                 "decimalPlaces": {
                     "displayName": "Decimal places",
+                    "description": "Specify decimal places for decimal number.",
                     "displayNameKey": "precision",
                     "type": {
                         "integer": true
@@ -146,6 +197,7 @@
                 },
                 "textSize": {
                     "displayName": "Text Size",
+                    "description": "Specify the font size for the main measure value.",
                     "displayNameKey": "textSize",
                     "type": {
                         "formatting": {
@@ -155,14 +207,107 @@
                 },
                 "fontFamily": {
                     "displayName": "Font family",
+                    "description": "Specify the font family for the main measure value.",
                     "type": {
-                        "formatting": {
-                            "fontFamily": true
-                        }
+                        "enumeration": [
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "segoe_bold"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "segoe_light"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
                     }
                 },
                 "isItalic": {
                     "displayName": "Italic",
+                    "description": "Make main data label italic.",
                     "displayNameKey": "italic",
                     "type": {
                         "bool": true
@@ -170,6 +315,7 @@
                 },
                 "isBold": {
                     "displayName": "Bold",
+                    "description": "Make main data label italic.",
                     "displayNameKey": "bold",
                     "type": {
                         "bool": true
@@ -177,6 +323,7 @@
                 },
                 "suppressBlankAndNaN": {
                     "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "description": "Include this field if you want to replace the value of the main measure with another text in the case of Blank or NaN.",
                     "displayNameKey": "suppressBlankAndNaN",
                     "type": {
                         "bool": true
@@ -184,6 +331,7 @@
                 },
                 "blankAndNaNReplaceText": {
                     "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "description": "Specify the text or symbol to replace the Blank or NaN values. It can be a value of 0, — or a warning symbol.",
                     "displayNameKey": "blankAndNaNReplaceText",
                     "type": {
                         "text": true
@@ -203,6 +351,7 @@
                 },
                 "labelAsMeasurename": {
                     "displayName": "Show measure name instead of category",
+                    "description": "If you need to replace the category names with the name of the main measure, then enable this field. For example, when categories need to be spelled out in separate text.",
                     "displayNameKey": "labelAsMeasurename",
                     "type": {
                         "bool": true
@@ -210,6 +359,7 @@
                 },
                 "horizontalAlignment": {
                     "displayName": "Alignment",
+                    "description": "Set 1 of 3 alignment types for the name of the main measure or category if it is used: left, center, right.",
                     "displayNameKey": "alignment",
                     "type": {
                         "formatting": {
@@ -219,6 +369,7 @@
                 },
                 "position": {
                     "displayName": "Position",
+                    "description": "Set up a constraint for alignment: the name of the main measure or category will be in the area of the main measure section or across the entire width of the card.",
                     "displayNameKey": "position",
                     "type": {
                         "enumeration": [
@@ -237,6 +388,7 @@
                 },
                 "paddingTop": {
                     "displayName": "Padding top",
+                    "description": "Set the value from 0 to 15 to adjust the offset of the measure or category name from the upper edge of the card border.",
                     "displayNameKey": "paddngTop",
                     "type": {
                         "integer": true
@@ -244,6 +396,7 @@
                 },
                 "paddingSide": {
                     "displayName": "Padding side",
+                    "description": "Set the value from 0 to 15 to adjust the offset of the main measurement value from the left or right edge of the card border.",
                     "displayNameKey": "paddingSide",
                     "type": {
                         "integer": true
@@ -251,6 +404,7 @@
                 },
                 "color": {
                     "displayName": "Color",
+                    "description": "Choose a color for the text of the name of the main measure or categories.",
                     "displayNameKey": "fontColor",
                     "type": {
                         "fill": {
@@ -262,6 +416,7 @@
                 },
                 "textSize": {
                     "displayName": "Text Size",
+                    "description": "Specify the font size for the name of the measure or category.",
                     "displayNameKey": "textSize",
                     "type": {
                         "formatting": {
@@ -271,14 +426,107 @@
                 },
                 "fontFamily": {
                     "displayName": "Font family",
+                    "description": "Specify the font family for the name of the measure or category.",
                     "type": {
-                        "formatting": {
-                            "fontFamily": true
-                        }
+                        "enumeration": [
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "segoe_bold"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "segoe_light"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
                     }
                 },
-                "wordWrap": {
+                "wordWrap_": {
                     "displayName": "Word wrap",
+                    "description": "Word wrap of the name measure or category is disabled by default. Enable this field if you want to change it.",
                     "displayNameKey": "wordWrap",
                     "type": {
                         "bool": true
@@ -286,6 +534,7 @@
                 },
                 "isItalic": {
                     "displayName": "Italic",
+                    "description": "Make category label italic.",
                     "displayNameKey": "italic",
                     "type": {
                         "bool": true
@@ -293,6 +542,7 @@
                 },
                 "isBold": {
                     "displayName": "Bold",
+                    "description": "Make category label bold.",
                     "displayNameKey": "bold",
                     "type": {
                         "bool": true
@@ -312,6 +562,7 @@
                 },
                 "backFill": {
                     "displayName": "Background color",
+                    "description": "Background color for the visual element. If the values are divided into categories, then the settings for each card are saved.",
                     "type": {
                         "fill": {
                             "solid": {
@@ -324,6 +575,7 @@
                 },
                 "transparency": {
                     "displayName": "Transparency",
+                    "description": "Set background transparency from 0 to 100%.",
                     "displayNameKey": "transparency",
                     "type": {
                         "numeric": true
@@ -331,12 +583,14 @@
                 },
                 "borderShow": {
                     "displayName": "Border",
+                    "description": "Add a border for the card.",
                     "type": {
                         "bool": true
                     }
                 },
                 "borderFill": {
                     "displayName": "Border color",
+                    "description": "Set the border color of the card.",
                     "type": {
                         "fill": {
                             "solid": {
@@ -347,6 +601,7 @@
                 },
                 "borderType": {
                     "displayName": "Border stroke",
+                    "description": "Set the line type.",
                     "type": {
                         "enumeration": [
                             {
@@ -366,6 +621,7 @@
                 },
                 "borderWeight": {
                     "displayName": "Border weight",
+                    "description": "Set the width of the border line. The value should be from 1 to 30.",
                     "type": {
                         "integer": true
                     }
@@ -378,6 +634,7 @@
             "properties": {
                 "cardsPerRow": {
                     "displayName": "Cards per row",
+                    "description": "The maximum allowed number of cards in one row is 15. The rest are transferred to the second and subsequent levels.",
                     "displayNameKey": "cardsPerRow",
                     "type": {
                         "integer": true
@@ -385,6 +642,7 @@
                 },
                 "cardsMargin": {
                     "displayName": "Space between cards",
+                    "description": "The maximum distance between individuals cards is 100.",
                     "type": {
                         "integer": true
                     }
@@ -403,14 +661,107 @@
             "properties": {
                 "fontFamily": {
                     "displayName": "Font family",
+                    "description": "Specify the font family for additional measure.",
                     "type": {
-                        "formatting": {
-                            "fontFamily": true
-                        }
+                        "enumeration": [
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "segoe_bold"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "segoe_light"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
                     }
                 },
                 "percentageWidth": {
                     "displayName": "Percentage width",
+                    "description": "Allows you to adjust the percentage of width occupied by the entire block of additional measures. The value is from 30 to 70.",
                     "displayNameKey": "percentageWidth",
                     "type": {
                         "numeric": true
@@ -418,6 +769,7 @@
                 },
                 "paddingTop": {
                     "displayName": "Padding top",
+                    "description": "Adjusts the distance between the top edge of the card and the value and category of additional measures. The value should be from 0 to 40.",
                     "displayNameKey": "paddingTop",
                     "type": {
                         "integer": true
@@ -425,6 +777,7 @@
                 },
                 "paddingBottom": {
                     "displayName": "Padding bottom",
+                    "description": "Adjusts the distance between the bottom edge of the card and the value and category of additional measures. The value should be from 0 to 40.",
                     "displayNameKey": "paddingBottom",
                     "type": {
                         "integer": true
@@ -432,6 +785,7 @@
                 },
                 "paddingLeft": {
                     "displayName": "Padding left",
+                    "description": "Adjusts the distance between the left edge and the value and category of additional measures. The value must be between 0 and 40.",
                     "displayNameKey": "paddingLeft",
                     "type": {
                         "integer": true
@@ -439,6 +793,7 @@
                 },
                 "paddingRight": {
                     "displayName": "Padding right",
+                    "description": "Adjusts the distance between the right edge and the value and category of additional measures. The value must be between 0 and 40.",
                     "displayNameKey": "paddingRight",
                     "type": {
                         "integer": true
@@ -446,13 +801,15 @@
                 },
                 "marginOfMeasure": {
                     "displayName": "Margin of measure",
+                    "description": "Adjusts the distance between rows or columns of value and categories of additional measures. The value should be from 0 to 40.",
                     "displayNameKey": "marginOfMeasure",
                     "type": {
                         "integer": true
                     }
                 },
-                "wordWrap": {
+                "wordWrap_": {
                     "displayName": "Word wrap",
+                    "description": "Word wrap of label is disabled by default. Enable this field if you want to change it.",
                     "displayNameKey": "wordWrap",
                     "type": {
                         "bool": true
@@ -460,6 +817,7 @@
                 },
                 "horizontalAlignment": {
                     "displayName": "Alignment",
+                    "description": "Set 1 of 3 alignment types for additional measure: left, center, right.",
                     "displayNameKey": "horizontalAlignment",
                     "type": {
                         "formatting": {
@@ -469,6 +827,7 @@
                 },
                 "layoutType": {
                     "displayName": "Layout type",
+                    "description": "Select a vertical or horizontal arrangement of categories and values of additional measures.",
                     "displayNameKey": "layoutType",
                     "type": {
                         "enumeration": [
@@ -487,6 +846,7 @@
                 },
                 "verticalTextAnchor": {
                     "displayName": "Vertical text anchor",
+                    "description": "Choose 1 of 3 types of category alignment and additional measure values: top, middle, bottom.",
                     "displayNameKey": "verticalTextAnchor",
                     "type": {
                         "enumeration": [
@@ -510,6 +870,7 @@
                 },
                 "textAnchor": {
                     "displayName": "Text anchor",
+                    "description": "Regulates the location of the category text and the values of the additional measure among themselves. You can configure the text to be to the left or right of the value, as well as above or below it.",
                     "displayNameKey": "textAnchor",
                     "type": {
                         "enumeration": [
@@ -545,6 +906,7 @@
                 },
                 "componentType": {
                     "displayName": "Component type",
+                    "description": "It is possible for an additional measure to output not only its value, but also a deviation from the main measure. Choose one of the 4 options for each measure.",
                     "displayNameKey": "componentType",
                     "type": {
                         "enumeration": [
@@ -573,6 +935,7 @@
                 },
                 "invertVariance": {
                     "displayName": "Invert Variance",
+                    "description": "Сhanges the order of calculation for an additional measure.",
                     "displayNameKey": "invertVariance",
                     "type": {
                         "bool": true
@@ -580,6 +943,7 @@
                 },
                 "textSize": {
                     "displayName": "Text Size",
+                    "description": "Specify the font size for additional measure.",
                     "displayNameKey": "textSize",
                     "type": {
                         "formatting": {
@@ -589,6 +953,7 @@
                 },
                 "isItalic": {
                     "displayName": "Italic",
+                    "description": "Make additional measure italic.",
                     "displayNameKey": "italic",
                     "type": {
                         "bool": true
@@ -596,6 +961,7 @@
                 },
                 "isBold": {
                     "displayName": "Bold",
+                    "description": "Make additional measure bold.",
                     "displayNameKey": "bold",
                     "type": {
                         "bool": true
@@ -622,6 +988,7 @@
                 },
                 "displayUnit": {
                     "displayName": "Display Unit",
+                    "description": "Specify display unit.",
                     "displayNameKey": "displayUnit",
                     "type": {
                         "formatting": {
@@ -631,6 +998,7 @@
                 },
                 "decimalPlaces": {
                     "displayName": "Decimal places",
+                    "description": "Specify decimal places for decimal number.",
                     "displayNameKey": "precision",
                     "type": {
                         "integer": true
@@ -638,6 +1006,7 @@
                 },
                 "suppressBlankAndNaN": {
                     "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "description": "Include this field if you want to replace the value of the additional measure with another text in the case of Blank or NaN.",
                     "displayNameKey": "suppressBlankAndNaN",
                     "type": {
                         "bool": true
@@ -645,6 +1014,7 @@
                 },
                 "blankAndNaNReplaceText": {
                     "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "description": "Specify the text or symbol to replace the Blank or NaN values. It can be a value of 0, — or a warning symbol.",
                     "displayNameKey": "blankAndNaNReplaceText",
                     "type": {
                         "text": true
@@ -657,14 +1027,107 @@
             "properties": {
                 "fontFamily": {
                     "displayName": "Font family",
+                    "description": "Specify the font family for label of additional measure.",
                     "type": {
-                        "formatting": {
-                            "fontFamily": true
-                        }
+                        "enumeration": [
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "segoe_bold"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "segoe_light"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            }
+                        ]
                     }
                 },
-                "wordWrap": {
+                "wordWrap_": {
                     "displayName": "Word wrap",
+                    "description": "Word wrap of label is disabled by default. Enable this field if you want to change it.",
                     "displayNameKey": "wordWrap",
                     "type": {
                         "bool": true
@@ -672,6 +1135,7 @@
                 },
                 "textSize": {
                     "displayName": "Text Size",
+                    "description": "Specify the font size for label of additional measure.",
                     "displayNameKey": "textSize",
                     "type": {
                         "formatting": {
@@ -681,6 +1145,7 @@
                 },
                 "isItalic": {
                     "displayName": "Italic",
+                    "description": "Make label of additional measure italic.",
                     "displayNameKey": "italic",
                     "type": {
                         "bool": true
@@ -688,6 +1153,7 @@
                 },
                 "isBold": {
                     "displayName": "Bold",
+                    "description": "Make label of additional measure bold.",
                     "displayNameKey": "bold",
                     "type": {
                         "bool": true
@@ -712,6 +1178,7 @@
             "properties": {
                 "componentTypeForColor": {
                     "displayName": "Component type",
+                    "description": "Select the relative value itself or the deviation you need to adjust the color formatting. You can also set up a complex condition using F(x).",
                     "displayNameKey": "componentType",
                     "type": {
                         "enumeration": [
@@ -745,6 +1212,7 @@
                 },
                 "invertVarianceForColor": {
                     "displayName": "Invert Variance",
+                    "description": "Сhanges the order of calculation for an additional measure.",
                     "displayNameKey": "invertVariance",
                     "type": {
                         "bool": true
@@ -752,6 +1220,7 @@
                 },
                 "unmatchedColor": {
                     "displayName": "Unmatched state color",
+                    "description": "The default color of the additional measure. If you use conditional formatting and none of the conditions are met, then this color will be visible.",
                     "displayNameKey": "unmatchedColor",
                     "type": {
                         "fill": {
@@ -777,6 +1246,7 @@
                 },
                 "comparisonOperator1": {
                     "displayName": "Comparison operator",
+                    "description": "Select a logical condition from the list for comparison.",
                     "displayNameKey": "comparisonOperator",
                     "type": {
                         "enumeration": [
@@ -810,6 +1280,7 @@
                 },
                 "value1": {
                     "displayName": "Value",
+                    "description": "Enter a numeric value to limit the condition.",
                     "displayNameKey": "value",
                     "type": {
                         "numeric": true
@@ -817,6 +1288,7 @@
                 },
                 "assignColor1": {
                     "displayName": "The assign the color",
+                    "description": "Set the color of the value of the additional measure for this condition.",
                     "displayNameKey": "assignColor",
                     "type": {
                         "fill": {
@@ -835,6 +1307,7 @@
                 },
                 "comparisonOperator2": {
                     "displayName": "Comparison operator",
+                    "description": "Select a logical condition from the list for comparison.",
                     "displayNameKey": "comparisonOperator",
                     "type": {
                         "enumeration": [
@@ -868,6 +1341,7 @@
                 },
                 "value2": {
                     "displayName": "Value",
+                    "description": "Enter a numeric value to limit the condition.",
                     "displayNameKey": "value",
                     "type": {
                         "numeric": true
@@ -875,6 +1349,7 @@
                 },
                 "assignColor2": {
                     "displayName": "The assign the color",
+                    "description": "Set the color of the value of the additional measure for this condition.",
                     "displayNameKey": "assignColor",
                     "type": {
                         "fill": {
@@ -893,6 +1368,7 @@
                 },
                 "comparisonOperator3": {
                     "displayName": "Comparison operator",
+                    "description": "Set the color of the value of the additional measure for this condition.",
                     "displayNameKey": "comparisonOperator",
                     "type": {
                         "enumeration": [
@@ -926,6 +1402,7 @@
                 },
                 "value3": {
                     "displayName": "Value",
+                    "description": "Enter a numeric value to limit the condition.",
                     "displayNameKey": "value",
                     "type": {
                         "numeric": true
@@ -933,6 +1410,7 @@
                 },
                 "assignColor3": {
                     "displayName": "The assign the color",
+                    "description": "Set the color of the value of the additional measure for this condition.",
                     "displayNameKey": "assignColor",
                     "type": {
                         "fill": {
@@ -945,6 +1423,9 @@
             }
         }
     },
+    "sorting": {
+        "default": {}
+    },
     "tooltips": {
         "supportedTypes": {
             "default": true,
@@ -956,5 +1437,6 @@
         "supportEnhancedTooltips": true
     },
     "supportsLandingPage": true,
-    "supportsEmptyDataView": true
+    "supportsEmptyDataView": true,
+    "suppressDefaultTitle": true
 }

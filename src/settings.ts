@@ -58,9 +58,9 @@ export class AdditionalItem {
 }
 
 export class AdditionalCategory {
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public wordWrap: boolean = false;
-  public textSize: number = 8;
+  public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public wordWrap_: boolean = false;
+  public textSize: number = 12;
   public isItalic: boolean = false;
   public isBold: boolean = false;
   public color: string = "#333333";
@@ -86,7 +86,7 @@ export class DataLabel {
   public displayUnit: number = 0;
   public decimalPlaces: number = 0;
   public textSize: number = 27;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
+  public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public isItalic: boolean = false;
   public isBold: boolean = false;
   public percentageWidth: number = 50;
@@ -94,6 +94,9 @@ export class DataLabel {
   public horizontalAlignment: string = "center";
   public suppressBlankAndNaN: boolean = false;
   public blankAndNaNReplaceText: string = "";
+  public paddingTop: number = 0;
+  public paddingBottom: number = 0;
+  public paddingSide: number = 0;
 }
 
 export class Additional {
@@ -101,11 +104,11 @@ export class Additional {
   public paddingBottom: number = 0;
   public paddingLeft: number = 0;
   public paddingRight: number = 0;
-  public wordWrap: boolean = false;
+  public wordWrap_: boolean = false;
   public horizontalAlignment: string = "center";
   public layoutType: string = "vertical";
   public verticalTextAnchor: string = "middle";
-  public textAnchor: string = "right";
+  public textAnchor: string = "left";
   public marginOfMeasure: number = 5;
   public percentageWidth: number = 50;
   public showAdditionalOptions: boolean = false;
@@ -113,8 +116,8 @@ export class Additional {
   public transparency: number = 0;
 
   // text formatting
-  public textSize: number = 8;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
+  public textSize: number = 12;
+  public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public isItalic: boolean = false;
   public isBold: boolean = false;
 }
@@ -128,8 +131,8 @@ export class CategoryLabel {
   public paddingSide: number = 0;
   public color: string = "#333333";
   public textSize: number = 15;
-  public fontFamily: string = "wf_standard-font, helvetica, arial, sans-serif";
-  public wordWrap: boolean = false;
+  public fontFamily: string = "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public wordWrap_: boolean = false;
   public isItalic: boolean = false;
   public isBold: boolean = false;
 }

@@ -36,11 +36,11 @@ import {
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { getValue } from "../utils/objectEnumerationUtility";
 import { prepareMeasureText } from "../utils/dataLabelUtility";
+import { valueFormatter } from "powerbi-visuals-utils-formattingutils";
 import DataView = powerbi.DataView;
 
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import DataViewValueColumn = powerbi.DataViewValueColumn;
-import ValueTypeDescriptor = powerbi.ValueTypeDescriptor;
 function parseSettings(dataView: DataView): CardSettings {
   return <CardSettings>CardSettings.parse(dataView);
 }
@@ -241,13 +241,6 @@ function getAdditionalSettings(
   }
 }
 
-function getValueType(valueType: ValueTypeDescriptor): string {
-  let result: string = "";
-  if (valueType.numeric || valueType.integer) result = "numeric";
-  if (valueType.dateTime) result = "dateTime";
-  return result;
-}
-
 function calculateAdditionalValue(
   mainMeasureValue: number,
   additionalMeasureValue: number,
@@ -367,16 +360,21 @@ export function visualTransform(
     let category = dataCategorical.categories
       ? dataCategorical.categories[dataCategorical.categories.length - 1]
       : null;
-    let categories = category ? category.values : [""];
+    let categories = category
+      ? category.values
+      : new Array<string>(dataCategorical.values.length);
 
     for (let i = 0; i < categories.length; i++) {
       let dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
 
       for (let ii = 0; ii < dataCategorical.values.length; ii++) {
-        let dataValue = dataCategorical.values[ii];
-        let value: any = dataValue.values[i];
+        let index = categories[i] ? ii : i;
+        let dataValue = dataCategorical.values[index];
+        let value: any = dataValue.values[categories[i] ? i : 0];
         let valueType = dataValue.source.type;
         if (dataValue.source.roles["Main Measure"]) {
+          console.log(dataValue);
+
           if (categories[i]) {
             if (settings.categoryLabel.labelAsMeasurename) {
               dataGroup.displayName = dataValue.source.displayName;
@@ -393,8 +391,10 @@ export function visualTransform(
             valueType.numeric || valueType.integer ? value : null;
           dataGroup.mainMeasureDataLabel = prepareMeasureText(
             value,
-            getValueType(valueType),
-            dataValue.source.format,
+            valueType,
+            dataValue.objects
+              ? (dataValue.objects[0]["general"]["formatString"] as string)
+              : valueFormatter.getFormatStringByColumn(dataValue.source),
             settings.dataLabel.displayUnit,
             settings.dataLabel.decimalPlaces,
             false,
@@ -575,8 +575,10 @@ export function visualTransform(
             case "measure": {
               additionalMeasure.dataLabel = prepareMeasureText(
                 value,
-                getValueType(valueType),
-                dataValue.source.format,
+                valueType,
+                dataValue.objects
+                  ? (dataValue.objects[0]["general"]["formatString"] as string)
+                  : valueFormatter.getFormatStringByColumn(dataValue.source),
                 additionalSettings.displayUnit,
                 additionalSettings.decimalPlaces,
                 false,
@@ -591,7 +593,7 @@ export function visualTransform(
                 additionalMeasure.dataLabel =
                   prepareMeasureText(
                     additionalMeasure.calculatedValue * 100,
-                    "numeric",
+                    { numeric: true },
                     "#,0.00",
                     1,
                     additionalSettings.decimalPlaces,
@@ -603,8 +605,12 @@ export function visualTransform(
               } else {
                 additionalMeasure.dataLabel = prepareMeasureText(
                   additionalMeasure.calculatedValue,
-                  getValueType(valueType),
-                  dataValue.source.format,
+                  valueType,
+                  dataValue.objects
+                    ? (dataValue.objects[0]["general"][
+                        "formatString"
+                      ] as string)
+                    : valueFormatter.getFormatStringByColumn(dataValue.source),
                   additionalSettings.displayUnit,
                   additionalSettings.decimalPlaces,
                   true,
@@ -619,7 +625,7 @@ export function visualTransform(
               additionalMeasure.dataLabel =
                 prepareMeasureText(
                   additionalMeasure.calculatedValue * 100,
-                  "numeric",
+                  { numeric: true },
                   "#,0.00",
                   1,
                   additionalSettings.decimalPlaces,
@@ -634,7 +640,7 @@ export function visualTransform(
               additionalMeasure.dataLabel =
                 prepareMeasureText(
                   additionalMeasure.calculatedValue * 100,
-                  "numeric",
+                  { numeric: true },
                   "#,0.00",
                   1,
                   additionalSettings.decimalPlaces,
@@ -653,8 +659,10 @@ export function visualTransform(
             displayName: dataValue.source.displayName,
             dataLabel: prepareMeasureText(
               value,
-              getValueType(valueType),
-              dataValue.source.format,
+              valueType,
+              dataValue.objects
+                ? (dataValue.objects[0]["general"]["formatString"] as string)
+                : valueFormatter.getFormatStringByColumn(dataValue.source),
               1,
               0,
               false,
@@ -664,15 +672,25 @@ export function visualTransform(
             ),
           });
         }
+
+        if (index != ii) continue;
       }
 
       // add selectionId
-      dataGroup.selectionId = host
-        .createSelectionIdBuilder()
-        .withCategory(category, i)
-        .createSelectionId();
+      if (category) {
+        dataGroup.selectionId = host
+          .createSelectionIdBuilder()
+          .withCategory(category, i)
+          .createSelectionId();
+      } else {
+        dataGroup.selectionId = host
+          .createSelectionIdBuilder()
+          .withMeasure(dataCategorical.values[0].source.queryName)
+          .createSelectionId();
+      }
       dataGroups.push(dataGroup);
     }
+    console.log(dataGroups);
   }
 
   return { settings, dataGroups };
