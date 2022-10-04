@@ -35,9 +35,10 @@ import {
 } from "./ViewModel";
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { getValue } from "../utils/objectEnumerationUtility";
-import { prepareMeasureText } from "../utils/dataLabelUtility";
+import { prepareMeasureText } from "../utils/prepareMeasureText";
 import { valueFormatter } from "powerbi-visuals-utils-formattingutils";
 import DataView = powerbi.DataView;
+import PrimitiveValue = powerbi.PrimitiveValue;
 
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import DataViewValueColumn = powerbi.DataViewValueColumn;
@@ -45,6 +46,7 @@ function parseSettings(dataView: DataView): CardSettings {
   return <CardSettings>CardSettings.parse(dataView);
 }
 
+// tslint:disable-next-line: max-func-body-length
 function getAdditionalSettings(
   value: DataViewValueColumn,
   settings: CardSettings
@@ -343,6 +345,7 @@ function updateAdditionalMeasureColor(
   return undefined;
 }
 
+// tslint:disable-next-line: max-func-body-length
 export function visualTransform(
   options: VisualUpdateOptions,
   host: IVisualHost
@@ -360,9 +363,12 @@ export function visualTransform(
     let category = dataCategorical.categories
       ? dataCategorical.categories[dataCategorical.categories.length - 1]
       : null;
-    let categories = category
-      ? category.values
-      : new Array<string>(dataCategorical.values.length);
+    let categories: PrimitiveValue[] = [];
+    if (category) {
+      categories = category.values;
+    } else {
+      dataCategorical.values.forEach(() => categories.push(null));
+    }
 
     for (let i = 0; i < categories.length; i++) {
       let dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
@@ -373,10 +379,10 @@ export function visualTransform(
         let value: any = dataValue.values[categories[i] ? i : 0];
         let valueType = dataValue.source.type;
         if (dataValue.source.roles["Main Measure"]) {
-          console.log(dataValue);
+          console.log(dataValue, 123);
 
           if (categories[i]) {
-            if (settings.categoryLabel.labelAsMeasurename) {
+            if (settings.category.labelAsMeasurename) {
               dataGroup.displayName = dataValue.source.displayName;
             } else {
               dataGroup.displayName = category
@@ -393,7 +399,7 @@ export function visualTransform(
             value,
             valueType,
             dataValue.objects
-              ? (dataValue.objects[0]["general"]["formatString"] as string)
+              ? <string>dataValue.objects[0]["general"]["formatString"]
               : valueFormatter.getFormatStringByColumn(dataValue.source),
             settings.dataLabel.displayUnit,
             settings.dataLabel.decimalPlaces,
@@ -577,7 +583,7 @@ export function visualTransform(
                 value,
                 valueType,
                 dataValue.objects
-                  ? (dataValue.objects[0]["general"]["formatString"] as string)
+                  ? <string>dataValue.objects[0]["general"]["formatString"]
                   : valueFormatter.getFormatStringByColumn(dataValue.source),
                 additionalSettings.displayUnit,
                 additionalSettings.decimalPlaces,
@@ -607,9 +613,7 @@ export function visualTransform(
                   additionalMeasure.calculatedValue,
                   valueType,
                   dataValue.objects
-                    ? (dataValue.objects[0]["general"][
-                        "formatString"
-                      ] as string)
+                    ? <string>dataValue.objects[0]["general"]["formatString"]
                     : valueFormatter.getFormatStringByColumn(dataValue.source),
                   additionalSettings.displayUnit,
                   additionalSettings.decimalPlaces,
@@ -661,7 +665,7 @@ export function visualTransform(
               value,
               valueType,
               dataValue.objects
-                ? (dataValue.objects[0]["general"]["formatString"] as string)
+                ? <string>dataValue.objects[0]["general"]["formatString"]
                 : valueFormatter.getFormatStringByColumn(dataValue.source),
               1,
               0,

@@ -25,7 +25,7 @@ import VisualTooltipDataItem = powerbi.extensibility.VisualTooltipDataItem;
 import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import translate = manipulation.translate;
-import transform = manipulation.parseTranslateTransform;
+import parseTranslateTransform = manipulation.parseTranslateTransform;
 
 export enum CardClassNames {
   Root = "root",
@@ -49,12 +49,8 @@ export class Card {
   private svg: Selection<BaseType, any, any, any>[];
   private categoryLabels: Selection<BaseType, any, any, any>[];
   public dataLabels: Selection<BaseType, any, any, any>[];
-  private additionalCategoryContainers: Array<
-    Selection<BaseType, any, any, any>[]
-  >;
-  private additionalMeasureContainers: Array<
-    Selection<BaseType, any, any, any>[]
-  >;
+  private additionalCategoryContainers: Selection<BaseType, any, any, any>[][];
+  private additionalMeasureContainers: Selection<BaseType, any, any, any>[][];
   private cardViewport: { width: number; height: number };
   private cardMargin: {
     left: number;
@@ -93,16 +89,16 @@ export class Card {
     this.numberOfCards = this.model.dataGroups.length;
     this.cardsPerRow = Math.min(
       this.numberOfCards,
-      this.model.settings.multiple.cardsPerRow
+      this.model.settings.category.cardsPerRow
     );
     this.numberOfRows = Math.ceil(this.numberOfCards / this.cardsPerRow);
     this.cardMargin = {
       left: 0,
       top: 0,
       right:
-        this.cardsPerRow > 1 ? this.model.settings.multiple.cardsMargin : 0,
+        this.cardsPerRow > 1 ? this.model.settings.category.cardsMargin : 0,
       bottom:
-        this.numberOfRows > 1 ? this.model.settings.multiple.cardsMargin : 0,
+        this.numberOfRows > 1 ? this.model.settings.category.cardsMargin : 0,
     };
 
     this.cardViewport = {
@@ -118,7 +114,7 @@ export class Card {
           this.numberOfRows
       ),
     };
-    this.maxMainMeasureWidth = this.model.settings.dataLabel.percentageWidth;
+    this.maxMainMeasureWidth = this.model.settings.background.percentageWidth;
   }
 
   public createCardContainer() {
@@ -178,20 +174,20 @@ export class Card {
           );
         }
       });
-      if (this.model.settings.card.show) {
-        let backgroundColor = d3.color(this.model.settings.card.backFill);
+      if (this.model.settings.background.show) {
+        let backgroundColor = d3.color(this.model.settings.background.backFill);
         backgroundColor.opacity =
-          1 - this.model.settings.card.transparency / 100;
+          1 - this.model.settings.background.transparency / 100;
         cardContainer
           .style("background-color", backgroundColor.formatRgb())
           .style(
             "border",
-            this.model.settings.card.borderShow
-              ? this.model.settings.card.borderWeight +
+            this.model.settings.background.borderShow
+              ? this.model.settings.background.borderWeight +
                   "px " +
-                  this.model.settings.card.borderType +
+                  this.model.settings.background.borderType +
                   " " +
-                  this.model.settings.card.borderFill
+                  this.model.settings.background.borderFill
               : ""
           );
       }
@@ -434,6 +430,7 @@ export class Card {
     }
   }
 
+  // tslint:disable-next-line: max-func-body-length
   private createAdditionalCategoryLabel() {
     this.additionalCategoryContainers = [];
 
@@ -451,6 +448,7 @@ export class Card {
           Math.abs(this.getSVGRect(svg).y - this.getSVGRect(v).top)
         )
       );
+      // tslint:disable-next-line: max-func-body-length
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         let additionalCategoryLabel = additionalCategoryContainter
           .append("g")
@@ -522,7 +520,9 @@ export class Card {
 
         if (this.model.settings.additional.layoutType == "horizontal") {
           x = Number(
-            transform(additionalMeasureContainer[j].attr("transform")).x
+            parseTranslateTransform(
+              additionalMeasureContainer[j].attr("transform")
+            ).x
           );
           y = minYPos - this.getSVGRect(additionalCategoryLabel).height / 2;
           additionalCategoryLabel
@@ -541,7 +541,9 @@ export class Card {
                 ? 0
                 : this.additionalMeasureWidth);
             y = Number(
-              transform(additionalMeasureContainer[j].attr("transform")).y
+              parseTranslateTransform(
+                additionalMeasureContainer[j].attr("transform")
+              ).y
             );
             additionalCategoryLabel
               .select("text")
@@ -581,6 +583,7 @@ export class Card {
     }
   }
 
+  // tslint:disable-next-line: max-func-body-length
   private createAdditionalMeasureLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
@@ -595,6 +598,7 @@ export class Card {
       //   1 - this.model.settings.additional.transparency / 100;
       let additionalMeasureLabels = [];
 
+      // tslint:disable-next-line: max-func-body-length
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         let additionalMeasureLabel = additionalMeasureContainter
           .append("g")
@@ -780,6 +784,7 @@ export class Card {
     }
   }
 
+  // tslint:disable-next-line: max-func-body-length
   public async createLandingPage() {
     this.removeLandingPage();
     this.cardsContainer.style("width", "100%").style("height", "100%");
@@ -872,9 +877,10 @@ export class Card {
       .classed("landing-footer-contact-email", true);
     footerContactsEmailContainer
       .append("a")
-      .attr("href", "https://alexkolokolov.com/en/")
-      .attr("target", "_blank")
-      .attr("rel", "noopener noreferrer")
+      .on("click", () => this.host.launchUrl("https://alexkolokolov.com/en/"))
+      // .attr("href", "https://alexkolokolov.com/en/")
+      // .attr("target", "_blank")
+      // .attr("rel", "noopener noreferrer")
       .append("div")
       .classed("landing-footer-contact-email-icon", true);
     let email = footerContactsEmailContainer
@@ -883,8 +889,9 @@ export class Card {
     email.append("div").text("Alex Kolokolov");
     email
       .append("a")
-      .attr("href", "mailto:dashboard@alexkolokolov.com")
-      .attr("target", "_blank")
+      .on("click", () => this.host.launchUrl("mailto:dashboard@alexkolokolov.com"))
+      // .attr("href", "mailto:dashboard@alexkolokolov.com")
+      // .attr("target", "_blank")
       .append("div")
       .classed("footer-email", true)
       .text("Email");
@@ -1020,7 +1027,6 @@ export class Card {
         right: 0,
         toJSON: null,
       };
-    let rect = <SVGRect>(<SVGElement>element.node()).getBoundingClientRect();
-    return rect;
+    return <SVGRect>(<SVGElement>element.node()).getBoundingClientRect();
   }
 }

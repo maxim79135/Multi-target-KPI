@@ -4,6 +4,7 @@ import powerbi from "powerbi-visuals-api";
 import { valueFormatter } from "powerbi-visuals-utils-formattingutils";
 import ValueTypeDescriptor = powerbi.ValueTypeDescriptor;
 
+
 const localizedUnits = {
   "ru-RU_K": " тыс.",
   "ru-RU_M": " млн",
@@ -45,10 +46,10 @@ export function prepareMeasureText(
   if (suppressBlankAndNaN) valueFormatted = blankAndNaNReplaceText;
   if (!(suppressBlankAndNaN && value == null)) {
     if (getValueType(valueType) == "numeric") {
-      if (!(isNaN(value as number) && suppressBlankAndNaN)) {
-        valueFormatted = formatMeasure(value as number, {
+      if (!(isNaN(<number>value) && suppressBlankAndNaN)) {
+        valueFormatted = formatMeasure(<number>value, {
           format: format,
-          value: displayUnit === 0 ? (value as number) : displayUnit,
+          value: displayUnit === 0 ? <number>value : displayUnit,
           precision: precision,
           allowFormatBeautification: false,
           cultureSelector: culture,
@@ -59,7 +60,7 @@ export function prepareMeasureText(
           valueFormatted = localizeUnit(valueFormatted, "bn", culture);
           valueFormatted = localizeUnit(valueFormatted, "T", culture);
         }
-        if (addPlusforPositiveValue && (value as number) > 0)
+        if (addPlusforPositiveValue && <number>value > 0)
           valueFormatted = "+" + valueFormatted;
       }
       if (value == null && valueType["primitiveType"] == 3) {
@@ -68,9 +69,7 @@ export function prepareMeasureText(
       }
     } else {
       valueFormatted = formatMeasure(
-        getValueType(valueType) == "dateTime"
-          ? new Date(value as string)
-          : value,
+        getValueType(valueType) == "dateTime" ? new Date(<string>value) : value,
         {
           format: format,
           cultureSelector: culture,

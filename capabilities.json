@@ -101,14 +101,6 @@
             "displayName": "Main data label",
             "displayNameKey": "maindatalabel",
             "properties": {
-                "percentageWidth": {
-                    "displayName": "Percentage width",
-                    "description": "The percentage width allows you to adjust the proportion of width occupied by the main measure. Takes a value from 10 to 90.",
-                    "displayNameKey": "percentageWidth",
-                    "type": {
-                        "numeric": true
-                    }
-                },
                 "paddingTop": {
                     "displayName": "Padding top",
                     "displayNameKey": "paddingTop",
@@ -349,14 +341,6 @@
                         "bool": true
                     }
                 },
-                "labelAsMeasurename": {
-                    "displayName": "Show measure name instead of category",
-                    "description": "If you need to replace the category names with the name of the main measure, then enable this field. For example, when categories need to be spelled out in separate text.",
-                    "displayNameKey": "labelAsMeasurename",
-                    "type": {
-                        "bool": true
-                    }
-                },
                 "horizontalAlignment": {
                     "displayName": "Alignment",
                     "description": "Set 1 of 3 alignment types for the name of the main measure or category if it is used: left, center, right.",
@@ -550,14 +534,27 @@
                 }
             }
         },
-        "card": {
-            "displayName": "Card",
-            "displayNameKey": "card",
+        "background": {
+            "displayName": "Background",
+            "displayNameKey": "background",
             "properties": {
                 "show": {
-                    "displayName": "Show Category Label",
                     "type": {
                         "bool": true
+                    }
+                },
+                "layout": {
+                    "displayName": "Layout",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "percentageWidth": {
+                    "displayName": "Percentage width",
+                    "description": "The percentage width allows you to adjust the proportion of width occupied by the main measure. Takes a value from 10 to 90.",
+                    "displayNameKey": "percentageWidth",
+                    "type": {
+                        "numeric": true
                     }
                 },
                 "backFill": {
@@ -628,8 +625,8 @@
                 }
             }
         },
-        "multiple": {
-            "displayName": "Multiple cards",
+        "category": {
+            "displayName": "Category",
             "displayNameKey": "multipleCardsSettings",
             "properties": {
                 "cardsPerRow": {
@@ -652,6 +649,14 @@
                     "displayNameKey": "spaceBeforeFirstComponent",
                     "type": {
                         "integer": true
+                    }
+                },
+                "labelAsMeasurename": {
+                    "displayName": "Show measure name instead of category",
+                    "description": "If you need to replace the category names with the name of the main measure, then enable this field. For example, when categories need to be spelled out in separate text.",
+                    "displayNameKey": "labelAsMeasurename",
+                    "type": {
+                        "bool": true
                     }
                 }
             }

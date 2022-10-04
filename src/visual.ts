@@ -41,7 +41,7 @@ import IVisualEventService = powerbi.extensibility.IVisualEventService;
 import { dataViewWildcard } from "powerbi-visuals-utils-dataviewutils";
 
 import { Card } from "./Card";
-import { visualTransform } from "./model/ViewModelHelper";
+import { visualTransform } from "./model/visualTransform";
 import { ICardViewModel } from "./model/ViewModel";
 export type Selection = d3.Selection<any, any, any, any>;
 
@@ -92,6 +92,7 @@ export class CardKPI implements IVisual {
    * objects and properties you want to expose to the users in the property pane.
    *
    */
+  // tslint:disable-next-line: max-func-body-length
   public enumerateObjectInstances(
     options: EnumerateVisualObjectInstancesOptions
   ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
@@ -108,7 +109,6 @@ export class CardKPI implements IVisual {
           objectName: objectName,
           properties: {
             show: model.settings.categoryLabel.show,
-            labelAsMeasurename: model.settings.categoryLabel.labelAsMeasurename,
             horizontalAlignment:
               model.settings.categoryLabel.horizontalAlignment,
             position: model.settings.categoryLabel.position,
@@ -143,17 +143,8 @@ export class CardKPI implements IVisual {
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            percentageWidth: model.settings.dataLabel.percentageWidth,
             verticalAlignment: model.settings.dataLabel.verticalAlignment,
             horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
-          },
-          validValues: {
-            percentageWidth: {
-              numberRange: {
-                min: 10,
-                max: 90,
-              },
-            },
           },
           selector: null,
         });
@@ -253,30 +244,53 @@ export class CardKPI implements IVisual {
           });
         break;
 
-      case "card":
+      case "background":
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            show: model.settings.card.show,
-            backFill: model.settings.card.backFill,
-            transparency: model.settings.card.transparency,
-            borderShow: model.settings.card.borderShow,
+            show: model.settings.background.show,
+            layout: model.settings.background.layout,
           },
-          propertyInstanceKind: {
-            backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
-          },
-          altConstantValueSelector: null,
-          selector: dataViewWildcard.createDataViewWildcardSelector(
-            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
-          ),
+          selector: null,
         });
-        model.settings.card.borderShow &&
+        model.settings.background.layout &&
           objectEnumeration.push({
             objectName: objectName,
             properties: {
-              borderFill: model.settings.card.borderFill,
-              borderType: model.settings.card.borderType,
-              borderWeight: model.settings.card.borderWeight,
+              percentageWidth: model.settings.background.percentageWidth,
+              backFill: model.settings.background.backFill,
+              transparency: model.settings.background.transparency,
+            },
+            validValues: {
+              percentageWidth: {
+                numberRange: {
+                  min: 10,
+                  max: 90,
+                },
+              },
+            },
+            propertyInstanceKind: {
+              backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
+            },
+            altConstantValueSelector: null,
+            selector: dataViewWildcard.createDataViewWildcardSelector(
+              dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+            ),
+          });
+        objectEnumeration.push({
+          objectName: objectName,
+          properties: {
+            borderShow: model.settings.background.borderShow,
+          },
+          selector: null,
+        });
+        model.settings.background.borderShow &&
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              borderFill: model.settings.background.borderFill,
+              borderType: model.settings.background.borderType,
+              borderWeight: model.settings.background.borderWeight,
             },
             validValues: {
               borderWeight: {
@@ -286,16 +300,23 @@ export class CardKPI implements IVisual {
                 },
               },
             },
-            selector: null,
+            propertyInstanceKind: {
+              backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
+            },
+            altConstantValueSelector: null,
+            selector: dataViewWildcard.createDataViewWildcardSelector(
+              dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+            ),
           });
         break;
 
-      case "multiple":
+      case "category":
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            cardsPerRow: model.settings.multiple.cardsPerRow,
-            cardsMargin: model.settings.multiple.cardsMargin,
+            cardsPerRow: model.settings.category.cardsPerRow,
+            cardsMargin: model.settings.category.cardsMargin,
+            labelAsMeasurename: model.settings.category.labelAsMeasurename,
             // spaceBeforeFirstComponent:
             //   model.settings.multiple.spaceBeforeFirstComponent,
           },
@@ -328,59 +349,52 @@ export class CardKPI implements IVisual {
           enumerationObject.instances.push({
             objectName,
             properties: {
-              marginOfMeasure: model.settings.additional.marginOfMeasure,
-              paddingTop: model.settings.additional.paddingTop,
-              paddingBottom: model.settings.additional.paddingBottom,
-              paddingLeft: model.settings.additional.paddingLeft,
-              paddingRight: model.settings.additional.paddingRight,
-              wordWrap_: model.settings.additional.wordWrap_,
-              horizontalAlignment:
-                model.settings.additional.horizontalAlignment,
-              textSize: model.settings.additional.textSize,
-              fontFamily: model.settings.additional.fontFamily,
-              isItalic: model.settings.additional.isItalic,
-              isBold: model.settings.additional.isBold,
+              layoutType: model.settings.additional.layoutType,
+              // paddingTop: model.settings.additional.paddingTop,
+              // paddingBottom: model.settings.additional.paddingBottom,
+              // paddingLeft: model.settings.additional.paddingLeft,
+              // paddingRight: model.settings.additional.paddingRight,
+              // wordWrap_: model.settings.additional.wordWrap_,
+              // horizontalAlignment:
+              //   model.settings.additional.horizontalAlignment,
+              // textSize: model.settings.additional.textSize,
+              // fontFamily: model.settings.additional.fontFamily,
+              // isItalic: model.settings.additional.isItalic,
+              // isBold: model.settings.additional.isBold,
               // backFill: model.settings.additional.backFill,
               // transparency: model.settings.additional.transparency,
-              layoutType: model.settings.additional.layoutType,
             },
             validValues: {
-              marginOfMeasure: {
-                numberRange: {
-                  min: 0,
-                  max: 40,
-                },
-              },
               verticalPadding: {
                 numberRange: {
                   min: 0,
                   max: 40,
                 },
               },
-              paddingTop: {
-                numberRange: {
-                  min: 0,
-                  max: 40,
-                },
-              },
-              paddingBottom: {
-                numberRange: {
-                  min: 0,
-                  max: 40,
-                },
-              },
-              paddingLeft: {
-                numberRange: {
-                  min: 0,
-                  max: 40,
-                },
-              },
-              paddingRight: {
-                numberRange: {
-                  min: 0,
-                  max: 40,
-                },
-              },
+              // paddingTop: {
+              //   numberRange: {
+              //     min: 0,
+              //     max: 40,
+              //   },
+              // },
+              // paddingBottom: {
+              //   numberRange: {
+              //     min: 0,
+              //     max: 40,
+              //   },
+              // },
+              // paddingLeft: {
+              //   numberRange: {
+              //     min: 0,
+              //     max: 40,
+              //   },
+              // },
+              // paddingRight: {
+              //   numberRange: {
+              //     min: 0,
+              //     max: 40,
+              //   },
+              // },
             },
             propertyInstanceKind: {
               backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
@@ -405,6 +419,21 @@ export class CardKPI implements IVisual {
             },
             selector: null,
           });
+        enumerationObject.instances.push({
+          objectName,
+          properties: {
+            marginOfMeasure: model.settings.additional.marginOfMeasure,
+          },
+          validValues: {
+            marginOfMeasure: {
+              numberRange: {
+                min: 0,
+                max: 40,
+              },
+            },
+          },
+          selector: null,
+        });
         enumerationObject.instances.push({
           objectName,
           properties: {
@@ -464,7 +493,7 @@ export class CardKPI implements IVisual {
           propertyInstanceKind: {
             color: VisualEnumerationInstanceKinds.ConstantOrRule,
           },
-          altConstantValueSelector: null,
+          altConstantValueSelector: undefined,
           selector: dataViewWildcard.createDataViewWildcardSelector(
             dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
           ),
