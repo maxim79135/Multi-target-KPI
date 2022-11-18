@@ -112,68 +112,107 @@ export class CardKPI implements IVisual {
             horizontalAlignment:
               model.settings.categoryLabel.horizontalAlignment,
             position: model.settings.categoryLabel.position,
-            paddingTop: model.settings.categoryLabel.paddingTop,
-            paddingSide: model.settings.categoryLabel.paddingSide,
-            color: model.settings.categoryLabel.color,
-            textSize: model.settings.categoryLabel.textSize,
-            fontFamily: model.settings.categoryLabel.fontFamily,
-            wordWrap_: model.settings.categoryLabel.wordWrap_,
-            isItalic: model.settings.categoryLabel.isItalic,
-            isBold: model.settings.categoryLabel.isBold,
+            // paddingTop: model.settings.categoryLabel.paddingTop,
+            // paddingSide: model.settings.categoryLabel.paddingSide,
+            font: model.settings.categoryLabel.font,
           },
-          validValues: {
-            paddingTop: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-            paddingSide: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-          },
+          // validValues: {
+          //   paddingTop: {
+          //     numberRange: {
+          //       min: 0,
+          //       max: 15,
+          //     },
+          //   },
+          //   paddingSide: {
+          //     numberRange: {
+          //       min: 0,
+          //       max: 15,
+          //     },
+          //   },
+          // },
           selector: null,
         });
+        if (model.settings.categoryLabel.font) {
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              color: model.settings.categoryLabel.color,
+              textSize: model.settings.categoryLabel.textSize,
+              fontFamily: model.settings.categoryLabel.fontFamily,
+              wordWrap_: model.settings.categoryLabel.wordWrap_,
+              isItalic: model.settings.categoryLabel.isItalic,
+              isBold: model.settings.categoryLabel.isBold,
+            },
+            selector: null,
+          });
+        }
         break;
 
       case "dataLabel":
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            verticalAlignment: model.settings.dataLabel.verticalAlignment,
-            horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
+            alignment: model.settings.dataLabel.alignment,
           },
           selector: null,
         });
-
-        // add dynamic paddings
-        if (model.settings.dataLabel.verticalAlignment == "top") {
+        if (model.settings.dataLabel.alignment) {
           objectEnumeration.push({
             objectName: objectName,
             properties: {
-              paddingTop: model.settings.dataLabel.paddingTop,
+              verticalAlignment: model.settings.dataLabel.verticalAlignment,
+              horizontalAlignment: model.settings.dataLabel.horizontalAlignment,
+            },
+            selector: null,
+          });
+
+          // add dynamic paddings
+          if (model.settings.dataLabel.verticalAlignment == "top") {
+            objectEnumeration.push({
+              objectName: objectName,
+              properties: {
+                paddingTop: model.settings.dataLabel.paddingTop,
+              },
+              validValues: {
+                paddingTop: {
+                  numberRange: {
+                    min: 0,
+                    max: 15,
+                  },
+                },
+              },
+              selector: null,
+            });
+          } else if (model.settings.dataLabel.verticalAlignment == "bottom") {
+            objectEnumeration.push({
+              objectName: objectName,
+              properties: {
+                paddingBottom: model.settings.dataLabel.paddingBottom,
+              },
+              validValues: {
+                paddingBottom: {
+                  numberRange: {
+                    min: 0,
+                    max: 15,
+                  },
+                },
+              },
+              selector: null,
+            });
+          }
+          objectEnumeration.push({
+            objectName: objectName,
+            properties: {
+              paddingSide: model.settings.dataLabel.paddingSide,
             },
             validValues: {
-              paddingTop: {
+              paddingSide: {
                 numberRange: {
                   min: 0,
                   max: 15,
                 },
               },
-            },
-            selector: null,
-          });
-        } else if (model.settings.dataLabel.verticalAlignment == "bottom") {
-          objectEnumeration.push({
-            objectName: objectName,
-            properties: {
-              paddingBottom: model.settings.dataLabel.paddingBottom,
-            },
-            validValues: {
-              paddingBottom: {
+              paddintTop: {
                 numberRange: {
                   min: 0,
                   max: 15,
@@ -183,65 +222,53 @@ export class CardKPI implements IVisual {
             selector: null,
           });
         }
-        objectEnumeration.push({
-          objectName: objectName,
-          properties: {
-            paddingSide: model.settings.dataLabel.paddingSide,
-          },
-          validValues: {
-            paddingSide: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-            paddintTop: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-          },
-          selector: null,
-        });
 
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            fontFamily: model.settings.dataLabel.fontFamily,
-            textSize: model.settings.dataLabel.textSize,
-            color: model.settings.dataLabel.color,
-            isItalic: model.settings.dataLabel.isItalic,
-            isBold: model.settings.dataLabel.isBold,
-            displayUnit: model.settings.dataLabel.displayUnit,
-            decimalPlaces: model.settings.dataLabel.decimalPlaces,
-            suppressBlankAndNaN: model.settings.dataLabel.suppressBlankAndNaN,
+            font: model.settings.dataLabel.font,
           },
-          validValues: {
-            decimalPlaces: {
-              numberRange: {
-                min: 0,
-                max: 15,
-              },
-            },
-          },
-          propertyInstanceKind: {
-            color: VisualEnumerationInstanceKinds.ConstantOrRule,
-          },
-          altConstantValueSelector: null,
-          selector: dataViewWildcard.createDataViewWildcardSelector(
-            dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
-          ),
+          selector: null,
         });
-        if (this.model.settings.dataLabel.suppressBlankAndNaN)
+        if (model.settings.dataLabel.font) {
           objectEnumeration.push({
             objectName: objectName,
             properties: {
-              blankAndNaNReplaceText:
-                this.model.settings.dataLabel.blankAndNaNReplaceText,
+              fontFamily: model.settings.dataLabel.fontFamily,
+              textSize: model.settings.dataLabel.textSize,
+              color: model.settings.dataLabel.color,
+              isItalic: model.settings.dataLabel.isItalic,
+              isBold: model.settings.dataLabel.isBold,
+              displayUnit: model.settings.dataLabel.displayUnit,
+              decimalPlaces: model.settings.dataLabel.decimalPlaces,
+              suppressBlankAndNaN: model.settings.dataLabel.suppressBlankAndNaN,
             },
-            selector: null,
+            validValues: {
+              decimalPlaces: {
+                numberRange: {
+                  min: 0,
+                  max: 15,
+                },
+              },
+            },
+            propertyInstanceKind: {
+              color: VisualEnumerationInstanceKinds.ConstantOrRule,
+            },
+            altConstantValueSelector: null,
+            selector: dataViewWildcard.createDataViewWildcardSelector(
+              dataViewWildcard.DataViewWildcardMatchingOption.InstancesAndTotals
+            ),
           });
+          if (this.model.settings.dataLabel.suppressBlankAndNaN)
+            objectEnumeration.push({
+              objectName: objectName,
+              properties: {
+                blankAndNaNReplaceText:
+                  this.model.settings.dataLabel.blankAndNaNReplaceText,
+              },
+              selector: null,
+            });
+        }
         break;
 
       case "background":
@@ -345,7 +372,17 @@ export class CardKPI implements IVisual {
         break;
 
       case "additional":
-        model.settings.additionalItems.length > 0 &&
+        if (model.settings.additionalItems.length == 0) break;
+
+        enumerationObject.instances.push({
+          objectName,
+          properties: {
+            alignment: model.settings.additional.alignment,
+          },
+          selector: null,
+        });
+
+        if (model.settings.additional.alignment) {
           enumerationObject.instances.push({
             objectName,
             properties: {
@@ -357,12 +394,6 @@ export class CardKPI implements IVisual {
               // wordWrap_: model.settings.additional.wordWrap_,
               // horizontalAlignment:
               //   model.settings.additional.horizontalAlignment,
-              // textSize: model.settings.additional.textSize,
-              // fontFamily: model.settings.additional.fontFamily,
-              // isItalic: model.settings.additional.isItalic,
-              // isBold: model.settings.additional.isBold,
-              // backFill: model.settings.additional.backFill,
-              // transparency: model.settings.additional.transparency,
             },
             validValues: {
               verticalPadding: {
@@ -396,52 +427,76 @@ export class CardKPI implements IVisual {
               //   },
               // },
             },
-            propertyInstanceKind: {
-              backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
-            },
             selector: null,
           });
-        if (model.settings.additional.layoutType == "vertical")
+          if (model.settings.additional.layoutType == "vertical")
+            enumerationObject.instances.push({
+              objectName,
+              properties: {
+                // verticalTextAnchor:
+                //   model.settings.additional.verticalTextAnchor,
+                textAnchor: model.settings.additional.textAnchor,
+                // percentageWidth: model.settings.additional.percentageWidth,
+              },
+              validValues: {
+                percentageWidth: {
+                  numberRange: {
+                    min: 30,
+                    max: 70,
+                  },
+                },
+              },
+              selector: null,
+            });
           enumerationObject.instances.push({
             objectName,
             properties: {
-              verticalTextAnchor: model.settings.additional.verticalTextAnchor,
-              textAnchor: model.settings.additional.textAnchor,
-              percentageWidth: model.settings.additional.percentageWidth,
+              marginOfMeasure: model.settings.additional.marginOfMeasure,
             },
             validValues: {
-              percentageWidth: {
+              marginOfMeasure: {
                 numberRange: {
-                  min: 30,
-                  max: 70,
+                  min: 0,
+                  max: 40,
                 },
               },
             },
             selector: null,
           });
-        enumerationObject.instances.push({
-          objectName,
-          properties: {
-            marginOfMeasure: model.settings.additional.marginOfMeasure,
-          },
-          validValues: {
-            marginOfMeasure: {
-              numberRange: {
-                min: 0,
-                max: 40,
-              },
+          enumerationObject.instances.push({
+            objectName,
+            properties: {
+              showAdditionalOptions:
+                model.settings.additional.showAdditionalOptions,
             },
-          },
-          selector: null,
-        });
+            selector: null,
+          });
+        }
+
         enumerationObject.instances.push({
           objectName,
           properties: {
-            showAdditionalOptions:
-              model.settings.additional.showAdditionalOptions,
+            font: model.settings.additional.font,
           },
           selector: null,
         });
+        if (model.settings.additional.font) {
+          enumerationObject.instances.push({
+            objectName,
+            properties: {
+              textSize: model.settings.additional.textSize,
+              fontFamily: model.settings.additional.fontFamily,
+              isItalic: model.settings.additional.isItalic,
+              isBold: model.settings.additional.isBold,
+              backFill: model.settings.additional.backFill,
+              transparency: model.settings.additional.transparency,
+            },
+            propertyInstanceKind: {
+              backFill: VisualEnumerationInstanceKinds.ConstantOrRule,
+            },
+            selector: null,
+          });
+        }
 
         if (model.settings.additional.showAdditionalOptions) {
           for (let i = 0; i < model.settings.additionalItems.length; i++) {
@@ -506,29 +561,9 @@ export class CardKPI implements IVisual {
             model.settings.additionalItems[i].measureDisplayName;
           const containerIdx: number =
             enumerationObject.containers.push({ displayName }) - 1;
-          let componentTypeForColor =
-            model.settings.additionalItems[i].componentTypeForColor;
-          if (componentTypeForColor == "f(x)") {
-            enumerationObject.instances.push({
-              containerIdx,
-              objectName,
-              properties: {
-                unmatchedColor:
-                  model.settings.additionalItems[i].unmatchedColor,
-                conditionFormatting:
-                  model.settings.additionalItems[i].conditionFormatting,
-                componentTypeForColor:
-                  model.settings.additionalItems[i].componentTypeForColor,
-              },
-              propertyInstanceKind: {
-                unmatchedColor: VisualEnumerationInstanceKinds.ConstantOrRule,
-              },
-              selector: {
-                metadata: model.settings.additionalItems[i].metadata,
-              },
-            });
-            return enumerationObject;
-          }
+          // let componentTypeForColor =
+          //   model.settings.additionalItems[i].componentTypeForColor;
+
           enumerationObject.instances.push({
             containerIdx,
             objectName,
@@ -536,6 +571,9 @@ export class CardKPI implements IVisual {
               unmatchedColor: model.settings.additionalItems[i].unmatchedColor,
               conditionFormatting:
                 model.settings.additionalItems[i].conditionFormatting,
+            },
+            propertyInstanceKind: {
+              unmatchedColor: VisualEnumerationInstanceKinds.ConstantOrRule,
             },
             selector: { metadata: model.settings.additionalItems[i].metadata },
           });

@@ -328,6 +328,18 @@
                     "type": {
                         "text": true
                     }
+                },
+                "font": {
+                    "displayName": "Font",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "alignment": {
+                    "displayName": "Alignment",
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },
@@ -337,6 +349,12 @@
             "properties": {
                 "show": {
                     "displayName": "Show Category Label",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "font": {
+                    "displayName": "Font",
                     "type": {
                         "bool": true
                     }
@@ -664,6 +682,18 @@
         "additional": {
             "displayName": "Additional measures",
             "properties": {
+                "font": {
+                    "displayName": "Font",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "alignment": {
+                    "displayName": "Alignment",
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "fontFamily": {
                     "displayName": "Font family",
                     "description": "Specify the font family for additional measure.",

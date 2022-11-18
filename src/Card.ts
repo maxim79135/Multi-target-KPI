@@ -888,13 +888,13 @@ export class Card {
       .classed("landing-footer-contact-email-text", true);
     email.append("div").text("Alex Kolokolov");
     email
-      .append("a")
-      .on("click", () => this.host.launchUrl("mailto:dashboard@alexkolokolov.com"))
+      // .append("a")
+      // .on("click", () => this.host.launchUrl("mailto:dashboard@alexkolokolov.com"))
       // .attr("href", "mailto:dashboard@alexkolokolov.com")
       // .attr("target", "_blank")
       .append("div")
       .classed("footer-email", true)
-      .text("Email");
+      .text("Email: dashboard@alexkolokolov.com");
 
     // icons
     let footerContactsIconsContainer = footerContainer

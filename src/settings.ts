@@ -101,6 +101,8 @@ export class DataLabel {
   public paddingTop: number = 0;
   public paddingBottom: number = 0;
   public paddingSide: number = 0;
+  public font: boolean = false;
+  public alignment: boolean = false;
 }
 
 export class Additional {
@@ -125,6 +127,9 @@ export class Additional {
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public isItalic: boolean = false;
   public isBold: boolean = false;
+
+  public font: boolean = false;
+  public alignment: boolean = false;
 }
 
 export class CategoryLabel {
@@ -132,7 +137,7 @@ export class CategoryLabel {
   public position: string = "aboveMainMeasure";
   public horizontalAlignment: string = "center";
   public paddingTop: number = 0;
-  public paddingSide: number = 0;
+  public paddingSide: number = 5;
   public color: string = "#333333";
   public textSize: number = 15;
   public fontFamily: string =
@@ -140,6 +145,7 @@ export class CategoryLabel {
   public wordWrap_: boolean = false;
   public isItalic: boolean = false;
   public isBold: boolean = false;
+  public font: boolean = false;
 }
 
 export class CardSettings extends DataViewObjectsParser {
