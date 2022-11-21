@@ -697,5 +697,16 @@ export function visualTransform(
     console.log(dataGroups);
   }
 
+  // transform settings
+  if (!settings.alignment.show_additional_horizontal) {
+    settings.alignment.horizontalMainMeasure = settings.alignment.horizontal;
+    settings.alignment.horizontalCategory = settings.alignment.horizontal;
+    settings.alignment.horizontalAdditionalMeasureName =
+      settings.alignment.horizontal;
+    settings.alignment.horizontalAdditionalMeasureValue =
+      settings.alignment.horizontal;
+  }
+  console.log(settings);
+
   return { settings, dataGroups };
 }

@@ -87,11 +87,342 @@ export class CardKPI implements IVisual {
     }
   }
 
-  /**
-   * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-   * objects and properties you want to expose to the users in the property pane.
-   *
-   */
+  // tslint:disable-next-line: max-func-body-length
+  public getFormattingModel(): powerbi.visuals.FormattingModel {
+    let settings = this.model.settings;
+
+    let grid: powerbi.visuals.FormattingCard = {
+      description: "Grid Description",
+      displayName: "Grid",
+      uid: "grid",
+      groups: [],
+      revertToDefaultDescriptors: [
+        {
+          objectName: "grid",
+          propertyName: "percentageWidth",
+        },
+      ],
+    };
+
+    let mainMeasureValue: powerbi.visuals.FormattingGroup = {
+      displayName: "Main measure value",
+      uid: "mainMeasureValue",
+      slices: [
+        {
+          uid: "mainMeasureValue_percentageWidth",
+          displayName: "Percentage width",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "percentageWidth",
+              },
+              value: settings.grid.percentageWidth,
+            },
+          },
+        },
+        {
+          uid: "mainMeasureValue_wireframe",
+          displayName: "Wireframe",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "wireframe",
+              },
+              value: settings.grid.wireframe,
+            },
+          },
+        },
+      ],
+    };
+    let category: powerbi.visuals.FormattingGroup = {
+      displayName: "Category",
+      uid: "grid_category",
+      slices: [
+        {
+          uid: "grid_category_labelAsMeasurename",
+          displayName: "Show measure name instead of category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "labelAsMeasurename",
+              },
+              value: settings.grid.labelAsMeasurename,
+            },
+          },
+        },
+        {
+          uid: "grid_category_position",
+          displayName: "Position main measure name",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "position",
+              },
+              value: settings.grid.position,
+            },
+          },
+        },
+      ],
+    };
+    let category1: powerbi.visuals.FormattingGroup = {
+      displayName: "Category",
+      uid: "grid_category1",
+      slices: [
+        {
+          uid: "grid_category_cardsPerRow",
+          displayName: "Cards per row",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "cardsPerRow",
+              },
+              value: settings.grid.cardsPerRow,
+            },
+          },
+        },
+        {
+          uid: "grid_category_cardsMargin",
+          displayName: "Cards per row",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "cardsMargin",
+              },
+              value: settings.grid.cardsMargin,
+            },
+          },
+        },
+      ],
+    };
+    let additionalMeasures: powerbi.visuals.FormattingGroup = {
+      displayName: "Additional measures",
+      uid: "grid_additionalMeasures",
+      slices: [
+        {
+          uid: "grid_category_layout_type",
+          displayName: "Layout type",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "grid",
+                propertyName: "layoutType",
+              },
+              value: settings.grid.layoutType,
+            },
+          },
+        },
+      ],
+    };
+
+    grid.groups.push(mainMeasureValue);
+    grid.groups.push(category);
+    grid.groups.push(category1);
+    grid.groups.push(additionalMeasures);
+
+    let alignment: powerbi.visuals.FormattingCard = {
+      description: "Alignment Description",
+      displayName: "Alignment",
+      uid: "alignment",
+      groups: [],
+      revertToDefaultDescriptors: [],
+    };
+
+    let alignment_all: powerbi.visuals.FormattingGroup = {
+      displayName: "All",
+      uid: "alignment_all",
+      slices: [
+        {
+          uid: "alignment_vertical_alignment",
+          displayName: "Vertical",
+          disabled: settings.alignment.show_additional_vertical,
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "vertical",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.vertical,
+            },
+          },
+        },
+        {
+          uid: "alignment_horizontal_alignment",
+          displayName: "Horizontal",
+          disabled: settings.alignment.show_additional_horizontal,
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "horizontal",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
+              value: settings.alignment.horizontal,
+            },
+          },
+        },
+      ],
+    };
+
+    let alignment_additional_vertical: powerbi.visuals.FormattingGroup = {
+      displayName: "Vertical alignment",
+      uid: "alignment_additional_vertical",
+      topLevelToggle: {
+        uid: "alignment_additional_vertical_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "alignment",
+              propertyName: "show_additional_vertical",
+            },
+            value: settings.alignment.show_additional_vertical,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "alignment_additional_vertical_main_measure",
+          displayName: "Main measure value",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "verticalMainMeasure",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.verticalMainMeasure,
+            },
+          },
+        },
+      ],
+    };
+
+    if (settings.grid.layoutType == "horizontal") {
+      alignment_additional_vertical.slices.push({
+        uid: "alignment_additional_vertical_additional_measures_name_value",
+        displayName: "Additional measures name and value",
+        control: {
+          type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+          properties: {
+            descriptor: {
+              objectName: "alignment",
+              propertyName: "verticalAdditionalMeasure",
+            },
+            mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+            value: settings.alignment.verticalAdditionalMeasure,
+          },
+        },
+      });
+    }
+
+    let alignment_additional_horizontal: powerbi.visuals.FormattingGroup = {
+      displayName: "Horizontal alignment",
+      uid: "alignment_additional_horizontal",
+      topLevelToggle: {
+        uid: "alignment_additional_horizontal_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "alignment",
+              propertyName: "show_additional_horizontal",
+            },
+            value: settings.alignment.show_additional_horizontal,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "alignment_additional_horizontal_main_measure",
+          displayName: "Main measure name",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "horizontalMainMeasure",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.horizontalMainMeasure,
+            },
+          },
+        },
+        {
+          uid: "alignment_additional_horizontal_category",
+          displayName: "Category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "horizontalCategory",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.horizontalCategory,
+            },
+          },
+        },
+        {
+          uid: "alignment_additional_horizontal_additional_name",
+          displayName: "Additional measure name",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "horizontalAdditionalMeasureName",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.horizontalAdditionalMeasureName,
+            },
+          },
+        },
+        {
+          uid: "alignment_additional_horizontal_additional_value",
+          displayName: "Additional measure value",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "horizontalAdditionalMeasureValue",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.horizontalAdditionalMeasureValue,
+            },
+          },
+        }
+      ],
+    };
+
+    alignment.groups.push(alignment_all);
+    alignment.groups.push(alignment_additional_vertical);
+    alignment.groups.push(alignment_additional_horizontal);
+
+    return {
+      cards: [grid, alignment],
+    };
+  }
+
   // tslint:disable-next-line: max-func-body-length
   public enumerateObjectInstances(
     options: EnumerateVisualObjectInstancesOptions

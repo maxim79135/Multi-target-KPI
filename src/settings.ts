@@ -148,6 +148,29 @@ export class CategoryLabel {
   public font: boolean = false;
 }
 
+export class Grid {
+  public percentageWidth: number = 50;
+  public wireframe: string = "left";
+  public labelAsMeasurename: boolean = false;
+  public position: string = "aboveMainMeasure";
+  public cardsPerRow: number = 5;
+  public cardsMargin: number = 15;
+  public layoutType: string = "vertical";
+}
+
+export class Alignment {
+  public vertical: string = "middle";
+  public horizontal: string = "center";
+  public show_additional_vertical: boolean = false;
+  public show_additional_horizontal: boolean = false;
+  public verticalMainMeasure: string = "middle";
+  public verticalAdditionalMeasure: string = "middle";
+  public horizontalMainMeasure: string = "center";
+  public horizontalAdditionalMeasureName: string = "center";
+  public horizontalAdditionalMeasureValue: string = "center";
+  public horizontalCategory: string = "center";
+}
+
 export class CardSettings extends DataViewObjectsParser {
   public category: Category = new Category();
   public background: Background = new Background();
@@ -156,4 +179,6 @@ export class CardSettings extends DataViewObjectsParser {
   public dataLabel: DataLabel = new DataLabel();
   public categoryLabel: CategoryLabel = new CategoryLabel();
   public additionalCategory: AdditionalCategory = new AdditionalCategory();
+  public grid: Grid = new Grid();
+  public alignment: Alignment = new Alignment();
 }

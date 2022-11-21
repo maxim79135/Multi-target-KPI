@@ -87,6 +87,179 @@
         }
     ],
     "objects": {
+        "grid": {
+            "displayNameKey": "grid",
+            "properties": {
+                "percentageWidth": {
+                    "description": "The percentage width allows you to adjust the proportion of width occupied by the main measure. Takes a value from 10 to 90.",
+                    "displayNameKey": "percentageWidth",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "wireframe": {
+                    "displayName": "Wireframe",
+                    "displayNameKey": "wireframe",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Left",
+                                "displayNameKey": "left",
+                                "value": "left"
+                            },
+                            {
+                                "displayName": "Top",
+                                "displayNameKey": "top",
+                                "value": "top"
+                            }
+                        ]
+                    }
+                },
+                "labelAsMeasurename": {
+                    "description": "If you need to replace the category names with the name of the main measure, then enable this field. For example, when categories need to be spelled out in separate text.",
+                    "displayNameKey": "labelAsMeasurename",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "position": {
+                    "description": "Set up a constraint for alignment: the name of the main measure or category will be in the area of the main measure section or across the entire width of the card.",
+                    "displayNameKey": "position",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Top center",
+                                "displayNameKey": "topCenter",
+                                "value": "topCenter"
+                            },
+                            {
+                                "displayName": "Above main measure",
+                                "displayNameKey": "aboveMainMeasure",
+                                "value": "aboveMainMeasure"
+                            }
+                        ]
+                    }
+                },
+                "cardsPerRow": {
+                    "description": "The maximum allowed number of cards in one row is 15. The rest are transferred to the second and subsequent levels.",
+                    "displayNameKey": "cardsPerRow",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "cardsMargin": {
+                    "description": "The maximum distance between individuals cards is 100.",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "layoutType": {
+                    "description": "Select a vertical or horizontal arrangement of categories and values of additional measures.",
+                    "displayNameKey": "layoutType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Horizontal",
+                                "displayNameKey": "horizontal",
+                                "value": "horizontal"
+                            },
+                            {
+                                "displayName": "Vertical",
+                                "displayNameKey": "vertical",
+                                "value": "vertical"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "alignment": {
+            "displayNameKey": "alignment",
+            "properties": {
+                "vertical": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "vertical",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "horizontal": {
+                    "description": "Set 1 of 3 alignment types for the value of the main measure: left, center, right.",
+                    "displayNameKey": "horizontal",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "show_additional_vertical": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "show_additional_horizontal": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "verticalMainMeasure": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "verticalMainMeasure",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "horizontalMainMeasure": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "verticalMainMeasure",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "verticalAdditionalMeasure": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "verticalAdditionalMeasure",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "horizontalAdditionalMeasureName": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "horizontalAdditionalMeasureName",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "horizontalAdditionalMeasureValue": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "horizontalAdditionalMeasureValue",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                },
+                "horizontalCategory": {
+                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayNameKey": "horizontalCategory",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
+                }
+            }
+        },
         "general": {
             "properties": {
                 "formatString": {
