@@ -30,7 +30,7 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import powerbi from "powerbi-visuals-api";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
-export class AdditionalItem1 {
+export class AdditionalItem {
   public measureDisplayName: string;
   public metadata: string;
   public componentType: string = "measure";
@@ -105,7 +105,7 @@ export class DataLabel {
   public alignment: boolean = false;
 }
 
-export class Additional1 {
+export class Additional {
   public paddingTop: number = 0;
   public paddingBottom: number = 0;
   public paddingLeft: number = 0;
@@ -214,17 +214,21 @@ export class Format {
 }
 
 export class AdditiionalFormat {
+  public metadata: string;
+  public measureDisplayName: string;
   public displayUnit: number = 0;
   public decimalPlaces: number = 0;
   public suppressBlankAndNaN: boolean = true;
   public blankAndNaNReplaceText: string = "0";
+  public componentType: string = "measure";
+  public invertVariance: boolean = false;
 }
 
 export class CardSettings extends DataViewObjectsParser {
   public category: Category = new Category();
   public background1: Background1 = new Background1();
-  public additional: Additional1 = new Additional1();
-  public additionalItems: AdditionalItem1[] = [];
+  public additional: Additional = new Additional();
+  public additionalItems: AdditionalItem[] = [];
   public dataLabel: DataLabel = new DataLabel();
   public categoryLabel: CategoryLabel = new CategoryLabel();
   public additionalCategory: AdditionalCategory = new AdditionalCategory();

@@ -677,6 +677,7 @@ export class CardKPI implements IVisual {
     let format_all: powerbi.visuals.FormattingGroup = {
       uid: "format_all",
       displayName: "All",
+      disabled: settings.format.additionalShow,
       slices: [
         {
           uid: "format_all_unit",
@@ -745,23 +746,72 @@ export class CardKPI implements IVisual {
     let format_additional: powerbi.visuals.FormattingGroup = {
       uid: "format_additional",
       displayName: "Additional measure values",
+      topLevelToggle: {
+        uid: "format_additional_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "format",
+              propertyName: "additionalShow",
+            },
+            value: settings.format.additionalShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
       container: {
         uid: "format_additional_container",
         displayName: "Additional options",
         containerItems: [
-          ...settings.additionalItems.map((item) => {
+          ...settings.additionalFormat.map((item) => {
             let containerItem: powerbi.visuals.FormattingContainerItem = {
               uid: `format_additional_${item.measureDisplayName}`,
               displayName: item.measureDisplayName,
               slices: [
+                {
+                  uid: `format_additional_component_type_${item.measureDisplayName}`,
+                  control: {
+                    type: powerbi.visuals.FormattingComponent.Dropdown,
+                    properties: {
+                      descriptor: {
+                        objectName: "format",
+                        propertyName: "componentType",
+                        selector: {
+                          metadata: item.metadata,
+                        },
+                      },
+                      value: item.componentType,
+                    },
+                  },
+                },
+                {
+                  uid: `format_additional_invert_variance_${item.measureDisplayName}`,
+                  control: {
+                    type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+                    properties: {
+                      descriptor: {
+                        objectName: "format",
+                        propertyName: "invertVariance",
+                        selector: {
+                          metadata: item.metadata,
+                        },
+                      },
+                      value: item.invertVariance,
+                    },
+                  },
+                },
                 {
                   uid: `format_additional_unit_${item.measureDisplayName}`,
                   control: {
                     type: powerbi.visuals.FormattingComponent.Dropdown,
                     properties: {
                       descriptor: {
-                        objectName: "additional",
+                        objectName: "format",
                         propertyName: "displayUnit",
+                        selector: {
+                          metadata: item.metadata,
+                        },
                       },
                       value: item.displayUnit,
                     },
@@ -773,8 +823,11 @@ export class CardKPI implements IVisual {
                     type: powerbi.visuals.FormattingComponent.NumUpDown,
                     properties: {
                       descriptor: {
-                        objectName: "additional",
+                        objectName: "format",
                         propertyName: "decimalPlaces",
+                        selector: {
+                          metadata: item.metadata,
+                        },
                       },
                       value: item.decimalPlaces,
                       options: {
@@ -792,10 +845,28 @@ export class CardKPI implements IVisual {
                     type: powerbi.visuals.FormattingComponent.ToggleSwitch,
                     properties: {
                       descriptor: {
-                        objectName: "additional",
+                        objectName: "format",
                         propertyName: "suppressBlankAndNaN",
+                        selector: {
+                          metadata: item.metadata,
+                        },
                       },
                       value: item.suppressBlankAndNaN,
+                    },
+                  },
+                },
+                {
+                  uid: `format_additional_blank_text_${item.measureDisplayName}`,
+                  disabled: !item.suppressBlankAndNaN,
+                  control: {
+                    type: powerbi.visuals.FormattingComponent.TextInput,
+                    properties: {
+                      descriptor: {
+                        objectName: "format",
+                        propertyName: "blankAndNaNReplaceText",
+                      },
+                      placeholder: "0",
+                      value: item.blankAndNaNReplaceText,
                     },
                   },
                 },

@@ -396,6 +396,11 @@
         },
         "format": {
             "properties": {
+                "additionalShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "displayUnit": {
                     "displayName": "Display Unit",
                     "type": {
@@ -420,6 +425,43 @@
                     "displayName": "'(Blank)' and '(NaN)' replace text",
                     "type": {
                         "text": true
+                    }
+                },
+                "componentType": {
+                    "displayName": "Component type",
+                    "description": "It is possible for an additional measure to output not only its value, but also a deviation from the main measure. Choose one of the 4 options for each measure.",
+                    "displayNameKey": "componentType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Measure",
+                                "displayNameKey": "measure",
+                                "value": "measure"
+                            },
+                            {
+                                "displayName": "Change over Main Measure",
+                                "displayNameKey": "changeOver",
+                                "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Main Measure",
+                                "displayNameKey": "percentageOver",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Percentage change over Main Measure",
+                                "displayNameKey": "percentageChangeOver",
+                                "value": "percentageChangeOver"
+                            }
+                        ]
+                    }
+                },
+                "invertVariance": {
+                    "displayName": "Invert Variance",
+                    "description": "Сhanges the order of calculation for an additional measure.",
+                    "displayNameKey": "invertVariance",
+                    "type": {
+                        "bool": true
                     }
                 }
             }

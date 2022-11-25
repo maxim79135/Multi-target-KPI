@@ -26,7 +26,12 @@
 "use strict";
 
 import powerbi from "powerbi-visuals-api";
-import { CardSettings, AdditionalItem1, DataLabel } from "../settings";
+import {
+  CardSettings,
+  AdditionalItem,
+  DataLabel,
+  AdditiionalFormat,
+} from "../settings";
 import {
   IAdditionalMeasure,
   ICardViewModel,
@@ -50,16 +55,16 @@ function parseSettings(dataView: DataView): CardSettings {
 function getAdditionalSettings(
   value: DataViewValueColumn,
   settings: CardSettings
-): AdditionalItem1 {
-  console.log(value.source.objects);
-  
-  let additionalSetting: AdditionalItem1;
+): AdditionalItem {
+  // console.log(value.source.objects);
+
+  let additionalSetting: AdditionalItem;
   additionalSetting = settings.additionalItems.find(
     (i) => i.metadata === value.source.queryName
   );
   if (additionalSetting) return additionalSetting;
   else {
-    additionalSetting = new AdditionalItem1();
+    additionalSetting = new AdditionalItem();
     additionalSetting.measureDisplayName = value.source.displayName;
     additionalSetting.metadata = value.source.queryName;
     additionalSetting.componentType = <string>(
@@ -245,6 +250,73 @@ function getAdditionalSettings(
   }
 }
 
+function getAdditionFormatValues(
+  value: DataViewValueColumn,
+  settings: CardSettings
+): AdditiionalFormat {
+  let format: AdditiionalFormat;
+  format = settings.additionalFormat.find(
+    (i) => i.metadata === value.source.queryName
+  );
+  if (!format) {
+    format = new AdditiionalFormat();
+
+    format.measureDisplayName = value.source.displayName;
+    format.metadata = value.source.queryName;
+    format.displayUnit = <number>(
+      getValue(
+        value.source.objects,
+        "format",
+        "displayUnit",
+        format.displayUnit
+      )
+    );
+    format.decimalPlaces = <number>(
+      getValue(
+        value.source.objects,
+        "format",
+        "decimalPlaces",
+        format.decimalPlaces
+      )
+    );
+    format.suppressBlankAndNaN = <boolean>(
+      getValue(
+        value.source.objects,
+        "format",
+        "suppressBlankAndNaN",
+        format.suppressBlankAndNaN
+      )
+    );
+    format.blankAndNaNReplaceText = <string>(
+      getValue(
+        value.source.objects,
+        "format",
+        "blankAndNaNReplaceText",
+        format.blankAndNaNReplaceText
+      )
+    );
+    format.componentType = <string>(
+      getValue(
+        value.source.objects,
+        "format",
+        "componentType",
+        format.componentType
+      )
+    );
+    format.invertVariance = <boolean>(
+      getValue(
+        value.source.objects,
+        "format",
+        "invertVariance",
+        format.invertVariance
+      )
+    );
+    settings.additionalFormat.push(format);
+  }
+
+  return format;
+}
+
 function calculateAdditionalValue(
   mainMeasureValue: number,
   additionalMeasureValue: number,
@@ -329,7 +401,7 @@ function comparisonValues(
 }
 
 function updateAdditionalMeasureColor(
-  additionalSettings: AdditionalItem1,
+  additionalSettings: AdditionalItem,
   value: number,
   value2Text: string,
   comparisonOperator: string,
@@ -381,8 +453,6 @@ export function visualTransform(
         let value: any = dataValue.values[categories[i] ? i : 0];
         let valueType = dataValue.source.type;
         if (dataValue.source.roles["Main Measure"]) {
-          console.log(dataValue, 123);
-
           if (categories[i]) {
             if (settings.category.labelAsMeasurename) {
               dataGroup.displayName = dataValue.source.displayName;
@@ -418,6 +488,7 @@ export function visualTransform(
         if (dataValue.source.roles["additional"]) {
           let additionalMeasure: IAdditionalMeasure = {};
           let additionalSettings = getAdditionalSettings(dataValue, settings);
+          getAdditionFormatValues(dataValue, settings);
           additionalMeasure.displayName = additionalSettings.measureDisplayName;
           additionalMeasure.measureValue =
             valueType.numeric || valueType.integer ? value : null;
