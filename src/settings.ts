@@ -30,7 +30,7 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import powerbi from "powerbi-visuals-api";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
-export class AdditionalItem {
+export class AdditionalItem1 {
   public measureDisplayName: string;
   public metadata: string;
   public componentType: string = "measure";
@@ -74,7 +74,7 @@ export class Category {
   public labelAsMeasurename: boolean = false;
 }
 
-export class Background {
+export class Background1 {
   public backFill: string = null;
   public transparency: number = 0;
   public borderShow: boolean = false;
@@ -105,7 +105,7 @@ export class DataLabel {
   public alignment: boolean = false;
 }
 
-export class Additional {
+export class Additional1 {
   public paddingTop: number = 0;
   public paddingBottom: number = 0;
   public paddingLeft: number = 0;
@@ -171,14 +171,68 @@ export class Alignment {
   public horizontalCategory: string = "center";
 }
 
+export class Background {
+  public layoutShow: boolean = true;
+  public backFill: string = null;
+  public transparency: number = 0;
+  public borderShow: boolean = false;
+  public borderFill: string = "#000000";
+  public borderWeight: number = 1;
+  public roundEdges: number = 0;
+}
+
+export class Font {
+  public fontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public wordWrap_: boolean = false;
+  public textSize: number = 12;
+  public isItalic: boolean = false;
+  public isBold: boolean = false;
+  public isUnderline: boolean = false;
+
+  public additionalShow: boolean = false;
+  public categoryfontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public categoryWordWrap_: boolean = false;
+  public categoryTextSize: number = 12;
+  public categoryIsItalic: boolean = false;
+  public categoryIsBold: boolean = false;
+  public categoryIsUnderline: boolean = false;
+}
+
+export class Format {
+  public displayUnit: number = 0;
+  public decimalPlaces: number = 0;
+  public suppressBlankAndNaN: boolean = true;
+  public blankAndNaNReplaceText: string = "0";
+
+  public additionalShow: boolean = false;
+  public minDisplayUnit: number = 0;
+  public mainDecimalPlaces: number = 0;
+  public mainSuppressBlankAndNaN: boolean = true;
+  public mainBlankAndNaNReplaceText: string = "0";
+}
+
+export class AdditiionalFormat {
+  public displayUnit: number = 0;
+  public decimalPlaces: number = 0;
+  public suppressBlankAndNaN: boolean = true;
+  public blankAndNaNReplaceText: string = "0";
+}
+
 export class CardSettings extends DataViewObjectsParser {
   public category: Category = new Category();
-  public background: Background = new Background();
-  public additional: Additional = new Additional();
-  public additionalItems: AdditionalItem[] = [];
+  public background1: Background1 = new Background1();
+  public additional: Additional1 = new Additional1();
+  public additionalItems: AdditionalItem1[] = [];
   public dataLabel: DataLabel = new DataLabel();
   public categoryLabel: CategoryLabel = new CategoryLabel();
   public additionalCategory: AdditionalCategory = new AdditionalCategory();
+
   public grid: Grid = new Grid();
   public alignment: Alignment = new Alignment();
+  public background: Background = new Background();
+  public font: Font = new Font();
+  public format: Format = new Format();
+  public additionalFormat: AdditiionalFormat[] = [];
 }

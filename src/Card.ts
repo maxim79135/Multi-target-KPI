@@ -114,7 +114,7 @@ export class Card {
           this.numberOfRows
       ),
     };
-    this.maxMainMeasureWidth = this.model.settings.background.percentageWidth;
+    this.maxMainMeasureWidth = this.model.settings.background1.percentageWidth;
   }
 
   public createCardContainer() {
@@ -174,20 +174,20 @@ export class Card {
           );
         }
       });
-      if (this.model.settings.background.show) {
-        let backgroundColor = d3.color(this.model.settings.background.backFill);
+      if (this.model.settings.background1.show) {
+        let backgroundColor = d3.color(this.model.settings.background1.backFill);
         backgroundColor.opacity =
-          1 - this.model.settings.background.transparency / 100;
+          1 - this.model.settings.background1.transparency / 100;
         cardContainer
-          .style("background-color", backgroundColor.formatRgb())
+          .style("background1-color", backgroundColor.formatRgb())
           .style(
             "border",
-            this.model.settings.background.borderShow
-              ? this.model.settings.background.borderWeight +
+            this.model.settings.background1.borderShow
+              ? this.model.settings.background1.borderWeight +
                   "px " +
-                  this.model.settings.background.borderType +
+                  this.model.settings.background1.borderType +
                   " " +
-                  this.model.settings.background.borderFill
+                  this.model.settings.background1.borderFill
               : ""
           );
       }
@@ -592,7 +592,7 @@ export class Card {
         .append("g")
         .classed(CardClassNames.AdditionalMeasureContainer + i, true);
 
-      // background color
+      // background1 color
       // let backgroundColor = d3.color(this.model.settings.additional.backFill);
       // backgroundColor.opacity =
       //   1 - this.model.settings.additional.transparency / 100;

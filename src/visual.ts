@@ -192,7 +192,7 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "grid_category_cardsMargin",
-          displayName: "Cards per row",
+          displayName: "Space between cards",
           control: {
             type: powerbi.visuals.FormattingComponent.NumUpDown,
             properties: {
@@ -410,7 +410,7 @@ export class CardKPI implements IVisual {
               value: settings.alignment.horizontalAdditionalMeasureValue,
             },
           },
-        }
+        },
       ],
     };
 
@@ -418,8 +418,400 @@ export class CardKPI implements IVisual {
     alignment.groups.push(alignment_additional_vertical);
     alignment.groups.push(alignment_additional_horizontal);
 
+    let background: powerbi.visuals.FormattingCard = {
+      description: "Background",
+      displayName: "Background",
+      uid: "background",
+      groups: [],
+      revertToDefaultDescriptors: [],
+    };
+
+    let background_layout: powerbi.visuals.FormattingGroup = {
+      uid: "background_layout",
+      displayName: "Layout",
+      topLevelToggle: {
+        uid: "background_layout_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "background",
+              propertyName: "layoutShow",
+            },
+            value: settings.background.layoutShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "background_layout_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "background",
+                propertyName: "backFill",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.background.backFill },
+            },
+          },
+        },
+        {
+          uid: "background_layout_transparency",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "background",
+                propertyName: "transparency",
+              },
+              value: settings.background.transparency,
+            },
+          },
+        },
+      ],
+    };
+
+    let background_border: powerbi.visuals.FormattingGroup = {
+      uid: "background_border",
+      displayName: "Border",
+      topLevelToggle: {
+        uid: "background_border_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "background",
+              propertyName: "borderShow",
+            },
+            value: settings.background.borderShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "background_border_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "background",
+                propertyName: "borderFill",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.background.borderFill },
+            },
+          },
+        },
+        {
+          uid: "background_border_borderWeight",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "background",
+                propertyName: "borderWeight",
+              },
+              value: settings.background.borderWeight,
+            },
+          },
+        },
+        {
+          uid: "background_border_roundEdges",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "background",
+                propertyName: "roundEdges",
+              },
+              value: settings.background.roundEdges,
+            },
+          },
+        },
+      ],
+    };
+
+    background.groups.push(background_layout);
+    background.groups.push(background_border);
+
+    let font: powerbi.visuals.FormattingCard = {
+      description: "Font",
+      displayName: "Font",
+      uid: "font",
+      groups: [],
+      revertToDefaultDescriptors: [],
+    };
+
+    let font_all: powerbi.visuals.FormattingGroup = {
+      uid: "font_all",
+      displayName: "All",
+      disabled: settings.font.additionalShow,
+      slices: [
+        {
+          uid: "font_all_font",
+          displayName: "Font family",
+          control: {
+            type: powerbi.visuals.FormattingComponent.FontControl,
+            properties: {
+              fontFamily: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "fontFamily",
+                },
+                value: settings.font.fontFamily,
+              },
+              fontSize: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "textSize",
+                },
+                value: settings.font.textSize,
+              },
+              bold: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "isBold",
+                },
+                value: settings.font.isBold,
+              },
+              italic: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "isItalic",
+                },
+                value: settings.font.isItalic,
+              },
+              underline: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "isUnderline",
+                },
+                value: settings.font.isUnderline,
+              },
+            },
+          },
+        },
+      ],
+    };
+
+    let font_additional: powerbi.visuals.FormattingGroup = {
+      uid: "font_additional",
+      displayName: "Additiional settings",
+      topLevelToggle: {
+        uid: "font_additional_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "font",
+              propertyName: "additionalShow",
+            },
+            value: settings.font.additionalShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "font_additional_font_category",
+          displayName: "Category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.FontControl,
+            properties: {
+              fontFamily: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "categoryFontFamily",
+                },
+                value: settings.font.categoryfontFamily,
+              },
+              fontSize: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "categoryTextSize",
+                },
+                value: settings.font.categoryTextSize,
+              },
+              bold: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "categoryIsBold",
+                },
+                value: settings.font.categoryIsBold,
+              },
+              italic: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "categoryIsItalic",
+                },
+                value: settings.font.categoryIsItalic,
+              },
+              underline: {
+                descriptor: {
+                  objectName: "font",
+                  propertyName: "categoryIsUnderline",
+                },
+                value: settings.font.categoryIsUnderline,
+              },
+            },
+          },
+        },
+      ],
+    };
+
+    font.groups.push(font_all);
+    font.groups.push(font_additional);
+
+    let format: powerbi.visuals.FormattingCard = {
+      description: "Value format",
+      displayName: "Value format",
+      uid: "format",
+      groups: [],
+      revertToDefaultDescriptors: [],
+    };
+
+    let format_all: powerbi.visuals.FormattingGroup = {
+      uid: "format_all",
+      displayName: "All",
+      slices: [
+        {
+          uid: "format_all_unit",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "displayUnit",
+              },
+              value: settings.format.displayUnit,
+            },
+          },
+        },
+        {
+          uid: "format_all_decimalPlaces",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "decimalPlaces",
+              },
+              value: settings.format.decimalPlaces,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 10,
+                },
+              },
+            },
+          },
+        },
+        {
+          uid: "format_all_suppress_blank",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "suppressBlankAndNaN",
+              },
+              value: settings.format.suppressBlankAndNaN,
+            },
+          },
+        },
+      ],
+    };
+
+    if (settings.format.suppressBlankAndNaN) {
+      format_all.slices.push({
+        uid: "format_all_blank_text",
+        control: {
+          type: powerbi.visuals.FormattingComponent.TextInput,
+          properties: {
+            descriptor: {
+              objectName: "format",
+              propertyName: "blankAndNaNReplaceText",
+            },
+            placeholder: "0",
+            value: settings.format.blankAndNaNReplaceText,
+          },
+        },
+      });
+    }
+    let format_additional: powerbi.visuals.FormattingGroup = {
+      uid: "format_additional",
+      displayName: "Additional measure values",
+      container: {
+        uid: "format_additional_container",
+        displayName: "Additional options",
+        containerItems: [
+          ...settings.additionalItems.map((item) => {
+            let containerItem: powerbi.visuals.FormattingContainerItem = {
+              uid: `format_additional_${item.measureDisplayName}`,
+              displayName: item.measureDisplayName,
+              slices: [
+                {
+                  uid: `format_additional_unit_${item.measureDisplayName}`,
+                  control: {
+                    type: powerbi.visuals.FormattingComponent.Dropdown,
+                    properties: {
+                      descriptor: {
+                        objectName: "additional",
+                        propertyName: "displayUnit",
+                      },
+                      value: item.displayUnit,
+                    },
+                  },
+                },
+                {
+                  uid: `format_additional_decimalPlaces_${item.measureDisplayName}`,
+                  control: {
+                    type: powerbi.visuals.FormattingComponent.NumUpDown,
+                    properties: {
+                      descriptor: {
+                        objectName: "additional",
+                        propertyName: "decimalPlaces",
+                      },
+                      value: item.decimalPlaces,
+                      options: {
+                        maxValue: {
+                          type: powerbi.visuals.ValidatorType.Max,
+                          value: 10,
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  uid: `format_additional_suppress_blank_${item.measureDisplayName}`,
+                  control: {
+                    type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+                    properties: {
+                      descriptor: {
+                        objectName: "additional",
+                        propertyName: "suppressBlankAndNaN",
+                      },
+                      value: item.suppressBlankAndNaN,
+                    },
+                  },
+                },
+              ],
+            };
+            return containerItem;
+          }),
+        ],
+      },
+    };
+
+    format.groups.push(format_all);
+    format.groups.push(format_additional);
+
     return {
-      cards: [grid, alignment],
+      cards: [grid, alignment, format, font, background],
     };
   }
 
@@ -606,16 +998,16 @@ export class CardKPI implements IVisual {
         objectEnumeration.push({
           objectName: objectName,
           properties: {
-            show: model.settings.background.show,
-            layout: model.settings.background.layout,
+            show: model.settings.background1.show,
+            layout: model.settings.background1.layout,
           },
           selector: null,
         });
-        model.settings.background.layout &&
+        model.settings.background1.layout &&
           objectEnumeration.push({
             objectName: objectName,
             properties: {
-              percentageWidth: model.settings.background.percentageWidth,
+              percentageWidth: model.settings.background1.percentageWidth,
               backFill: model.settings.background.backFill,
               transparency: model.settings.background.transparency,
             },
@@ -646,9 +1038,9 @@ export class CardKPI implements IVisual {
           objectEnumeration.push({
             objectName: objectName,
             properties: {
-              borderFill: model.settings.background.borderFill,
-              borderType: model.settings.background.borderType,
-              borderWeight: model.settings.background.borderWeight,
+              borderFill: model.settings.background1.borderFill,
+              borderType: model.settings.background1.borderType,
+              borderWeight: model.settings.background1.borderWeight,
             },
             validValues: {
               borderWeight: {

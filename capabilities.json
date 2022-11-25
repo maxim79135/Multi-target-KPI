@@ -260,6 +260,170 @@
                 }
             }
         },
+        "background": {
+            "properties": {
+                "layoutShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "borderShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "backFill": {
+                    "displayName": "Background color",
+                    "description": "Background color for the visual element. If the values are divided into categories, then the settings for each card are saved.",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "transparency": {
+                    "displayName": "Transparency",
+                    "description": "Set background transparency from 0 to 100%.",
+                    "displayNameKey": "transparency",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "borderFill": {
+                    "displayName": "Border color",
+                    "description": "Set the border color of the card.",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "borderWeight": {
+                    "displayName": "Border weight",
+                    "description": "Set the width of the border line. The value should be from 1 to 30.",
+                    "type": {
+                        "integer": true
+                    }
+                },
+                "roundEdges": {
+                    "displayName": "Border weight",
+                    "type": {
+                        "integer": true
+                    }
+                }
+            }
+        },
+        "font": {
+            "properties": {
+                "fontFamily": {
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "textSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "isBold": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isItalic": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "isUnderline": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "wordWrap_": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "categoryfontFamily": {
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "categoryTextSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "categoryIsBold": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "categoryIsItalic": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "categoryIsUnderline": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "categoryWordWrap_": {
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
+        "format": {
+            "properties": {
+                "displayUnit": {
+                    "displayName": "Display Unit",
+                    "type": {
+                        "formatting": {
+                            "labelDisplayUnits": true
+                        }
+                    }
+                },
+                "decimalPlaces": {
+                    "displayName": "Decimal places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "suppressBlankAndNaN": {
+                    "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "blankAndNaNReplaceText": {
+                    "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
         "general": {
             "properties": {
                 "formatString": {
@@ -726,7 +890,7 @@
                 }
             }
         },
-        "background": {
+        "background1": {
             "displayName": "Background",
             "displayNameKey": "background",
             "properties": {

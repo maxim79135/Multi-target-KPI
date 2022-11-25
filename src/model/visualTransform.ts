@@ -26,7 +26,7 @@
 "use strict";
 
 import powerbi from "powerbi-visuals-api";
-import { CardSettings, AdditionalItem, DataLabel } from "../settings";
+import { CardSettings, AdditionalItem1, DataLabel } from "../settings";
 import {
   IAdditionalMeasure,
   ICardViewModel,
@@ -50,14 +50,16 @@ function parseSettings(dataView: DataView): CardSettings {
 function getAdditionalSettings(
   value: DataViewValueColumn,
   settings: CardSettings
-): AdditionalItem {
-  let additionalSetting: AdditionalItem;
+): AdditionalItem1 {
+  console.log(value.source.objects);
+  
+  let additionalSetting: AdditionalItem1;
   additionalSetting = settings.additionalItems.find(
     (i) => i.metadata === value.source.queryName
   );
   if (additionalSetting) return additionalSetting;
   else {
-    additionalSetting = new AdditionalItem();
+    additionalSetting = new AdditionalItem1();
     additionalSetting.measureDisplayName = value.source.displayName;
     additionalSetting.metadata = value.source.queryName;
     additionalSetting.componentType = <string>(
@@ -327,7 +329,7 @@ function comparisonValues(
 }
 
 function updateAdditionalMeasureColor(
-  additionalSettings: AdditionalItem,
+  additionalSettings: AdditionalItem1,
   value: number,
   value2Text: string,
   comparisonOperator: string,
