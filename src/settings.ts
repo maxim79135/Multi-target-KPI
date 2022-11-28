@@ -165,6 +165,7 @@ export class Alignment {
   public show_additional_horizontal: boolean = false;
   public verticalMainMeasure: string = "middle";
   public verticalAdditionalMeasure: string = "middle";
+  public verticalAdditionalMeasureName: string = "left";
   public horizontalMainMeasure: string = "center";
   public horizontalAdditionalMeasureName: string = "center";
   public horizontalAdditionalMeasureValue: string = "center";

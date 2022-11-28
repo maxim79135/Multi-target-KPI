@@ -231,6 +231,35 @@
                         }
                     }
                 },
+                "verticalAdditionalMeasureName": {
+                    "displayName": "Position additional measure names",
+                    "description": "Regulates the location of the category text and the values of the additional measure among themselves. You can configure the text to be to the left or right of the value, as well as above or below it.",
+                    "displayNameKey": "verticalAdditionalMeasureName",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Left",
+                                "displayNameKey": "left",
+                                "value": "left"
+                            },
+                            {
+                                "displayName": "Right",
+                                "displayNameKey": "right",
+                                "value": "right"
+                            },
+                            {
+                                "displayName": "Top",
+                                "displayNameKey": "top",
+                                "value": "top"
+                            },
+                            {
+                                "displayName": "Bottom",
+                                "displayNameKey": "bottom",
+                                "value": "bottom"
+                            }
+                        ]
+                    }
+                },
                 "horizontalAdditionalMeasureName": {
                     "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
                     "displayNameKey": "horizontalAdditionalMeasureName",

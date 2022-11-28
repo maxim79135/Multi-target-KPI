@@ -313,22 +313,38 @@ export class CardKPI implements IVisual {
             },
           },
         },
+        {
+          uid: "alignment_additional_vertical_additional_measure",
+          displayName:
+            settings.grid.layoutType == "horizontal"
+              ? "Additional measures name and value"
+              : "Additional measures",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "verticalAdditionalMeasure",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.verticalAdditionalMeasure,
+            },
+          },
+        },
       ],
     };
 
-    if (settings.grid.layoutType == "horizontal") {
+    if (settings.grid.layoutType == "vertical") {
       alignment_additional_vertical.slices.push({
-        uid: "alignment_additional_vertical_additional_measures_name_value",
-        displayName: "Additional measures name and value",
+        uid: "alignment_additional_vertical_additional_measure_name",
         control: {
-          type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+          type: powerbi.visuals.FormattingComponent.Dropdown,
           properties: {
             descriptor: {
               objectName: "alignment",
-              propertyName: "verticalAdditionalMeasure",
+              propertyName: "verticalAdditionalMeasureName",
             },
-            mode: powerbi.visuals.AlignmentGroupMode.Vertical,
-            value: settings.alignment.verticalAdditionalMeasure,
+            value: settings.alignment.verticalAdditionalMeasureName,
           },
         },
       });
