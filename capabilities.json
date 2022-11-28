@@ -128,12 +128,12 @@
                     "type": {
                         "enumeration": [
                             {
-                                "displayName": "Top center",
+                                "displayName": "The entire width",
                                 "displayNameKey": "topCenter",
                                 "value": "topCenter"
                             },
                             {
-                                "displayName": "Above main measure",
+                                "displayName": "Above main label",
                                 "displayNameKey": "aboveMainMeasure",
                                 "value": "aboveMainMeasure"
                             }
@@ -391,12 +391,109 @@
                     "type": {
                         "bool": true
                     }
+                },
+                "mainfontFamily": {
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "mainTextSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "mainIsBold": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "mainIsItalic": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "mainIsUnderline": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalNamefontFamily": {
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "additionalNameTextSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "additionalNameIsBold": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalNameIsItalic": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalNameIsUnderline": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalNameWordWrap_": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalValuefontFamily": {
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "additionalValueTextSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                },
+                "additionalValueIsBold": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalValueIsItalic": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "additionalValueIsUnderline": {
+                    "type": {
+                        "bool": true
+                    }
                 }
             }
         },
         "format": {
             "properties": {
                 "additionalShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "mainShow": {
                     "type": {
                         "bool": true
                     }
@@ -422,6 +519,32 @@
                     }
                 },
                 "blankAndNaNReplaceText": {
+                    "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "mainDisplayUnit": {
+                    "displayName": "Display Unit",
+                    "type": {
+                        "formatting": {
+                            "labelDisplayUnits": true
+                        }
+                    }
+                },
+                "mainDecimalPlaces": {
+                    "displayName": "Decimal places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "mainSuppressBlankAndNaN": {
+                    "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "mainBlankAndNaNReplaceText": {
                     "displayName": "'(Blank)' and '(NaN)' replace text",
                     "type": {
                         "text": true
@@ -462,6 +585,274 @@
                     "displayNameKey": "invertVariance",
                     "type": {
                         "bool": true
+                    }
+                }
+            }
+        },
+        "color": {
+            "properties": {
+                "color": {
+                    "displayName": "Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "mainColor": {
+                    "displayName": "Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "additionalShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "unmatchedColor": {
+                    "displayName": "Unmatched state color",
+                    "description": "The default color of the additional measure. If you use conditional formatting and none of the conditions are met, then this color will be visible.",
+                    "displayNameKey": "unmatchedColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "conditionFormatting": {
+                    "displayName": "Condition formatting",
+                    "displayNameKey": "conditionFormatting",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "componentType": {
+                    "displayName": "Component type",
+                    "description": "Select the relative value itself or the deviation you need to adjust the color formatting. You can also set up a complex condition using F(x).",
+                    "displayNameKey": "componentType",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Measure",
+                                "displayNameKey": "measure",
+                                "value": "measure"
+                            },
+                            {
+                                "displayName": "Change over Main Measure",
+                                "displayNameKey": "changeOver",
+                                "value": "changeOver"
+                            },
+                            {
+                                "displayName": "Percentage over Main Measure",
+                                "displayNameKey": "percentageOver",
+                                "value": "percentageOver"
+                            },
+                            {
+                                "displayName": "Percentage change over Main Measure",
+                                "displayNameKey": "percentageChangeOver",
+                                "value": "percentageChangeOver"
+                            }
+                        ]
+                    }
+                },
+                "invertVariance": {
+                    "displayName": "Invert Variance",
+                    "description": "Сhanges the order of calculation for an additional measure.",
+                    "displayNameKey": "invertVariance",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "condition1": {
+                    "displayName": "Condition 1",
+                    "displayNameKey": "condition1",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "comparisonOperator1": {
+                    "displayName": "Comparison operator",
+                    "description": "Select a logical condition from the list for comparison.",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "value1": {
+                    "displayName": "Value",
+                    "description": "Enter a numeric value to limit the condition.",
+                    "displayNameKey": "value",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "assignColor1": {
+                    "displayName": "The assign the color",
+                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "displayNameKey": "assignColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "condition2": {
+                    "displayName": "Condition 2",
+                    "displayNameKey": "condition2",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "comparisonOperator2": {
+                    "displayName": "Comparison operator",
+                    "description": "Select a logical condition from the list for comparison.",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "value2": {
+                    "displayName": "Value",
+                    "description": "Enter a numeric value to limit the condition.",
+                    "displayNameKey": "value",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "assignColor2": {
+                    "displayName": "The assign the color",
+                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "displayNameKey": "assignColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "condition3": {
+                    "displayName": "Condition 3",
+                    "displayNameKey": "condition3",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "comparisonOperator3": {
+                    "displayName": "Comparison operator",
+                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "displayNameKey": "comparisonOperator",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Greater than (>)",
+                                "displayNameKey": ">",
+                                "value": ">"
+                            },
+                            {
+                                "displayName": "Greater than or equal to (>=)",
+                                "displayNameKey": ">=",
+                                "value": ">="
+                            },
+                            {
+                                "displayName": "Equal to (=)",
+                                "displayNameKey": "=",
+                                "value": "="
+                            },
+                            {
+                                "displayName": "Less than or equal to (<=)",
+                                "displayNameKey": "<=",
+                                "value": "<="
+                            },
+                            {
+                                "displayName": "Less than (<)",
+                                "displayNameKey": "<",
+                                "value": "<"
+                            }
+                        ]
+                    }
+                },
+                "value3": {
+                    "displayName": "Value",
+                    "description": "Enter a numeric value to limit the condition.",
+                    "displayNameKey": "value",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "assignColor3": {
+                    "displayName": "The assign the color",
+                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "displayNameKey": "assignColor",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
                 }
             }

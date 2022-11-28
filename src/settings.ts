@@ -198,6 +198,28 @@ export class Font {
   public categoryIsItalic: boolean = false;
   public categoryIsBold: boolean = false;
   public categoryIsUnderline: boolean = false;
+
+  public mainfontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public mainTextSize: number = 12;
+  public mainIsItalic: boolean = false;
+  public mainIsBold: boolean = false;
+  public mainIsUnderline: boolean = false;
+
+  public additionalNamefontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public additionalNameWordWrap_: boolean = false;
+  public additionalNameTextSize: number = 12;
+  public additionalNameIsItalic: boolean = false;
+  public additionalNameIsBold: boolean = false;
+  public additionalNameIsUnderline: boolean = false;
+
+  public additionalValuefontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public additionalValueTextSize: number = 12;
+  public additionalValueIsItalic: boolean = false;
+  public additionalValueIsBold: boolean = false;
+  public additionalValueIsUnderline: boolean = false;
 }
 
 export class Format {
@@ -207,7 +229,8 @@ export class Format {
   public blankAndNaNReplaceText: string = "0";
 
   public additionalShow: boolean = false;
-  public minDisplayUnit: number = 0;
+  public mainShow: boolean = false;
+  public mainDisplayUnit: number = 0;
   public mainDecimalPlaces: number = 0;
   public mainSuppressBlankAndNaN: boolean = true;
   public mainBlankAndNaNReplaceText: string = "0";
@@ -222,6 +245,39 @@ export class AdditiionalFormat {
   public blankAndNaNReplaceText: string = "0";
   public componentType: string = "measure";
   public invertVariance: boolean = false;
+}
+
+export class Color {
+  public color: string = "#333333";
+  public maincolor: string = "#333333";
+
+  public mainShow: boolean = false;
+  public additionalShow: boolean = false;
+}
+
+export class AdditiionalColor {
+  public metadata: string;
+  public measureDisplayName: string;
+  public componentType: string = "measure";
+  public invertVariance: boolean = false;
+  public unmatchedColor = { solid: { color: "#333333" } };
+  public conditionFormatting: boolean = false;
+  public condition1: boolean = false;
+  public comparisonOperator1: string = ">";
+  public condition2: boolean = false;
+  public comparisonOperator2: string = ">";
+  public condition3: boolean = false;
+  public comparisonOperator3: string = ">";
+  public value1: number = null;
+  public value2: number = null;
+  public value3: number = null;
+  public assignColor1 = { solid: { color: "#333333" } };
+  public assignColor2 = { solid: { color: "#333333" } };
+  public assignColor3 = { solid: { color: "#333333" } };
+  public conditions: boolean[] = [];
+  public comparisonOperators: string[] = [];
+  public values: number[] = [];
+  public assignColors: { solid: { color: string } }[] = [];
 }
 
 export class CardSettings extends DataViewObjectsParser {
@@ -239,4 +295,6 @@ export class CardSettings extends DataViewObjectsParser {
   public font: Font = new Font();
   public format: Format = new Format();
   public additionalFormat: AdditiionalFormat[] = [];
+  public color: Color = new Color();
+  public additionalColor: AdditiionalColor[] = [];
 }

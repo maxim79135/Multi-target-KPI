@@ -31,6 +31,7 @@ import {
   AdditionalItem,
   DataLabel,
   AdditiionalFormat,
+  AdditiionalColor,
 } from "../settings";
 import {
   IAdditionalMeasure,
@@ -317,6 +318,135 @@ function getAdditionFormatValues(
   return format;
 }
 
+function getAdditionColor(
+  value: DataViewValueColumn,
+  settings: CardSettings
+): AdditiionalColor {
+  let color: AdditiionalColor;
+  color = settings.additionalColor.find(
+    (i) => i.metadata === value.source.queryName
+  );
+  if (!color) {
+    color = new AdditiionalColor();
+
+    color.measureDisplayName = value.source.displayName;
+    color.metadata = value.source.queryName;
+    color.unmatchedColor = getValue(
+      value.source.objects,
+      "color",
+      "unmatchedColor",
+      color.unmatchedColor
+    );
+    color.conditionFormatting = getValue(
+      value.source.objects,
+      "color",
+      "conditionFormatting",
+      color.conditionFormatting
+    );
+    color.componentType = getValue(
+      value.source.objects,
+      "color",
+      "componentType",
+      color.componentType
+    );
+    color.invertVariance = getValue(
+      value.source.objects,
+      "color",
+      "invertVariance",
+      color.invertVariance
+    );
+    color.condition1 = getValue(
+      value.source.objects,
+      "color",
+      "condition1",
+      color.condition1
+    );
+    color.comparisonOperator1 = getValue(
+      value.source.objects,
+      "color",
+      "comparisonOperator1",
+      color.comparisonOperator1
+    );
+    color.value1 = getValue(
+      value.source.objects,
+      "color",
+      "value1",
+      color.value1
+    );
+    color.assignColor1 = getValue(
+      value.source.objects,
+      "color",
+      "assignColor1",
+      color.assignColor1
+    );
+    color.condition2 = getValue(
+      value.source.objects,
+      "color",
+      "condition2",
+      color.condition2
+    );
+    color.comparisonOperator2 = getValue(
+      value.source.objects,
+      "color",
+      "comparisonOperator2",
+      color.comparisonOperator2
+    );
+    color.value2 = getValue(
+      value.source.objects,
+      "color",
+      "value2",
+      color.value2
+    );
+    color.assignColor2 = getValue(
+      value.source.objects,
+      "color",
+      "assignColor2",
+      color.assignColor2
+    );
+    color.condition3 = getValue(
+      value.source.objects,
+      "color",
+      "condition3",
+      color.condition3
+    );
+    color.comparisonOperator3 = getValue(
+      value.source.objects,
+      "color",
+      "comparisonOperator3",
+      color.comparisonOperator3
+    );
+    color.value3 = getValue(
+      value.source.objects,
+      "color",
+      "value3",
+      color.value3
+    );
+    color.assignColor3 = getValue(
+      value.source.objects,
+      "color",
+      "assignColor3",
+      color.assignColor3
+    );
+
+    color.conditions.push(color.condition1, color.condition2, color.condition3);
+    color.comparisonOperators.push(
+      color.comparisonOperator1,
+      color.comparisonOperator2,
+      color.comparisonOperator3
+    );
+    color.values.push(color.value1, color.value2, color.value3);
+    color.assignColors.push(
+      color.assignColor1,
+      color.assignColor2,
+      color.assignColor3
+    );
+
+    settings.additionalColor.push(color);
+  }
+
+  return color;
+}
+
 function calculateAdditionalValue(
   mainMeasureValue: number,
   additionalMeasureValue: number,
@@ -489,6 +619,7 @@ export function visualTransform(
           let additionalMeasure: IAdditionalMeasure = {};
           let additionalSettings = getAdditionalSettings(dataValue, settings);
           getAdditionFormatValues(dataValue, settings);
+          getAdditionColor(dataValue, settings);
           additionalMeasure.displayName = additionalSettings.measureDisplayName;
           additionalMeasure.measureValue =
             valueType.numeric || valueType.integer ? value : null;
