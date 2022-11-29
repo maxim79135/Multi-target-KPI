@@ -107,11 +107,12 @@ export class CardKPI implements IVisual {
 
     let mainMeasureValue: powerbi.visuals.FormattingGroup = {
       displayName: "Main measure value",
+      description:
+        "Enable this field if you want to change the position of the Main Measure",
       uid: "mainMeasureValue",
       slices: [
         {
           uid: "mainMeasureValue_percentageWidth",
-          displayName: "Percentage width",
           control: {
             type: powerbi.visuals.FormattingComponent.Slider,
             properties: {
@@ -120,12 +121,21 @@ export class CardKPI implements IVisual {
                 propertyName: "percentageWidth",
               },
               value: settings.grid.percentageWidth,
+              options: {
+                minValue: {
+                  type: powerbi.visuals.ValidatorType.Min,
+                  value: 10,
+                },
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 90,
+                },
+              },
             },
           },
         },
         {
           uid: "mainMeasureValue_wireframe",
-          displayName: "Wireframe",
           control: {
             type: powerbi.visuals.FormattingComponent.Dropdown,
             properties: {
@@ -139,13 +149,12 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let category: powerbi.visuals.FormattingGroup = {
+    let mainMeasureName: powerbi.visuals.FormattingGroup = {
       displayName: "Main measure name",
       uid: "grid_category",
       slices: [
         {
           uid: "grid_category_labelAsMeasurename",
-          displayName: "Show measure name instead of category",
           control: {
             type: powerbi.visuals.FormattingComponent.ToggleSwitch,
             properties: {
@@ -159,7 +168,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "grid_category_position",
-          displayName: "Position main measure name",
           control: {
             type: powerbi.visuals.FormattingComponent.Dropdown,
             properties: {
@@ -173,13 +181,14 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let category1: powerbi.visuals.FormattingGroup = {
+    let category: powerbi.visuals.FormattingGroup = {
       displayName: "Category",
+      description:
+        "Enable this field if you want to change the position of the Categories.",
       uid: "grid_category1",
       slices: [
         {
           uid: "grid_category_cardsPerRow",
-          displayName: "Cards per row",
           control: {
             type: powerbi.visuals.FormattingComponent.NumUpDown,
             properties: {
@@ -188,12 +197,17 @@ export class CardKPI implements IVisual {
                 propertyName: "cardsPerRow",
               },
               value: settings.grid.cardsPerRow,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 15,
+                },
+              },
             },
           },
         },
         {
           uid: "grid_category_cardsMargin",
-          displayName: "Space between cards",
           control: {
             type: powerbi.visuals.FormattingComponent.NumUpDown,
             properties: {
@@ -202,6 +216,12 @@ export class CardKPI implements IVisual {
                 propertyName: "cardsMargin",
               },
               value: settings.grid.cardsMargin,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 100,
+                },
+              },
             },
           },
         },
@@ -209,11 +229,12 @@ export class CardKPI implements IVisual {
     };
     let additionalMeasures: powerbi.visuals.FormattingGroup = {
       displayName: "Additional measures",
+      description:
+        "Еnable this field if you want to change the position of Additional Measures.",
       uid: "grid_additionalMeasures",
       slices: [
         {
           uid: "grid_category_layout_type",
-          displayName: "Layout type",
           control: {
             type: powerbi.visuals.FormattingComponent.Dropdown,
             properties: {
@@ -229,8 +250,8 @@ export class CardKPI implements IVisual {
     };
 
     grid.groups.push(mainMeasureValue);
+    grid.groups.push(mainMeasureName);
     grid.groups.push(category);
-    grid.groups.push(category1);
     grid.groups.push(additionalMeasures);
 
     let alignment: powerbi.visuals.FormattingCard = {
@@ -243,11 +264,11 @@ export class CardKPI implements IVisual {
 
     let alignment_all: powerbi.visuals.FormattingGroup = {
       displayName: "All",
+      description: "Set alignment for all elements.",
       uid: "alignment_all",
       slices: [
         {
           uid: "alignment_vertical_alignment",
-          displayName: "Vertical",
           disabled: settings.alignment.show_additional_vertical,
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
@@ -263,7 +284,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "alignment_horizontal_alignment",
-          displayName: "Horizontal",
           disabled: settings.alignment.show_additional_horizontal,
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
@@ -282,6 +302,8 @@ export class CardKPI implements IVisual {
 
     let alignment_additional_vertical: powerbi.visuals.FormattingGroup = {
       displayName: "Vertical alignment",
+      description:
+        "Enable this field if you want to change the vertical position of the element.",
       uid: "alignment_additional_vertical",
       topLevelToggle: {
         uid: "alignment_additional_vertical_show",
@@ -300,7 +322,6 @@ export class CardKPI implements IVisual {
       slices: [
         {
           uid: "alignment_additional_vertical_main_measure",
-          displayName: "Main measure value",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {
@@ -319,6 +340,10 @@ export class CardKPI implements IVisual {
             settings.grid.layoutType == "horizontal"
               ? "Additional measures name and value"
               : "Additional measures",
+          description:
+            settings.grid.layoutType == "horizontal"
+              ? "Additional Measures section (name and values)."
+              : "Additional Measures",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {
@@ -352,6 +377,8 @@ export class CardKPI implements IVisual {
 
     let alignment_additional_horizontal: powerbi.visuals.FormattingGroup = {
       displayName: "Horizontal alignment",
+      description:
+        "Enable this field if you want to change the horizontal position of the element.",
       uid: "alignment_additional_horizontal",
       topLevelToggle: {
         uid: "alignment_additional_horizontal_show",
@@ -370,7 +397,6 @@ export class CardKPI implements IVisual {
       slices: [
         {
           uid: "alignment_additional_horizontal_main_measure",
-          displayName: "Main measure name",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {
@@ -385,7 +411,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "alignment_additional_horizontal_category",
-          displayName: "Category",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {
@@ -400,7 +425,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "alignment_additional_horizontal_additional_name",
-          displayName: "Additional measure name",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {
@@ -415,7 +439,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "alignment_additional_horizontal_additional_value",
-          displayName: "Additional measure value",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {
@@ -446,6 +469,7 @@ export class CardKPI implements IVisual {
     let background_layout: powerbi.visuals.FormattingGroup = {
       uid: "background_layout",
       displayName: "Layout",
+      description: "Add layout background.",
       topLevelToggle: {
         uid: "background_layout_show",
         control: {
@@ -494,6 +518,7 @@ export class CardKPI implements IVisual {
     let background_border: powerbi.visuals.FormattingGroup = {
       uid: "background_border",
       displayName: "Border",
+      description: "Add a border to the card.",
       topLevelToggle: {
         uid: "background_border_show",
         control: {
@@ -533,6 +558,16 @@ export class CardKPI implements IVisual {
                 propertyName: "borderWeight",
               },
               value: settings.background.borderWeight,
+              options: {
+                minValue: {
+                  type: powerbi.visuals.ValidatorType.Min,
+                  value: 1,
+                },
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
             },
           },
         },
@@ -546,6 +581,16 @@ export class CardKPI implements IVisual {
                 propertyName: "roundEdges",
               },
               value: settings.background.roundEdges,
+              options: {
+                minValue: {
+                  type: powerbi.visuals.ValidatorType.Min,
+                  value: 1,
+                },
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
             },
           },
         },
@@ -571,6 +616,7 @@ export class CardKPI implements IVisual {
         {
           uid: "font_all_font",
           displayName: "Font family",
+          description: "Specify the font family",
           control: {
             type: powerbi.visuals.FormattingComponent.FontControl,
             properties: {
@@ -614,7 +660,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "font_all_word_wrap",
-          displayName: "Word wrap",
           control: {
             type: powerbi.visuals.FormattingComponent.ToggleSwitch,
             properties: {
@@ -650,6 +695,7 @@ export class CardKPI implements IVisual {
         {
           uid: "font_additional_font_category",
           displayName: "Category",
+          description: "Specify the font family",
           control: {
             type: powerbi.visuals.FormattingComponent.FontControl,
             properties: {
@@ -693,7 +739,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "font_additional_category_word_wrap",
-          displayName: "Word wrap",
           control: {
             type: powerbi.visuals.FormattingComponent.ToggleSwitch,
             properties: {
@@ -708,6 +753,7 @@ export class CardKPI implements IVisual {
         {
           uid: "font_additional_font_main",
           displayName: "Main measure value",
+          description: "Specify the font family",
           control: {
             type: powerbi.visuals.FormattingComponent.FontControl,
             properties: {
@@ -752,6 +798,7 @@ export class CardKPI implements IVisual {
         {
           uid: "font_additional_font_additional_name",
           displayName: "Additional measure names",
+          description: "Specify the font family",
           control: {
             type: powerbi.visuals.FormattingComponent.FontControl,
             properties: {
@@ -795,7 +842,6 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "font_additional_name_word_wrap",
-          displayName: "Word wrap",
           control: {
             type: powerbi.visuals.FormattingComponent.ToggleSwitch,
             properties: {
@@ -810,6 +856,7 @@ export class CardKPI implements IVisual {
         {
           uid: "font_additional_font_additional_value",
           displayName: "Additional measure values",
+          description: "Specify the font family",
           control: {
             type: powerbi.visuals.FormattingComponent.FontControl,
             properties: {
@@ -868,6 +915,7 @@ export class CardKPI implements IVisual {
     let format_all: powerbi.visuals.FormattingGroup = {
       uid: "format_all",
       displayName: "All",
+      description: "Set the values format for all elements.",
       disabled: settings.format.additionalShow,
       slices: [
         {
@@ -936,6 +984,8 @@ export class CardKPI implements IVisual {
     let format_main: powerbi.visuals.FormattingGroup = {
       uid: "format_main",
       displayName: "Main measure value",
+      description:
+        "Enable this field if you want to change the format of the Main Measure value.",
       topLevelToggle: {
         uid: "format_main_show",
         control: {
@@ -1016,6 +1066,8 @@ export class CardKPI implements IVisual {
     let format_additional: powerbi.visuals.FormattingGroup = {
       uid: "format_additional",
       displayName: "Additional measure values",
+      description:
+        "Enable this field if you want to change the format of the Additional Measure values.",
       topLevelToggle: {
         uid: "format_additional_show",
         control: {
@@ -1165,6 +1217,7 @@ export class CardKPI implements IVisual {
     let color_all: powerbi.visuals.FormattingGroup = {
       uid: "color_all",
       displayName: "All",
+      description: "Set color for all elements.",
       slices: [
         {
           uid: "color_all_color",
@@ -1184,6 +1237,7 @@ export class CardKPI implements IVisual {
     let color_main: powerbi.visuals.FormattingGroup = {
       uid: "color_main",
       displayName: "Main measure value",
+      description: "Set Color for Main Measure",
       slices: [
         {
           uid: "color_main_color",
@@ -1204,6 +1258,7 @@ export class CardKPI implements IVisual {
     let color_additional: powerbi.visuals.FormattingGroup = {
       uid: "color_additional",
       displayName: "Additional measure values",
+      description: "Additional measure values",
       topLevelToggle: {
         uid: "color_additional_show",
         control: {
@@ -1237,8 +1292,9 @@ export class CardKPI implements IVisual {
                         descriptor: {
                           objectName: "color",
                           propertyName: "unmatchedColor",
-                          instanceKind:
-                            VisualEnumerationInstanceKinds.ConstantOrRule,
+                          instanceKind: !item.conditionFormatting
+                            ? VisualEnumerationInstanceKinds.ConstantOrRule
+                            : VisualEnumerationInstanceKinds.Constant,
                           selector: {
                             metadata: item.metadata,
                           },
@@ -1301,10 +1357,10 @@ export class CardKPI implements IVisual {
                     },
                   }
                 );
+                this.addConditionColor(list, item, 1);
+                this.addConditionColor(list, item, 2);
+                this.addConditionColor(list, item, 3);
               }
-              this.addConditionColor(list, item, 1);
-              this.addConditionColor(list, item, 2);
-              this.addConditionColor(list, item, 3);
               return list;
             }
           ),

@@ -10,7 +10,7 @@
         },
         {
             "displayName": "Category",
-            "description": "You can set a field that will split the card and all values (main measure, additional and hint values) into several. Keep in mind that if some values cannot be divided into categories, then the same value will be output for all cards.",
+            "description": "You can set a field that will split the card and all values (main measure, additional and tooltips) into several. Keep in mind that if some values cannot be divided into categories, then the same value will be output for all cards.",
             "displayNameKey": "category",
             "name": "category",
             "kind": "Grouping"
@@ -91,6 +91,7 @@
             "displayNameKey": "grid",
             "properties": {
                 "percentageWidth": {
+                    "displayName": "Percentage width",
                     "description": "The percentage width allows you to adjust the proportion of width occupied by the main measure. Takes a value from 10 to 90.",
                     "displayNameKey": "percentageWidth",
                     "type": {
@@ -99,6 +100,7 @@
                 },
                 "wireframe": {
                     "displayName": "Wireframe",
+                    "description": "The framework defines the location type of the value and title of the Main measure. Choose 1 of 2 types: To the left of the block with additional measures, or Above the block with additional measures.",
                     "displayNameKey": "wireframe",
                     "type": {
                         "enumeration": [
@@ -116,14 +118,16 @@
                     }
                 },
                 "labelAsMeasurename": {
-                    "description": "If you need to replace the category names with the name of the main measure, then enable this field. For example, when categories need to be spelled out in separate text.",
+                    "displayName": "Show measure name instead of category",
+                    "description": "Еnable this field If you need to replace the category names with the name of the main measure. For example, when it is necessary to rename categories.",
                     "displayNameKey": "labelAsMeasurename",
                     "type": {
                         "bool": true
                     }
                 },
                 "position": {
-                    "description": "Set up a constraint for alignment: the name of the main measure or category will be in the area of the main measure section or across the entire width of the card.",
+                    "displayName": "Position main measure name",
+                    "description": "Set up the alignment constraint: the name of the Main Measure or Category will be located in the area of the Main Measure section or across the entire width of the card.",
                     "displayNameKey": "position",
                     "type": {
                         "enumeration": [
@@ -141,19 +145,22 @@
                     }
                 },
                 "cardsPerRow": {
-                    "description": "The maximum allowed number of cards in one row is 15. The rest are transferred to the second and subsequent levels.",
+                    "displayName": "Cards per row",
+                    "description": "The maximum allowed number of cards in one row is 15. The rest are transferred to the second and subsequent rows.",
                     "displayNameKey": "cardsPerRow",
                     "type": {
                         "integer": true
                     }
                 },
                 "cardsMargin": {
-                    "description": "The maximum distance between individuals cards is 100.",
+                    "displayName": "Space between cards",
+                    "description": "The maximum distance between individual cards is 100.",
                     "type": {
                         "integer": true
                     }
                 },
                 "layoutType": {
+                    "displayName": "Layout type",
                     "description": "Select a vertical or horizontal arrangement of categories and values of additional measures.",
                     "displayNameKey": "layoutType",
                     "type": {
@@ -177,7 +184,8 @@
             "displayNameKey": "alignment",
             "properties": {
                 "vertical": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayName": "Vertical",
+                    "description": "Vertical alignment sets the type of location of the element according to the height of the card. Choose 1 of 3 types: Top, Middle, Bottom.",
                     "displayNameKey": "vertical",
                     "type": {
                         "formatting": {
@@ -186,7 +194,8 @@
                     }
                 },
                 "horizontal": {
-                    "description": "Set 1 of 3 alignment types for the value of the main measure: left, center, right.",
+                    "displayName": "Horizontal",
+                    "description": "Set 1 of 3 element alignment types: Left, Center, Right.",
                     "displayNameKey": "horizontal",
                     "type": {
                         "formatting": {
@@ -205,7 +214,8 @@
                     }
                 },
                 "verticalMainMeasure": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayName": "Main measure value",
+                    "description": "Main measure.",
                     "displayNameKey": "verticalMainMeasure",
                     "type": {
                         "formatting": {
@@ -214,7 +224,8 @@
                     }
                 },
                 "horizontalMainMeasure": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayName": "Main measure name",
+                    "description": "Main measure name.",
                     "displayNameKey": "verticalMainMeasure",
                     "type": {
                         "formatting": {
@@ -223,7 +234,6 @@
                     }
                 },
                 "verticalAdditionalMeasure": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
                     "displayNameKey": "verticalAdditionalMeasure",
                     "type": {
                         "formatting": {
@@ -233,7 +243,7 @@
                 },
                 "verticalAdditionalMeasureName": {
                     "displayName": "Position additional measure names",
-                    "description": "Regulates the location of the category text and the values of the additional measure among themselves. You can configure the text to be to the left or right of the value, as well as above or below it.",
+                    "description": "Change the position of the Additional Measures names. Set 1 of 4 element alignment types: Top, Bottom, Left, Right.",
                     "displayNameKey": "verticalAdditionalMeasureName",
                     "type": {
                         "enumeration": [
@@ -261,7 +271,8 @@
                     }
                 },
                 "horizontalAdditionalMeasureName": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayName": "Additional measure name",
+                    "description": "Additional Measure names.",
                     "displayNameKey": "horizontalAdditionalMeasureName",
                     "type": {
                         "formatting": {
@@ -270,7 +281,8 @@
                     }
                 },
                 "horizontalAdditionalMeasureValue": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayName": "Additional measure value",
+                    "description": "Additional Measure values.",
                     "displayNameKey": "horizontalAdditionalMeasureValue",
                     "type": {
                         "formatting": {
@@ -279,7 +291,8 @@
                     }
                 },
                 "horizontalCategory": {
-                    "description": "Vertical aligment specifies the type of location of the value of the measure by the height of the card. Choose 1 of 3 types: Top, Middle, Buttom.",
+                    "displayName": "Category",
+                    "description": "Category.",
                     "displayNameKey": "horizontalCategory",
                     "type": {
                         "formatting": {
@@ -303,7 +316,7 @@
                 },
                 "backFill": {
                     "displayName": "Background color",
-                    "description": "Background color for the visual element. If the values are divided into categories, then the settings for each card are saved.",
+                    "description": "Background color for the visual element.",
                     "type": {
                         "fill": {
                             "solid": {
@@ -333,13 +346,14 @@
                 },
                 "borderWeight": {
                     "displayName": "Border weight",
-                    "description": "Set the width of the border line. The value should be from 1 to 30.",
+                    "description": "Set the rounding of the border edges. The value should be from 1 to 30.",
                     "type": {
                         "integer": true
                     }
                 },
                 "roundEdges": {
                     "displayName": "Border weight",
+                    "description": "Set the width of the border line. The value should be from 1 to 30.",
                     "type": {
                         "integer": true
                     }
@@ -378,6 +392,8 @@
                     }
                 },
                 "wordWrap_": {
+                    "displayName": "Word wrap",
+                    "description": "Label text wrap is disabled by default. Enable this field if you want to change that.",
                     "type": {
                         "bool": true
                     }
@@ -417,6 +433,8 @@
                     }
                 },
                 "categoryWordWrap_": {
+                    "displayName": "Word wrap",
+                    "description": "Label text wrap is disabled by default. Enable this field if you want to change that.",
                     "type": {
                         "bool": true
                     }
@@ -480,6 +498,8 @@
                     }
                 },
                 "additionalNameWordWrap_": {
+                    "displayName": "Word wrap",
+                    "description": "Label text wrap is disabled by default. Enable this field if you want to change that.",
                     "type": {
                         "bool": true
                     }
@@ -529,6 +549,7 @@
                 },
                 "displayUnit": {
                     "displayName": "Display Unit",
+                    "description": "Specify the display unit.",
                     "type": {
                         "formatting": {
                             "labelDisplayUnits": true
@@ -537,24 +558,28 @@
                 },
                 "decimalPlaces": {
                     "displayName": "Decimal places",
+                    "description": "Specify decimal places for decimal number.",
                     "type": {
                         "numeric": true
                     }
                 },
                 "suppressBlankAndNaN": {
                     "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "description": "Enable this field if you want to replace the value of the additional measure with another text in the case of Blank or NaN.",
                     "type": {
                         "bool": true
                     }
                 },
                 "blankAndNaNReplaceText": {
                     "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "description": "Specify the text or symbol to replace the Blank or NaN values. It can be '0', '—' or a warning symbol.",
                     "type": {
                         "text": true
                     }
                 },
                 "mainDisplayUnit": {
                     "displayName": "Display Unit",
+                    "description": "Specify the display unit.",
                     "type": {
                         "formatting": {
                             "labelDisplayUnits": true
@@ -563,18 +588,21 @@
                 },
                 "mainDecimalPlaces": {
                     "displayName": "Decimal places",
+                    "description": "Specify decimal places for decimal number.",
                     "type": {
                         "numeric": true
                     }
                 },
                 "mainSuppressBlankAndNaN": {
                     "displayName": "Suppress '(Blank)' and '(NaN)'",
+                    "description": "Enable this field if you want to replace the value of the additional measure with another text in the case of Blank or NaN.",
                     "type": {
                         "bool": true
                     }
                 },
                 "mainBlankAndNaNReplaceText": {
                     "displayName": "'(Blank)' and '(NaN)' replace text",
+                    "description": "Specify the text or symbol to replace the Blank or NaN values. It can be '0', '—' or a warning symbol.",
                     "type": {
                         "text": true
                     }
@@ -610,7 +638,7 @@
                 },
                 "invertVariance": {
                     "displayName": "Invert Variance",
-                    "description": "Сhanges the order of calculation for an additional measure.",
+                    "description": "Changes the calculation order for an additional measure value",
                     "displayNameKey": "invertVariance",
                     "type": {
                         "bool": true
@@ -622,6 +650,7 @@
             "properties": {
                 "color": {
                     "displayName": "Color",
+                    "description": "Color for all elements",
                     "type": {
                         "fill": {
                             "solid": {
@@ -659,6 +688,7 @@
                 },
                 "conditionFormatting": {
                     "displayName": "Condition formatting",
+                    "description": "Enable this field if you want to add conditional formatting for individual elements.",
                     "displayNameKey": "conditionFormatting",
                     "type": {
                         "bool": true
@@ -666,7 +696,7 @@
                 },
                 "componentType": {
                     "displayName": "Component type",
-                    "description": "Select the relative value itself or the deviation you need to adjust the color formatting. You can also set up a complex condition using F(x).",
+                    "description": "Select the relative value itself or the deviation you need to adjust the color formatting.",
                     "displayNameKey": "componentType",
                     "type": {
                         "enumeration": [
@@ -695,7 +725,7 @@
                 },
                 "invertVariance": {
                     "displayName": "Invert Variance",
-                    "description": "Сhanges the order of calculation for an additional measure.",
+                    "description": "Change the order of calculation for an additional measure value",
                     "displayNameKey": "invertVariance",
                     "type": {
                         "bool": true
@@ -703,6 +733,7 @@
                 },
                 "condition1": {
                     "displayName": "Condition 1",
+                    "description": "Enable this field if you want to add a conditional formatting",
                     "displayNameKey": "condition1",
                     "type": {
                         "bool": true
@@ -752,7 +783,7 @@
                 },
                 "assignColor1": {
                     "displayName": "The assign the color",
-                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "description": "Set the color value of the additional measure for this condition.",
                     "displayNameKey": "assignColor",
                     "type": {
                         "fill": {
@@ -764,6 +795,7 @@
                 },
                 "condition2": {
                     "displayName": "Condition 2",
+                    "description": "Enable this field if you want to add a conditional formatting",
                     "displayNameKey": "condition2",
                     "type": {
                         "bool": true
@@ -813,7 +845,7 @@
                 },
                 "assignColor2": {
                     "displayName": "The assign the color",
-                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "description": "Set the color value of the additional measure for this condition.",
                     "displayNameKey": "assignColor",
                     "type": {
                         "fill": {
@@ -825,6 +857,7 @@
                 },
                 "condition3": {
                     "displayName": "Condition 3",
+                    "description": "Enable this field if you want to add a conditional formatting",
                     "displayNameKey": "condition3",
                     "type": {
                         "bool": true
@@ -832,7 +865,7 @@
                 },
                 "comparisonOperator3": {
                     "displayName": "Comparison operator",
-                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "description": "Select a logical condition from the list for comparison.",
                     "displayNameKey": "comparisonOperator",
                     "type": {
                         "enumeration": [
@@ -874,7 +907,7 @@
                 },
                 "assignColor3": {
                     "displayName": "The assign the color",
-                    "description": "Set the color of the value of the additional measure for this condition.",
+                    "description": "Set the color value of the additional measure for this condition.",
                     "displayNameKey": "assignColor",
                     "type": {
                         "fill": {

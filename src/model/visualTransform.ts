@@ -318,6 +318,7 @@ function getAdditionFormatValues(
   return format;
 }
 
+// tslint:disable-next-line: max-func-body-length
 function getAdditionColor(
   value: DataViewValueColumn,
   settings: CardSettings
