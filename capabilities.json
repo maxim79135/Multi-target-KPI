@@ -352,7 +352,7 @@
                     }
                 },
                 "roundEdges": {
-                    "displayName": "Border weight",
+                    "displayName": "Round edges",
                     "description": "Set the width of the border line. The value should be from 1 to 30.",
                     "type": {
                         "integer": true

@@ -560,10 +560,6 @@ export class CardKPI implements IVisual {
               },
               value: settings.background.borderWeight,
               options: {
-                minValue: {
-                  type: powerbi.visuals.ValidatorType.Min,
-                  value: 1,
-                },
                 maxValue: {
                   type: powerbi.visuals.ValidatorType.Max,
                   value: 30,
