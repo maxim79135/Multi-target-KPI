@@ -27,6 +27,7 @@
 import * as d3 from "d3";
 import "core-js/stable";
 import "./../style/visual.less";
+import "regenerator-runtime/runtime";
 import powerbi from "powerbi-visuals-api";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;

@@ -2,7 +2,7 @@
     "visual":{
        "name":"Multi target KPI",
        "displayName":"Multi target KPI",
-       "guid":"Multi_target_KPI",
+       "guid":"Multi_target_KPI_dev",
        "visualClassName":"CardKPI",
        "version":"1.1.4",
        "description":"This card is designed to display the main indicator with several deviation indicators with advanced color formatting settings.",
