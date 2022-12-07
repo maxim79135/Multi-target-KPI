@@ -397,7 +397,7 @@ export function visualTransform(
             blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
           };
           if (categories[i]) {
-            if (settings.category.labelAsMeasurename) {
+            if (settings.grid.labelAsMeasurename) {
               dataGroup.displayName = dataValue.source.displayName;
             } else {
               dataGroup.displayName = category

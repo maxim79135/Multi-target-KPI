@@ -87,19 +87,15 @@ export class Card {
   }
 
   public updateViewport(viewport: powerbi.IViewport) {
+    const settings = this.model.settings;
     this.numberOfCards = this.model.dataGroups.length;
-    this.cardsPerRow = Math.min(
-      this.numberOfCards,
-      this.model.settings.category.cardsPerRow
-    );
+    this.cardsPerRow = Math.min(this.numberOfCards, settings.grid.cardsPerRow);
     this.numberOfRows = Math.ceil(this.numberOfCards / this.cardsPerRow);
     this.cardMargin = {
       left: 0,
       top: 0,
-      right:
-        this.cardsPerRow > 1 ? this.model.settings.category.cardsMargin : 0,
-      bottom:
-        this.numberOfRows > 1 ? this.model.settings.category.cardsMargin : 0,
+      right: this.cardsPerRow > 1 ? settings.grid.cardsMargin : 0,
+      bottom: this.numberOfRows > 1 ? settings.grid.cardsMargin : 0,
     };
 
     this.cardViewport = {
@@ -115,13 +111,14 @@ export class Card {
           this.numberOfRows
       ),
     };
-    this.maxMainMeasureWidth = this.model.settings.grid.percentageWidth;
+    this.maxMainMeasureWidth = settings.grid.percentageWidth;
   }
 
   public createCardContainer() {
     this.cardsContainer.selectAll(".card").remove();
     this.cards = [];
     this.svg = [];
+    const settings = this.model.settings;
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let marginRight =
@@ -175,28 +172,24 @@ export class Card {
           );
         }
       });
-      if (this.model.settings.background.layoutShow) {
-        let backgroundColor = d3.color(this.model.settings.background.backFill);
-        backgroundColor.opacity =
-          1 - this.model.settings.background.transparency / 100;
+      if (settings.background.layoutShow) {
+        let backgroundColor = d3.color(settings.background.backFill);
+        backgroundColor.opacity = 1 - settings.background.transparency / 100;
         cardContainer.style("background-color", backgroundColor.formatRgb());
       }
-      if (this.model.settings.background.borderShow) {
+      if (settings.background.borderShow) {
         cardContainer
           .style(
             "border",
-            this.model.settings.background.borderShow
-              ? this.model.settings.background.borderWeight +
+            settings.background.borderShow
+              ? settings.background.borderWeight +
                   "px solid" +
-                  // this.model.settings.background.borderType +
+                  // settings.background.borderType +
                   // " " +
-                  this.model.settings.background.borderFill
+                  settings.background.borderFill
               : ""
           )
-          .style(
-            "border-radius",
-            `${this.model.settings.background.roundEdges}px`
-          );
+          .style("border-radius", `${settings.background.roundEdges}px`);
       }
       this.cards.push(cardContainer);
       this.svg.push(
@@ -213,8 +206,8 @@ export class Card {
       this.additionalMeasureContainerWidth =
         svgRect.width -
         this.maxMainMeasureWidth -
-        this.model.settings.additional.paddingLeft -
-        this.model.settings.additional.paddingRight;
+        settings.constants.additionalPaddingLeft -
+        settings.constants.additionalPaddingRight;
     }
   }
 
@@ -224,7 +217,7 @@ export class Card {
     this.additionalCategoryContainers = [];
     this.additionalMeasureContainers = [];
 
-    if (this.model.settings.categoryLabel.show) {
+    if (this.model.settings.grid.showMeasureName) {
       this.createCategoryLabel();
     }
     if (
@@ -332,11 +325,11 @@ export class Card {
       let categoryLabelSize = this.getSVGRect(categoryLabel);
       let x: number;
       let y: number =
-        settings.categoryLabel.paddingTop + categoryLabelSize.height;
+        settings.constants.categoryPaddingTop + categoryLabelSize.height;
 
-      if (settings.categoryLabel.horizontalAlignment == "center") {
+      if (settings.alignment.horizontalCategory == "center") {
         if (
-          settings.categoryLabel.position == "aboveMainMeasure" &&
+          settings.grid.position == "aboveMainMeasure" &&
           this.model.dataGroups[i].additionalMeasures.length > 0
         ) {
           x = this.maxMainMeasureWidth / 2;
@@ -344,17 +337,17 @@ export class Card {
           x = svgRect.width / 2;
         }
         categoryLabel.select("text").attr("text-anchor", "middle");
-      } else if (settings.categoryLabel.horizontalAlignment == "left") {
-        x = settings.categoryLabel.paddingSide;
+      } else if (settings.alignment.horizontalCategory == "left") {
+        x = settings.constants.categoryPaddingSide;
         categoryLabel.select("text").attr("text-anchor", "start");
-      } else if (settings.categoryLabel.horizontalAlignment == "right") {
+      } else if (settings.alignment.horizontalCategory == "right") {
         if (
-          settings.categoryLabel.position == "aboveMainMeasure" &&
+          settings.grid.position == "aboveMainMeasure" &&
           this.model.dataGroups[i].additionalMeasures.length > 0
         ) {
-          x = this.maxMainMeasureWidth - settings.categoryLabel.paddingSide;
+          x = this.maxMainMeasureWidth - settings.constants.categoryPaddingSide;
         } else {
-          x = svgRect.width - settings.categoryLabel.paddingSide;
+          x = svgRect.width - settings.constants.categoryPaddingSide;
         }
         categoryLabel.select("text").attr("text-anchor", "end");
       }
@@ -399,40 +392,54 @@ export class Card {
         this.model.dataGroups[0].additionalMeasures.length == 0
       )
         this.maxMainMeasureWidth = svgRect.width;
-      if (settings.dataLabel.horizontalAlignment == "center") {
-        x = this.maxMainMeasureWidth / 2;
-      } else if (settings.dataLabel.horizontalAlignment == "left") {
-        x = dataLabelSize.width / 2 + settings.dataLabel.paddingSide;
-      } else if (settings.dataLabel.horizontalAlignment == "right") {
-        x =
-          this.maxMainMeasureWidth -
-          dataLabelSize.width / 2 -
-          settings.dataLabel.paddingSide;
+
+      switch (settings.alignment.horizontalMainMeasure) {
+        case "center":
+          x = this.maxMainMeasureWidth / 2;
+          break;
+
+        case "left":
+          x =
+            dataLabelSize.width / 2 + settings.constants.mainMeasurePaddingSide;
+          break;
+
+        case "right":
+          x =
+            this.maxMainMeasureWidth -
+            dataLabelSize.width / 2 -
+            settings.constants.mainMeasurePaddingSide;
+          break;
       }
 
       if (this.categoryLabels.length == 0) {
         y = svgRect.height / 2;
       } else {
         let categoryLabelSize = this.getSVGRect(this.categoryLabels[i]);
-        if (settings.dataLabel.verticalAlignment == "middle") {
-          y =
-            settings.categoryLabel.paddingTop +
-            categoryLabelSize.height +
-            (svgRect.height -
-              settings.categoryLabel.paddingTop -
-              categoryLabelSize.height) /
-              2;
-        } else if (settings.dataLabel.verticalAlignment == "top") {
-          y =
-            settings.categoryLabel.paddingTop +
-            categoryLabelSize.height +
-            dataLabelSize.height / 2 +
-            settings.dataLabel.paddingTop;
-        } else if (settings.dataLabel.verticalAlignment == "bottom") {
-          y =
-            svgRect.height -
-            dataLabelSize.height / 2 -
-            settings.dataLabel.paddingBottom;
+        switch (settings.alignment.verticalMainMeasure) {
+          case "middle":
+            y =
+              settings.constants.categoryPaddingTop +
+              categoryLabelSize.height +
+              (svgRect.height -
+                settings.constants.categoryPaddingTop -
+                categoryLabelSize.height) /
+                2;
+            break;
+
+          case "top":
+            y =
+              settings.constants.categoryPaddingTop +
+              categoryLabelSize.height +
+              dataLabelSize.height / 2 +
+              settings.constants.mainMeasurePaddingTop;
+            break;
+
+          case "bottom":
+            y =
+              svgRect.height -
+              dataLabelSize.height / 2 -
+              settings.constants.mainMeasurePaddingBottom;
+            break;
         }
       }
 
@@ -478,32 +485,32 @@ export class Card {
         additionalCategoryLabel.append("text");
         let textProperties = this.getTextProperties(style);
         textProperties.text = v.displayName;
-        if (settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           this.additionalCategoryWidth =
             (svgRect.width -
               this.maxMainMeasureWidth -
-              settings.additional.paddingRight -
-              settings.additional.paddingLeft -
-              (array.length - 1) * settings.additional.marginOfMeasure) /
+              settings.constants.additionalPaddingRight -
+              settings.constants.additionalPaddingLeft -
+              (array.length - 1) * settings.constants.marginOfMeasure) /
             array.length;
         } else {
           if (
-            settings.additional.textAnchor == "left" ||
-            settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             this.additionalCategoryWidth =
               ((svgRect.width -
                 this.maxMainMeasureWidth -
-                settings.additional.paddingLeft -
-                settings.additional.paddingRight) *
-                (100 - settings.additional.percentageWidth)) /
+                settings.constants.additionalPaddingLeft -
+                settings.constants.additionalPaddingRight) *
+                (100 - settings.grid.percentageWidth)) /
               100;
           } else {
             this.additionalCategoryWidth =
               svgRect.width -
               this.maxMainMeasureWidth -
-              settings.additional.paddingLeft -
-              settings.additional.paddingRight;
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight;
           }
         }
 
@@ -534,7 +541,7 @@ export class Card {
           .attr("text-anchor");
         let x: number, y: number;
 
-        if (settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           x = Number(
             parseTranslateTransform(
               additionalMeasureContainer[j].attr("transform")
@@ -547,13 +554,13 @@ export class Card {
         } else {
           let startXPosition: number;
           if (
-            settings.additional.textAnchor == "left" ||
-            settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             startXPosition =
               this.maxMainMeasureWidth +
-              settings.additional.paddingLeft +
-              (settings.additional.textAnchor == "left"
+              settings.constants.additionalPaddingLeft +
+              (settings.alignment.verticalAdditionalMeasureName == "left"
                 ? 0
                 : this.additionalMeasureWidth);
             y = Number(
@@ -566,9 +573,10 @@ export class Card {
               .style("dominant-baseline", "middle");
           } else {
             startXPosition =
-              this.maxMainMeasureWidth + settings.additional.paddingLeft;
+              this.maxMainMeasureWidth +
+              settings.constants.additionalPaddingLeft;
             y =
-              settings.additional.textAnchor == "top"
+              settings.alignment.verticalAdditionalMeasureName == "top"
                 ? Math.abs(
                     this.getSVGRect(svg).y -
                       this.getSVGRect(additionalMeasureContainer[j]).top
@@ -631,49 +639,49 @@ export class Card {
         let textProperties = this.getTextProperties(style);
         textProperties.text = v.dataLabel;
         let additionalMeasureHeight: number;
-        if (settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           this.additionalMeasureWidth =
             (svgRect.width -
               this.maxMainMeasureWidth -
-              settings.additional.paddingRight -
-              settings.additional.paddingLeft -
-              (array.length - 1) * settings.additional.marginOfMeasure) /
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight -
+              (array.length - 1) * settings.constants.marginOfMeasure) /
             array.length;
         } else {
           let verticalPadding: number;
           if (array.length == 3 || array.length == 6) {
             verticalPadding =
-              settings.additional.paddingTop +
-              settings.additional.paddingBottom;
+              settings.constants.additionalPaddingTop +
+              settings.constants.additionalPaddingBottom;
           } else {
-            switch (settings.additional.verticalTextAnchor) {
+            switch (settings.alignment.verticalAdditionalMeasure) {
               case "top":
-                verticalPadding = settings.additional.paddingTop;
+                verticalPadding = settings.constants.additionalPaddingTop;
                 break;
               case "middle":
                 verticalPadding =
-                  settings.additional.paddingTop +
-                  settings.additional.paddingBottom;
+                  settings.constants.additionalPaddingTop +
+                  settings.constants.additionalPaddingBottom;
                 break;
               case "bottom":
-                verticalPadding = settings.additional.paddingBottom;
+                verticalPadding = settings.constants.additionalPaddingBottom;
             }
           }
           if (
-            settings.additional.textAnchor == "left" ||
-            settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             this.additionalMeasureWidth =
               (this.additionalMeasureContainerWidth *
-                settings.additional.percentageWidth) /
+                settings.grid.percentageWidth) /
               100;
             additionalMeasureHeight =
               (svgRect.height -
                 this.getSVGRect(this.categoryLabels[i]).height -
-                settings.categoryLabel.paddingTop -
-                (array.length - 1) * settings.additional.marginOfMeasure -
+                settings.constants.categoryPaddingTop -
+                (array.length - 1) * settings.constants.marginOfMeasure -
                 verticalPadding) /
-              (settings.additional.verticalTextAnchor == "middle"
+              (settings.alignment.verticalAdditionalMeasure == "middle"
                 ? array.length
                 : 3);
           } else {
@@ -681,10 +689,10 @@ export class Card {
             additionalMeasureHeight =
               (svgRect.height -
                 this.getSVGRect(this.categoryLabels[i]).height -
-                settings.categoryLabel.paddingTop -
-                (array.length - 1) * settings.additional.marginOfMeasure -
+                settings.constants.categoryPaddingTop -
+                (array.length - 1) * settings.constants.marginOfMeasure -
                 verticalPadding) /
-              (settings.additional.verticalTextAnchor == "middle"
+              (settings.alignment.verticalAdditionalMeasure == "middle"
                 ? 2 * array.length
                 : 6);
           }
@@ -704,73 +712,99 @@ export class Card {
           startXMeasures: number,
           startYMeasures: number;
 
-        if (settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           startXMeasures =
             this.maxMainMeasureWidth +
-            settings.additional.paddingLeft +
+            settings.constants.additionalPaddingLeft +
             j * this.additionalMeasureWidth +
-            j * settings.additional.marginOfMeasure;
-          y = svgRect.height - settings.additional.paddingBottom;
-          if (settings.additional.horizontalAlignment == "center") {
-            x = startXMeasures + this.additionalMeasureWidth / 2;
-            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
-          } else if (settings.additional.horizontalAlignment == "left") {
-            x = startXMeasures;
-            additionalMeasureLabel.select("text").attr("text-anchor", "start");
-          } else if (settings.additional.horizontalAlignment == "right") {
-            x = startXMeasures + this.additionalMeasureWidth;
-            additionalMeasureLabel.select("text").attr("text-anchor", "end");
-            additionalMeasureLabel
-              .select("text")
-              .style("dominant-baseline", "text-bottom");
+            j * settings.constants.marginOfMeasure;
+          y = svgRect.height - settings.constants.additionalPaddingBottom;
+
+          switch (settings.alignment.horizontalAdditionalMeasureValue) {
+            case "center":
+              x = startXMeasures + this.additionalMeasureWidth / 2;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "middle");
+              break;
+
+            case "left":
+              x = startXMeasures;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "start");
+              break;
+
+            case "right":
+              x = startXMeasures + this.additionalMeasureWidth;
+              additionalMeasureLabel.select("text").attr("text-anchor", "end");
+              additionalMeasureLabel
+                .select("text")
+                .style("dominant-baseline", "text-bottom");
+              break;
           }
         } else {
           if (
-            settings.additional.textAnchor == "left" ||
-            settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             startXMeasures =
               this.maxMainMeasureWidth +
-              settings.additional.paddingLeft +
-              (settings.additional.textAnchor == "left"
+              settings.constants.additionalPaddingLeft +
+              (settings.alignment.verticalAdditionalMeasureName == "left"
                 ? (this.additionalMeasureContainerWidth *
-                    (100 - settings.additional.percentageWidth)) /
+                    (100 - settings.grid.percentageWidth)) /
                   100
                 : 0);
             startYMeasures =
-              settings.categoryLabel.paddingTop +
+              settings.constants.categoryPaddingTop +
               this.getSVGRect(this.categoryLabels[i]).height +
-              (settings.additional.verticalTextAnchor !== "top"
-                ? settings.additional.paddingTop
+              (settings.alignment.verticalAdditionalMeasure !== "top"
+                ? settings.constants.additionalPaddingTop
                 : 0) +
               (j +
-                (settings.additional.verticalTextAnchor == "bottom"
+                (settings.alignment.verticalAdditionalMeasure == "bottom"
                   ? 3 - array.length
                   : 0)) *
                 additionalMeasureHeight +
-              j * settings.additional.marginOfMeasure;
+              j * settings.constants.marginOfMeasure;
           } else {
             startXMeasures =
-              this.maxMainMeasureWidth + settings.additional.paddingLeft;
+              this.maxMainMeasureWidth +
+              settings.constants.additionalPaddingLeft;
             startYMeasures =
               this.getSVGRect(this.categoryLabels[i]).height +
-              settings.categoryLabel.paddingTop +
-              settings.additional.paddingTop +
+              settings.constants.categoryPaddingTop +
+              settings.constants.additionalPaddingTop +
               (j * 2 +
-                (settings.additional.textAnchor == "top" ? 1 : 0) +
-                (settings.additional.verticalTextAnchor == "bottom" ? 1 : 0)) *
+                (settings.alignment.verticalAdditionalMeasure == "top"
+                  ? 1
+                  : 0) +
+                (settings.alignment.verticalAdditionalMeasure == "bottom"
+                  ? 1
+                  : 0)) *
                 additionalMeasureHeight +
-              j * settings.additional.marginOfMeasure;
+              j * settings.constants.marginOfMeasure;
           }
-          if (settings.additional.horizontalAlignment == "center") {
-            x = startXMeasures + this.additionalMeasureWidth / 2;
-            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
-          } else if (settings.additional.horizontalAlignment == "left") {
-            x = startXMeasures;
-            additionalMeasureLabel.select("text").attr("text-anchor", "start");
-          } else if (settings.additional.horizontalAlignment == "right") {
-            x = startXMeasures + this.additionalMeasureWidth;
-            additionalMeasureLabel.select("text").attr("text-anchor", "end");
+          switch (settings.alignment.horizontalAdditionalMeasureValue) {
+            case "center":
+              x = startXMeasures + this.additionalMeasureWidth / 2;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "middle");
+              break;
+
+            case "left":
+              x = startXMeasures;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "start");
+              break;
+
+            case "right":
+              x = startXMeasures + this.additionalMeasureWidth;
+              additionalMeasureLabel.select("text").attr("text-anchor", "end");
+              break;
           }
           y = startYMeasures + additionalMeasureHeight / 2;
           additionalMeasureLabel

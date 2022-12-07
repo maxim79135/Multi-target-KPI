@@ -140,6 +140,7 @@ export class CategoryLabel {
 export class Grid {
   public percentageWidth: number = 50;
   public wireframe: string = "left";
+  public showMeasureName: boolean = true;
   public labelAsMeasurename: boolean = false;
   public position: string = "aboveMainMeasure";
   public cardsPerRow: number = 5;
@@ -283,4 +284,18 @@ export class CardSettings extends DataViewObjectsParser {
   public additionalFormat: AdditiionalFormat[] = [];
   public color: Color = new Color();
   public additionalColor: AdditiionalColor[] = [];
+  public constants: Constants = new Constants();
+}
+
+export class Constants {
+  public categoryPaddingTop = 10;
+  public categoryPaddingSide = 15;
+  public mainMeasurePaddingSide = 15;
+  public mainMeasurePaddingBottom = 15;
+  public mainMeasurePaddingTop = 15;
+  public additionalPaddingLeft = 15;
+  public additionalPaddingRight = 15;
+  public additionalPaddingTop = 15;
+  public additionalPaddingBottom = 15;
+  public marginOfMeasure = 0;
 }

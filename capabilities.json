@@ -117,6 +117,11 @@
                         ]
                     }
                 },
+                "showMeasureName": {
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "labelAsMeasurename": {
                     "displayName": "Show measure name instead of category",
                     "description": "Еnable this field If you need to replace the category names with the name of the main measure. For example, when it is necessary to rename categories.",

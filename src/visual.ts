@@ -153,6 +153,20 @@ export class CardKPI implements IVisual {
     let mainMeasureName: powerbi.visuals.FormattingGroup = {
       displayName: "Main measure name",
       uid: "grid_category",
+      topLevelToggle: {
+        uid: "grid_category_show",
+        suppressDisplayName: true,
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "grid",
+              propertyName: "showMeasureName"
+            },
+            value: settings.grid.showMeasureName
+          }
+        }
+      },
       slices: [
         {
           uid: "grid_category_labelAsMeasurename",
