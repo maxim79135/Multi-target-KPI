@@ -28,18 +28,11 @@
 import powerbi from "powerbi-visuals-api";
 import {
   CardSettings,
-  AdditionalItem,
-  DataLabel,
   AdditiionalFormat,
   AdditiionalColor,
   Font,
 } from "../settings";
-import {
-  IAdditionalMeasure,
-  ICardViewModel,
-  IDataGroup,
-  ITooltipValue,
-} from "./ViewModel";
+import { IAdditionalMeasure, ICardViewModel, IDataGroup } from "./ViewModel";
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { getValue } from "../utils/objectEnumerationUtility";
 import { prepareMeasureText } from "../utils/prepareMeasureText";

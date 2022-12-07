@@ -27,115 +27,7 @@
 "use strict";
 
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
-import powerbi from "powerbi-visuals-api";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
-
-export class AdditionalItem {
-  public measureDisplayName: string;
-  public metadata: string;
-  public componentType: string = "measure";
-  public displayUnit: number = 0;
-  public decimalPlaces: number = 0;
-  public suppressBlankAndNaN: boolean = false;
-  public blankAndNaNReplaceText: string = "";
-  public invertVariance: boolean = false;
-  public componentTypeForColor: string = "measure";
-  public unmatchedColor: string = "#333333";
-  public conditionFormatting: boolean = false;
-  public condition1: boolean = false;
-  public comparisonOperator1: string = ">";
-  public condition2: boolean = false;
-  public comparisonOperator2: string = ">";
-  public condition3: boolean = false;
-  public comparisonOperator3: string = ">";
-  public value1: number = null;
-  public value2: number = null;
-  public value3: number = null;
-  public assignColor1: string = "#333333";
-  public assignColor2: string = "#333333";
-  public assignColor3: string = "#333333";
-  public invertVarianceForColor: boolean = false;
-}
-
-export class AdditionalCategory {
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public wordWrap_: boolean = false;
-  public textSize: number = 12;
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public color: string = "#333333";
-}
-
-export class Category {
-  public cardsPerRow: number = 5;
-  public cardsMargin: number = 15;
-  public spaceBeforeFirstComponent: number = 15;
-  public labelAsMeasurename: boolean = false;
-}
-
-export class DataLabel {
-  public color: string = "#333333";
-  public displayUnit: number = 0;
-  public decimalPlaces: number = 0;
-  public textSize: number = 27;
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public verticalAlignment: string = "middle";
-  public horizontalAlignment: string = "center";
-  public suppressBlankAndNaN: boolean = false;
-  public blankAndNaNReplaceText: string = "";
-  public paddingTop: number = 0;
-  public paddingBottom: number = 0;
-  public paddingSide: number = 0;
-  public font: boolean = false;
-  public alignment: boolean = false;
-}
-
-export class Additional {
-  public paddingTop: number = 0;
-  public paddingBottom: number = 0;
-  public paddingLeft: number = 0;
-  public paddingRight: number = 0;
-  public wordWrap_: boolean = false;
-  public horizontalAlignment: string = "center";
-  public layoutType: string = "vertical";
-  public verticalTextAnchor: string = "middle";
-  public textAnchor: string = "left";
-  public marginOfMeasure: number = 5;
-  public percentageWidth: number = 50;
-  public showAdditionalOptions: boolean = false;
-  public backFill: string = null;
-  public transparency: number = 0;
-
-  // text formatting
-  public textSize: number = 12;
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-
-  public font: boolean = false;
-  public alignment: boolean = false;
-}
-
-export class CategoryLabel {
-  public show: boolean = true;
-  public position: string = "aboveMainMeasure";
-  public horizontalAlignment: string = "center";
-  public paddingTop: number = 0;
-  public paddingSide: number = 5;
-  public color: string = "#333333";
-  public textSize: number = 15;
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public wordWrap_: boolean = false;
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public font: boolean = false;
-}
 
 export class Grid {
   public percentageWidth: number = 50;
@@ -269,13 +161,6 @@ export class AdditiionalColor {
 }
 
 export class CardSettings extends DataViewObjectsParser {
-  public category: Category = new Category();
-  public additional: Additional = new Additional();
-  public additionalItems: AdditionalItem[] = [];
-  public dataLabel: DataLabel = new DataLabel();
-  public categoryLabel: CategoryLabel = new CategoryLabel();
-  public additionalCategory: AdditionalCategory = new AdditionalCategory();
-
   public grid: Grid = new Grid();
   public alignment: Alignment = new Alignment();
   public background: Background = new Background();
