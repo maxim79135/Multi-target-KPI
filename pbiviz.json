@@ -4,7 +4,7 @@
        "displayName":"Multi target KPI",
        "guid":"Multi_target_KPI_dev",
        "visualClassName":"CardKPI",
-       "version":"1.1.5",
+       "version":"1.1.6",
        "description":"This card is designed to display the main indicator with several deviation indicators with advanced color formatting settings.",
        "supportUrl":"https://alexkolokolov.com/en/",
        "gitHubUrl":"https://github.com/maxim79135/Multi-target-KPI"
