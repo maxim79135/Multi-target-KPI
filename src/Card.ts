@@ -17,6 +17,7 @@ const getEvent = () => require("d3-selection").event;
 import powerbi from "powerbi-visuals-api";
 import { TextProperties } from "powerbi-visuals-utils-formattingutils/lib/src/interfaces";
 import { ICardViewModel, IDataGroup } from "./model/ViewModel";
+import { IFontProperties } from "./model/visualTransform";
 import {
   createTooltipServiceWrapper,
   ITooltipServiceWrapper,
@@ -86,19 +87,15 @@ export class Card {
   }
 
   public updateViewport(viewport: powerbi.IViewport) {
+    const settings = this.model.settings;
     this.numberOfCards = this.model.dataGroups.length;
-    this.cardsPerRow = Math.min(
-      this.numberOfCards,
-      this.model.settings.category.cardsPerRow
-    );
+    this.cardsPerRow = Math.min(this.numberOfCards, settings.grid.cardsPerRow);
     this.numberOfRows = Math.ceil(this.numberOfCards / this.cardsPerRow);
     this.cardMargin = {
       left: 0,
       top: 0,
-      right:
-        this.cardsPerRow > 1 ? this.model.settings.category.cardsMargin : 0,
-      bottom:
-        this.numberOfRows > 1 ? this.model.settings.category.cardsMargin : 0,
+      right: this.cardsPerRow > 1 ? settings.grid.cardsMargin : 0,
+      bottom: this.numberOfRows > 1 ? settings.grid.cardsMargin : 0,
     };
 
     this.cardViewport = {
@@ -114,13 +111,14 @@ export class Card {
           this.numberOfRows
       ),
     };
-    this.maxMainMeasureWidth = this.model.settings.background.percentageWidth;
+    this.maxMainMeasureWidth = settings.grid.percentageWidth;
   }
 
   public createCardContainer() {
     this.cardsContainer.selectAll(".card").remove();
     this.cards = [];
     this.svg = [];
+    const settings = this.model.settings;
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let marginRight =
@@ -174,22 +172,24 @@ export class Card {
           );
         }
       });
-      if (this.model.settings.background.show) {
-        let backgroundColor = d3.color(this.model.settings.background.backFill);
-        backgroundColor.opacity =
-          1 - this.model.settings.background.transparency / 100;
+      if (settings.background.layoutShow) {
+        let backgroundColor = d3.color(settings.background.backFill);
+        backgroundColor.opacity = 1 - settings.background.transparency / 100;
+        cardContainer.style("background-color", backgroundColor.formatRgb());
+      }
+      if (settings.background.borderShow) {
         cardContainer
-          .style("background-color", backgroundColor.formatRgb())
           .style(
             "border",
-            this.model.settings.background.borderShow
-              ? this.model.settings.background.borderWeight +
-                  "px " +
-                  this.model.settings.background.borderType +
-                  " " +
-                  this.model.settings.background.borderFill
+            settings.background.borderShow
+              ? settings.background.borderWeight +
+                  "px solid" +
+                  // settings.background.borderType +
+                  // " " +
+                  settings.background.borderFill
               : ""
-          );
+          )
+          .style("border-radius", `${settings.background.roundEdges}px`);
       }
       this.cards.push(cardContainer);
       this.svg.push(
@@ -206,8 +206,8 @@ export class Card {
       this.additionalMeasureContainerWidth =
         svgRect.width -
         this.maxMainMeasureWidth -
-        this.model.settings.additional.paddingLeft -
-        this.model.settings.additional.paddingRight;
+        settings.constants.additionalPaddingLeft -
+        settings.constants.additionalPaddingRight;
     }
   }
 
@@ -217,7 +217,7 @@ export class Card {
     this.additionalCategoryContainers = [];
     this.additionalMeasureContainers = [];
 
-    if (this.model.settings.categoryLabel.show) {
+    if (this.model.settings.grid.showMeasureName) {
       this.createCategoryLabel();
     }
     if (
@@ -293,13 +293,20 @@ export class Card {
       categoryLabel.append("text");
 
       let svgRect = this.getSVGRect(svg);
-      let textProperties = this.getTextProperties(
-        this.model.settings.categoryLabel
-      );
+      const settings = this.model.settings;
+      let style = {
+        fontFamily: settings.font.categoryfontFamily,
+        textSize: settings.font.categoryTextSize,
+        isItalic: settings.font.categoryIsItalic,
+        isBold: settings.font.categoryIsBold,
+        isUnderline: settings.font.categoryIsUnderline,
+        color: settings.color.categoryColor,
+      };
+      let textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].displayName;
-      this.updateLabelStyles(categoryLabel, this.model.settings.categoryLabel);
+      this.updateLabelStyles(categoryLabel, style);
 
-      if (this.model.settings.categoryLabel.wordWrap_) {
+      if (settings.font.categoryWordWrap_) {
         let maxDataHeight = svgRect.height / 2;
         this.updateLabelValueWithWrapping(
           categoryLabel,
@@ -318,11 +325,11 @@ export class Card {
       let categoryLabelSize = this.getSVGRect(categoryLabel);
       let x: number;
       let y: number =
-        this.model.settings.categoryLabel.paddingTop + categoryLabelSize.height;
+        settings.constants.categoryPaddingTop + categoryLabelSize.height;
 
-      if (this.model.settings.categoryLabel.horizontalAlignment == "center") {
+      if (settings.alignment.horizontalCategory == "center") {
         if (
-          this.model.settings.categoryLabel.position == "aboveMainMeasure" &&
+          settings.grid.position == "aboveMainMeasure" &&
           this.model.dataGroups[i].additionalMeasures.length > 0
         ) {
           x = this.maxMainMeasureWidth / 2;
@@ -330,23 +337,17 @@ export class Card {
           x = svgRect.width / 2;
         }
         categoryLabel.select("text").attr("text-anchor", "middle");
-      } else if (
-        this.model.settings.categoryLabel.horizontalAlignment == "left"
-      ) {
-        x = this.model.settings.categoryLabel.paddingSide;
+      } else if (settings.alignment.horizontalCategory == "left") {
+        x = settings.constants.categoryPaddingSide;
         categoryLabel.select("text").attr("text-anchor", "start");
-      } else if (
-        this.model.settings.categoryLabel.horizontalAlignment == "right"
-      ) {
+      } else if (settings.alignment.horizontalCategory == "right") {
         if (
-          this.model.settings.categoryLabel.position == "aboveMainMeasure" &&
+          settings.grid.position == "aboveMainMeasure" &&
           this.model.dataGroups[i].additionalMeasures.length > 0
         ) {
-          x =
-            this.maxMainMeasureWidth -
-            this.model.settings.categoryLabel.paddingSide;
+          x = this.maxMainMeasureWidth - settings.constants.categoryPaddingSide;
         } else {
-          x = svgRect.width - this.model.settings.categoryLabel.paddingSide;
+          x = svgRect.width - settings.constants.categoryPaddingSide;
         }
         categoryLabel.select("text").attr("text-anchor", "end");
       }
@@ -365,11 +366,18 @@ export class Card {
       dataLabel.append("text");
 
       let svgRect = this.getSVGRect(svg);
-      let textProperties = this.getTextProperties(
-        this.model.settings.dataLabel
-      );
+      const settings = this.model.settings;
+      let style = {
+        fontFamily: settings.font.mainfontFamily,
+        textSize: settings.font.mainTextSize,
+        isItalic: settings.font.mainIsItalic,
+        isBold: settings.font.mainIsBold,
+        isUnderline: settings.font.mainIsUnderline,
+        color: settings.color.mainColor,
+      };
+      let textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].mainMeasureDataLabel;
-      this.updateLabelStyles(dataLabel, this.model.settings.dataLabel);
+      this.updateLabelStyles(dataLabel, style);
       let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
         textProperties,
         this.maxMainMeasureWidth
@@ -384,42 +392,54 @@ export class Card {
         this.model.dataGroups[0].additionalMeasures.length == 0
       )
         this.maxMainMeasureWidth = svgRect.width;
-      if (this.model.settings.dataLabel.horizontalAlignment == "center") {
-        x = this.maxMainMeasureWidth / 2;
-      } else if (this.model.settings.dataLabel.horizontalAlignment == "left") {
-        x = dataLabelSize.width / 2 + this.model.settings.dataLabel.paddingSide;
-      } else if (this.model.settings.dataLabel.horizontalAlignment == "right") {
-        x =
-          this.maxMainMeasureWidth -
-          dataLabelSize.width / 2 -
-          this.model.settings.dataLabel.paddingSide;
+
+      switch (settings.alignment.horizontalMainMeasure) {
+        case "center":
+          x = this.maxMainMeasureWidth / 2;
+          break;
+
+        case "left":
+          x =
+            dataLabelSize.width / 2 + settings.constants.mainMeasurePaddingSide;
+          break;
+
+        case "right":
+          x =
+            this.maxMainMeasureWidth -
+            dataLabelSize.width / 2 -
+            settings.constants.mainMeasurePaddingSide;
+          break;
       }
 
       if (this.categoryLabels.length == 0) {
         y = svgRect.height / 2;
       } else {
         let categoryLabelSize = this.getSVGRect(this.categoryLabels[i]);
-        if (this.model.settings.dataLabel.verticalAlignment == "middle") {
-          y =
-            this.model.settings.categoryLabel.paddingTop +
-            categoryLabelSize.height +
-            (svgRect.height -
-              this.model.settings.categoryLabel.paddingTop -
-              categoryLabelSize.height) /
-              2;
-        } else if (this.model.settings.dataLabel.verticalAlignment == "top") {
-          y =
-            this.model.settings.categoryLabel.paddingTop +
-            categoryLabelSize.height +
-            dataLabelSize.height / 2 +
-            this.model.settings.dataLabel.paddingTop;
-        } else if (
-          this.model.settings.dataLabel.verticalAlignment == "bottom"
-        ) {
-          y =
-            svgRect.height -
-            dataLabelSize.height / 2 -
-            this.model.settings.dataLabel.paddingBottom;
+        switch (settings.alignment.verticalMainMeasure) {
+          case "middle":
+            y =
+              settings.constants.categoryPaddingTop +
+              categoryLabelSize.height +
+              (svgRect.height -
+                settings.constants.categoryPaddingTop -
+                categoryLabelSize.height) /
+                2;
+            break;
+
+          case "top":
+            y =
+              settings.constants.categoryPaddingTop +
+              categoryLabelSize.height +
+              dataLabelSize.height / 2 +
+              settings.constants.mainMeasurePaddingTop;
+            break;
+
+          case "bottom":
+            y =
+              svgRect.height -
+              dataLabelSize.height / 2 -
+              settings.constants.mainMeasurePaddingBottom;
+            break;
         }
       }
 
@@ -433,6 +453,7 @@ export class Card {
   // tslint:disable-next-line: max-func-body-length
   private createAdditionalCategoryLabel() {
     this.additionalCategoryContainers = [];
+    const settings = this.model.settings;
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       let svg = this.svg[i];
@@ -450,50 +471,52 @@ export class Card {
       );
       // tslint:disable-next-line: max-func-body-length
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
+        let style: IFontProperties = {
+          fontFamily: settings.font.additionalNamefontFamily,
+          textSize: settings.font.additionalNameTextSize,
+          isItalic: settings.font.additionalNameIsItalic,
+          isBold: settings.font.additionalNameIsBold,
+          isUnderline: settings.font.additionalNameIsUnderline,
+          color: v.labelFill,
+        };
         let additionalCategoryLabel = additionalCategoryContainter
           .append("g")
           .classed(CardClassNames.AdditionalCategoryLabel + i + j, true);
         additionalCategoryLabel.append("text");
-        let textProperties = this.getTextProperties(
-          this.model.settings.additionalCategory
-        );
+        let textProperties = this.getTextProperties(style);
         textProperties.text = v.displayName;
-        if (this.model.settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           this.additionalCategoryWidth =
             (svgRect.width -
               this.maxMainMeasureWidth -
-              this.model.settings.additional.paddingRight -
-              this.model.settings.additional.paddingLeft -
-              (array.length - 1) *
-                this.model.settings.additional.marginOfMeasure) /
+              settings.constants.additionalPaddingRight -
+              settings.constants.additionalPaddingLeft -
+              (array.length - 1) * settings.constants.marginOfMeasure) /
             array.length;
         } else {
           if (
-            this.model.settings.additional.textAnchor == "left" ||
-            this.model.settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             this.additionalCategoryWidth =
               ((svgRect.width -
                 this.maxMainMeasureWidth -
-                this.model.settings.additional.paddingLeft -
-                this.model.settings.additional.paddingRight) *
-                (100 - this.model.settings.additional.percentageWidth)) /
+                settings.constants.additionalPaddingLeft -
+                settings.constants.additionalPaddingRight) *
+                (100 - settings.grid.percentageWidth)) /
               100;
           } else {
             this.additionalCategoryWidth =
               svgRect.width -
               this.maxMainMeasureWidth -
-              this.model.settings.additional.paddingLeft -
-              this.model.settings.additional.paddingRight;
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight;
           }
         }
 
-        this.updateLabelStyles(
-          additionalCategoryLabel,
-          this.model.settings.additionalCategory
-        );
+        this.updateLabelStyles(additionalCategoryLabel, style);
 
-        if (this.model.settings.additionalCategory.wordWrap_) {
+        if (settings.font.additionalNameWordWrap_) {
           let maxDataHeight = svgRect.height / 2;
           this.updateLabelValueWithWrapping(
             additionalCategoryLabel,
@@ -518,7 +541,7 @@ export class Card {
           .attr("text-anchor");
         let x: number, y: number;
 
-        if (this.model.settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           x = Number(
             parseTranslateTransform(
               additionalMeasureContainer[j].attr("transform")
@@ -531,13 +554,13 @@ export class Card {
         } else {
           let startXPosition: number;
           if (
-            this.model.settings.additional.textAnchor == "left" ||
-            this.model.settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             startXPosition =
               this.maxMainMeasureWidth +
-              this.model.settings.additional.paddingLeft +
-              (this.model.settings.additional.textAnchor == "left"
+              settings.constants.additionalPaddingLeft +
+              (settings.alignment.verticalAdditionalMeasureName == "left"
                 ? 0
                 : this.additionalMeasureWidth);
             y = Number(
@@ -551,9 +574,9 @@ export class Card {
           } else {
             startXPosition =
               this.maxMainMeasureWidth +
-              this.model.settings.additional.paddingLeft;
+              settings.constants.additionalPaddingLeft;
             y =
-              this.model.settings.additional.textAnchor == "top"
+              settings.alignment.verticalAdditionalMeasureName == "top"
                 ? Math.abs(
                     this.getSVGRect(svg).y -
                       this.getSVGRect(additionalMeasureContainer[j]).top
@@ -597,6 +620,7 @@ export class Card {
       // backgroundColor.opacity =
       //   1 - this.model.settings.additional.transparency / 100;
       let additionalMeasureLabels = [];
+      const settings = this.model.settings;
 
       // tslint:disable-next-line: max-func-body-length
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
@@ -604,57 +628,60 @@ export class Card {
           .append("g")
           .classed(CardClassNames.AdditionalMeasureLabel + i + j, true);
         additionalMeasureLabel.append("text");
-        let textProperties = this.getTextProperties(
-          this.model.settings.additionalItems[j]
-        );
-        textProperties.text =
-          this.model.dataGroups[i].additionalMeasures[j].dataLabel;
+        let style: IFontProperties = {
+          fontFamily: settings.font.additionalValuefontFamily,
+          textSize: settings.font.additionalValueTextSize,
+          isItalic: settings.font.additionalValueIsItalic,
+          isBold: settings.font.additionalValueIsBold,
+          isUnderline: settings.font.additionalValueIsUnderline,
+          color: v.labelFill,
+        };
+        let textProperties = this.getTextProperties(style);
+        textProperties.text = v.dataLabel;
         let additionalMeasureHeight: number;
-        if (this.model.settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           this.additionalMeasureWidth =
             (svgRect.width -
               this.maxMainMeasureWidth -
-              this.model.settings.additional.paddingRight -
-              this.model.settings.additional.paddingLeft -
-              (array.length - 1) *
-                this.model.settings.additional.marginOfMeasure) /
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight -
+              (array.length - 1) * settings.constants.marginOfMeasure) /
             array.length;
         } else {
           let verticalPadding: number;
           if (array.length == 3 || array.length == 6) {
             verticalPadding =
-              this.model.settings.additional.paddingTop +
-              this.model.settings.additional.paddingBottom;
+              settings.constants.additionalPaddingTop +
+              settings.constants.additionalPaddingBottom;
           } else {
-            switch (this.model.settings.additional.verticalTextAnchor) {
+            switch (settings.alignment.verticalAdditionalMeasure) {
               case "top":
-                verticalPadding = this.model.settings.additional.paddingTop;
+                verticalPadding = settings.constants.additionalPaddingTop;
                 break;
               case "middle":
                 verticalPadding =
-                  this.model.settings.additional.paddingTop +
-                  this.model.settings.additional.paddingBottom;
+                  settings.constants.additionalPaddingTop +
+                  settings.constants.additionalPaddingBottom;
                 break;
               case "bottom":
-                verticalPadding = this.model.settings.additional.paddingBottom;
+                verticalPadding = settings.constants.additionalPaddingBottom;
             }
           }
           if (
-            this.model.settings.additional.textAnchor == "left" ||
-            this.model.settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             this.additionalMeasureWidth =
               (this.additionalMeasureContainerWidth *
-                this.model.settings.additional.percentageWidth) /
+                settings.grid.percentageWidth) /
               100;
             additionalMeasureHeight =
               (svgRect.height -
                 this.getSVGRect(this.categoryLabels[i]).height -
-                this.model.settings.categoryLabel.paddingTop -
-                (array.length - 1) *
-                  this.model.settings.additional.marginOfMeasure -
+                settings.constants.categoryPaddingTop -
+                (array.length - 1) * settings.constants.marginOfMeasure -
                 verticalPadding) /
-              (this.model.settings.additional.verticalTextAnchor == "middle"
+              (settings.alignment.verticalAdditionalMeasure == "middle"
                 ? array.length
                 : 3);
           } else {
@@ -662,22 +689,15 @@ export class Card {
             additionalMeasureHeight =
               (svgRect.height -
                 this.getSVGRect(this.categoryLabels[i]).height -
-                this.model.settings.categoryLabel.paddingTop -
-                (array.length - 1) *
-                  this.model.settings.additional.marginOfMeasure -
+                settings.constants.categoryPaddingTop -
+                (array.length - 1) * settings.constants.marginOfMeasure -
                 verticalPadding) /
-              (this.model.settings.additional.verticalTextAnchor == "middle"
+              (settings.alignment.verticalAdditionalMeasure == "middle"
                 ? 2 * array.length
                 : 6);
           }
         }
-        this.updateLabelStyles(additionalMeasureLabel, {
-          fontFamily: this.model.settings.additional.fontFamily,
-          textSize: this.model.settings.additional.textSize,
-          isItalic: this.model.settings.additional.isItalic,
-          isBold: this.model.settings.additional.isBold,
-          color: this.model.dataGroups[i].additionalMeasures[j].labelFill,
-        });
+        this.updateLabelStyles(additionalMeasureLabel, style);
         let measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
           this.additionalMeasureWidth
@@ -692,84 +712,99 @@ export class Card {
           startXMeasures: number,
           startYMeasures: number;
 
-        if (this.model.settings.additional.layoutType == "horizontal") {
+        if (settings.grid.layoutType == "horizontal") {
           startXMeasures =
             this.maxMainMeasureWidth +
-            this.model.settings.additional.paddingLeft +
+            settings.constants.additionalPaddingLeft +
             j * this.additionalMeasureWidth +
-            j * this.model.settings.additional.marginOfMeasure;
-          y = svgRect.height - this.model.settings.additional.paddingBottom;
-          if (this.model.settings.additional.horizontalAlignment == "center") {
-            x = startXMeasures + this.additionalMeasureWidth / 2;
-            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
-          } else if (
-            this.model.settings.additional.horizontalAlignment == "left"
-          ) {
-            x = startXMeasures;
-            additionalMeasureLabel.select("text").attr("text-anchor", "start");
-          } else if (
-            this.model.settings.additional.horizontalAlignment == "right"
-          ) {
-            x = startXMeasures + this.additionalMeasureWidth;
-            additionalMeasureLabel.select("text").attr("text-anchor", "end");
-            additionalMeasureLabel
-              .select("text")
-              .style("dominant-baseline", "text-bottom");
+            j * settings.constants.marginOfMeasure;
+          y = svgRect.height - settings.constants.additionalPaddingBottom;
+
+          switch (settings.alignment.horizontalAdditionalMeasureValue) {
+            case "center":
+              x = startXMeasures + this.additionalMeasureWidth / 2;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "middle");
+              break;
+
+            case "left":
+              x = startXMeasures;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "start");
+              break;
+
+            case "right":
+              x = startXMeasures + this.additionalMeasureWidth;
+              additionalMeasureLabel.select("text").attr("text-anchor", "end");
+              additionalMeasureLabel
+                .select("text")
+                .style("dominant-baseline", "text-bottom");
+              break;
           }
         } else {
           if (
-            this.model.settings.additional.textAnchor == "left" ||
-            this.model.settings.additional.textAnchor == "right"
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
           ) {
             startXMeasures =
               this.maxMainMeasureWidth +
-              this.model.settings.additional.paddingLeft +
-              (this.model.settings.additional.textAnchor == "left"
+              settings.constants.additionalPaddingLeft +
+              (settings.alignment.verticalAdditionalMeasureName == "left"
                 ? (this.additionalMeasureContainerWidth *
-                    (100 - this.model.settings.additional.percentageWidth)) /
+                    (100 - settings.grid.percentageWidth)) /
                   100
                 : 0);
             startYMeasures =
-              this.model.settings.categoryLabel.paddingTop +
+              settings.constants.categoryPaddingTop +
               this.getSVGRect(this.categoryLabels[i]).height +
-              (this.model.settings.additional.verticalTextAnchor !== "top"
-                ? this.model.settings.additional.paddingTop
+              (settings.alignment.verticalAdditionalMeasure !== "top"
+                ? settings.constants.additionalPaddingTop
                 : 0) +
               (j +
-                (this.model.settings.additional.verticalTextAnchor == "bottom"
+                (settings.alignment.verticalAdditionalMeasure == "bottom"
                   ? 3 - array.length
                   : 0)) *
                 additionalMeasureHeight +
-              j * this.model.settings.additional.marginOfMeasure;
+              j * settings.constants.marginOfMeasure;
           } else {
             startXMeasures =
               this.maxMainMeasureWidth +
-              this.model.settings.additional.paddingLeft;
+              settings.constants.additionalPaddingLeft;
             startYMeasures =
               this.getSVGRect(this.categoryLabels[i]).height +
-              this.model.settings.categoryLabel.paddingTop +
-              this.model.settings.additional.paddingTop +
+              settings.constants.categoryPaddingTop +
+              settings.constants.additionalPaddingTop +
               (j * 2 +
-                (this.model.settings.additional.textAnchor == "top" ? 1 : 0) +
-                (this.model.settings.additional.verticalTextAnchor == "bottom"
+                (settings.alignment.verticalAdditionalMeasure == "top"
+                  ? 1
+                  : 0) +
+                (settings.alignment.verticalAdditionalMeasure == "bottom"
                   ? 1
                   : 0)) *
                 additionalMeasureHeight +
-              j * this.model.settings.additional.marginOfMeasure;
+              j * settings.constants.marginOfMeasure;
           }
-          if (this.model.settings.additional.horizontalAlignment == "center") {
-            x = startXMeasures + this.additionalMeasureWidth / 2;
-            additionalMeasureLabel.select("text").attr("text-anchor", "middle");
-          } else if (
-            this.model.settings.additional.horizontalAlignment == "left"
-          ) {
-            x = startXMeasures;
-            additionalMeasureLabel.select("text").attr("text-anchor", "start");
-          } else if (
-            this.model.settings.additional.horizontalAlignment == "right"
-          ) {
-            x = startXMeasures + this.additionalMeasureWidth;
-            additionalMeasureLabel.select("text").attr("text-anchor", "end");
+          switch (settings.alignment.horizontalAdditionalMeasureValue) {
+            case "center":
+              x = startXMeasures + this.additionalMeasureWidth / 2;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "middle");
+              break;
+
+            case "left":
+              x = startXMeasures;
+              additionalMeasureLabel
+                .select("text")
+                .attr("text-anchor", "start");
+              break;
+
+            case "right":
+              x = startXMeasures + this.additionalMeasureWidth;
+              additionalMeasureLabel.select("text").attr("text-anchor", "end");
+              break;
           }
           y = startYMeasures + additionalMeasureHeight / 2;
           additionalMeasureLabel
@@ -819,14 +854,11 @@ export class Card {
       .text("by Institute of Business Intelligence");
 
     // description
-    landingPage
-      .append("div")
-      .classed("landing-description", true)
-      .html(
-        "Crisp-n-clear visualization for your KPIs! <br> \
+    landingPage.append("div").classed("landing-description", true).html(
+      "Crisp-n-clear visualization for your KPIs! <br> \
         We are developing dashboards for 12 years, and business customers often ask for several indicators for cards: v/s target, previous year and something else. <br> \
         Also specific labels alignment, which is possible with separate text labels. Instead of this we developed “all-in-one” KPI card and share it with you for free."
-      );
+    );
 
     // main
     let mainContainer = landingPage
@@ -852,13 +884,10 @@ export class Card {
       .text("Pixel perfect alignment setting for non-designers");
     mainInfoDescription.append("li").text("Built-in (blank) & NaN turn-off");
     mainInfoDescription.append("li").text("Simple conditional formatting");
-    mainInfo
-      .append("div")
-      .classed("landing-main-info-footer", true)
-      .html(
-        "You will save your time for design and developing supplementary measures. Also you will optimize report performance: it works in a single query. <br> \
+    mainInfo.append("div").classed("landing-main-info-footer", true).html(
+      "You will save your time for design and developing supplementary measures. Also you will optimize report performance: it works in a single query. <br> \
         Start a new level of business dashboarding!"
-      );
+    );
 
     // footer
     landingPage.append("hr").classed("landgin-footer-hr", true);
@@ -888,13 +917,13 @@ export class Card {
       .classed("landing-footer-contact-email-text", true);
     email.append("div").text("Alex Kolokolov");
     email
-      .append("a")
-      .on("click", () => this.host.launchUrl("mailto:dashboard@alexkolokolov.com"))
+      // .append("a")
+      // .on("click", () => this.host.launchUrl("mailto:dashboard@alexkolokolov.com"))
       // .attr("href", "mailto:dashboard@alexkolokolov.com")
       // .attr("target", "_blank")
       .append("div")
       .classed("footer-email", true)
-      .text("Email");
+      .text("Email: dashboard@alexkolokolov.com");
 
     // icons
     let footerContactsIconsContainer = footerContainer
@@ -939,7 +968,7 @@ export class Card {
     this.cardsContainer.selectAll(".landing-page").remove();
   }
 
-  private getTextProperties(properties): TextProperties {
+  private getTextProperties(properties: IFontProperties): TextProperties {
     return {
       fontFamily: properties.fontFamily,
       fontSize: properties.textSize + "pt",
@@ -948,17 +977,23 @@ export class Card {
     };
   }
 
-  private updateLabelStyles(label: Selection<BaseType, any, any, any>, styles) {
+  private updateLabelStyles(
+    label: Selection<BaseType, any, any, any>,
+    style: IFontProperties
+  ) {
     label
       .select("text")
-      .style("font-family", styles.fontFamily)
-      .style("font-size", styles.textSize + "pt")
-      .style("fill", styles.color);
-    if (styles.isBold === true) {
+      .style("font-family", style.fontFamily)
+      .style("font-size", style.textSize + "pt")
+      .style("fill", style.color);
+    if (style.isBold === true) {
       label.style("font-weight", "bold");
     }
-    if (styles.isItalic === true) {
+    if (style.isItalic === true) {
       label.style("font-style", "italic");
+    }
+    if (style.isUnderline) {
+      label.style("text-decoration", "underline");
     }
   }
 

@@ -26,13 +26,13 @@
 "use strict";
 
 import powerbi from "powerbi-visuals-api";
-import { CardSettings, AdditionalItem, DataLabel } from "../settings";
 import {
-  IAdditionalMeasure,
-  ICardViewModel,
-  IDataGroup,
-  ITooltipValue,
-} from "./ViewModel";
+  CardSettings,
+  AdditiionalFormat,
+  AdditiionalColor,
+  Font,
+} from "../settings";
+import { IAdditionalMeasure, ICardViewModel, IDataGroup } from "./ViewModel";
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import { getValue } from "../utils/objectEnumerationUtility";
 import { prepareMeasureText } from "../utils/prepareMeasureText";
@@ -46,201 +46,205 @@ function parseSettings(dataView: DataView): CardSettings {
   return <CardSettings>CardSettings.parse(dataView);
 }
 
-// tslint:disable-next-line: max-func-body-length
-function getAdditionalSettings(
+export interface IFontProperties {
+  fontFamily: string;
+  textSize: number;
+  isItalic: boolean;
+  isBold: boolean;
+  isUnderline?: boolean;
+  wordWrap?: boolean;
+  color?: string;
+}
+
+interface IFormatProperties {
+  displayUnit: number;
+  decimalPlaces: number;
+  suppressBlankAndNaN: boolean;
+  blankAndNaNReplaceText: string;
+}
+
+function getAdditionFormatValues(
   value: DataViewValueColumn,
   settings: CardSettings
-): AdditionalItem {
-  let additionalSetting: AdditionalItem;
-  additionalSetting = settings.additionalItems.find(
+): AdditiionalFormat {
+  let format: AdditiionalFormat;
+  format = settings.additionalFormat.find(
     (i) => i.metadata === value.source.queryName
   );
-  if (additionalSetting) return additionalSetting;
-  else {
-    additionalSetting = new AdditionalItem();
-    additionalSetting.measureDisplayName = value.source.displayName;
-    additionalSetting.metadata = value.source.queryName;
-    additionalSetting.componentType = <string>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "componentType",
-        additionalSetting.componentType
-      )
-    );
-    additionalSetting.displayUnit = <number>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "displayUnit",
-        additionalSetting.displayUnit
-      )
-    );
-    additionalSetting.decimalPlaces = <number>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "decimalPlaces",
-        additionalSetting.decimalPlaces
-      )
-    );
-    additionalSetting.invertVariance = <boolean>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "invertVariance",
-        additionalSetting.invertVariance
-      )
-    );
-    additionalSetting.suppressBlankAndNaN = <boolean>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "suppressBlankAndNaN",
-        additionalSetting.suppressBlankAndNaN
-      )
-    );
-    additionalSetting.blankAndNaNReplaceText = <string>(
-      getValue(
-        value.source.objects,
-        "additional",
-        "blankAndNaNReplaceText",
-        additionalSetting.blankAndNaNReplaceText
-      )
-    );
-    additionalSetting.componentTypeForColor = <string>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "componentTypeForColor",
-        additionalSetting.componentTypeForColor
-      )
-    );
-    additionalSetting.invertVarianceForColor = <boolean>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "invertVarianceForColor",
-        additionalSetting.invertVarianceForColor
-      )
-    );
-    additionalSetting.unmatchedColor = getValue(
-      value.source.objects,
-      "additionalMeasureColors",
-      "unmatchedColor",
-      additionalSetting.unmatchedColor
-    );
-    if (additionalSetting.unmatchedColor["solid"])
-      additionalSetting.unmatchedColor =
-        additionalSetting.unmatchedColor["solid"]["color"];
+  if (!format) {
+    format = new AdditiionalFormat();
 
-    additionalSetting.conditionFormatting = <boolean>(
+    format.measureDisplayName = value.source.displayName;
+    format.metadata = value.source.queryName;
+    format.displayUnit = <number>(
       getValue(
         value.source.objects,
-        "additionalMeasureColors",
-        "conditionFormatting",
-        additionalSetting.conditionFormatting
+        "format",
+        "displayUnit",
+        format.displayUnit
       )
     );
-    additionalSetting.condition1 = <boolean>(
+    format.decimalPlaces = <number>(
       getValue(
         value.source.objects,
-        "additionalMeasureColors",
-        "condition1",
-        additionalSetting.condition1
+        "format",
+        "decimalPlaces",
+        format.decimalPlaces
       )
     );
-    additionalSetting.condition2 = <boolean>(
+    format.suppressBlankAndNaN = <boolean>(
       getValue(
         value.source.objects,
-        "additionalMeasureColors",
-        "condition2",
-        additionalSetting.condition2
+        "format",
+        "suppressBlankAndNaN",
+        format.suppressBlankAndNaN
       )
     );
-    additionalSetting.condition3 = <boolean>(
+    format.blankAndNaNReplaceText = <string>(
       getValue(
         value.source.objects,
-        "additionalMeasureColors",
-        "condition3",
-        additionalSetting.condition3
+        "format",
+        "blankAndNaNReplaceText",
+        format.blankAndNaNReplaceText
       )
     );
-    additionalSetting.comparisonOperator1 = <string>(
+    format.componentType = <string>(
       getValue(
         value.source.objects,
-        "additionalMeasureColors",
-        "comparisonOperator1",
-        additionalSetting.comparisonOperator1
+        "format",
+        "componentType",
+        format.componentType
       )
     );
-    additionalSetting.comparisonOperator2 = <string>(
+    format.invertVariance = <boolean>(
       getValue(
         value.source.objects,
-        "additionalMeasureColors",
-        "comparisonOperator2",
-        additionalSetting.comparisonOperator2
+        "format",
+        "invertVariance",
+        format.invertVariance
       )
     );
-    additionalSetting.comparisonOperator3 = <string>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "comparisonOperator3",
-        additionalSetting.comparisonOperator3
-      )
-    );
-    additionalSetting.value1 = <number>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "value1",
-        additionalSetting.value1
-      )
-    );
-    additionalSetting.value2 = <number>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "value2",
-        additionalSetting.value2
-      )
-    );
-    additionalSetting.value3 = <number>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "value3",
-        additionalSetting.value3
-      )
-    );
-    additionalSetting.assignColor1 = <string>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "assignColor1",
-        additionalSetting.assignColor1
-      )
-    );
-    additionalSetting.assignColor2 = <string>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "assignColor2",
-        additionalSetting.assignColor2
-      )
-    );
-    additionalSetting.assignColor3 = <string>(
-      getValue(
-        value.source.objects,
-        "additionalMeasureColors",
-        "assignColor3",
-        additionalSetting.assignColor3
-      )
-    );
-    settings.additionalItems.push(additionalSetting);
-    return additionalSetting;
+    settings.additionalFormat.push(format);
   }
+
+  return format;
+}
+
+// tslint:disable-next-line: max-func-body-length
+function getAdditionColor(
+  value: DataViewValueColumn,
+  settings: CardSettings
+): AdditiionalColor {
+  let color: AdditiionalColor;
+  color = settings.additionalColor.find(
+    (i) => i.metadata === value.source.queryName
+  );
+  if (!color) {
+    color = new AdditiionalColor();
+
+    color.measureDisplayName = value.source.displayName;
+    color.metadata = value.source.queryName;
+    color.unmatchedColor = getValue(
+      value.source.objects,
+      "color",
+      "unmatchedColor",
+      color.unmatchedColor
+    );
+    color.conditionFormatting = getValue(
+      value.source.objects,
+      "color",
+      "conditionFormatting",
+      color.conditionFormatting
+    );
+    color.componentType = getValue(
+      value.source.objects,
+      "color",
+      "componentType",
+      color.componentType
+    );
+    color.invertVariance = getValue(
+      value.source.objects,
+      "color",
+      "invertVariance",
+      color.invertVariance
+    );
+    color.condition1 = getValue(
+      value.source.objects,
+      "color",
+      "condition1",
+      color.condition1
+    );
+    color.comparisonOperator1 = getValue(
+      value.source.objects,
+      "color",
+      "comparisonOperator1",
+      color.comparisonOperator1
+    );
+    color.value1 = getValue(
+      value.source.objects,
+      "color",
+      "value1",
+      color.value1
+    );
+    color.assignColor1 = getValue(
+      value.source.objects,
+      "color",
+      "assignColor1",
+      color.assignColor1
+    );
+    color.condition2 = getValue(
+      value.source.objects,
+      "color",
+      "condition2",
+      color.condition2
+    );
+    color.comparisonOperator2 = getValue(
+      value.source.objects,
+      "color",
+      "comparisonOperator2",
+      color.comparisonOperator2
+    );
+    color.value2 = getValue(
+      value.source.objects,
+      "color",
+      "value2",
+      color.value2
+    );
+    color.assignColor2 = getValue(
+      value.source.objects,
+      "color",
+      "assignColor2",
+      color.assignColor2
+    );
+    color.condition3 = getValue(
+      value.source.objects,
+      "color",
+      "condition3",
+      color.condition3
+    );
+    color.comparisonOperator3 = getValue(
+      value.source.objects,
+      "color",
+      "comparisonOperator3",
+      color.comparisonOperator3
+    );
+    color.value3 = getValue(
+      value.source.objects,
+      "color",
+      "value3",
+      color.value3
+    );
+    color.assignColor3 = getValue(
+      value.source.objects,
+      "color",
+      "assignColor3",
+      color.assignColor3
+    );
+
+    settings.additionalColor.push(color);
+  }
+
+  return color;
 }
 
 function calculateAdditionalValue(
@@ -327,7 +331,7 @@ function comparisonValues(
 }
 
 function updateAdditionalMeasureColor(
-  additionalSettings: AdditionalItem,
+  additionalSettings: AdditiionalColor,
   value: number,
   value2Text: string,
   comparisonOperator: string,
@@ -378,11 +382,15 @@ export function visualTransform(
         let dataValue = dataCategorical.values[index];
         let value: any = dataValue.values[categories[i] ? i : 0];
         let valueType = dataValue.source.type;
-        if (dataValue.source.roles["Main Measure"]) {
-          console.log(dataValue, 123);
-
+        if (dataValue.source.roles["mainMeasure"]) {
+          let formatProperties: IFormatProperties = {
+            displayUnit: settings.format.mainDisplayUnit,
+            decimalPlaces: settings.format.decimalPlaces,
+            suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
+            blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
+          };
           if (categories[i]) {
-            if (settings.category.labelAsMeasurename) {
+            if (settings.grid.labelAsMeasurename) {
               dataGroup.displayName = dataValue.source.displayName;
             } else {
               dataGroup.displayName = category
@@ -401,11 +409,11 @@ export function visualTransform(
             dataValue.objects
               ? <string>dataValue.objects[0]["general"]["formatString"]
               : valueFormatter.getFormatStringByColumn(dataValue.source),
-            settings.dataLabel.displayUnit,
-            settings.dataLabel.decimalPlaces,
+            formatProperties.displayUnit,
+            formatProperties.decimalPlaces,
             false,
-            settings.dataLabel.suppressBlankAndNaN,
-            settings.dataLabel.blankAndNaNReplaceText,
+            formatProperties.suppressBlankAndNaN,
+            formatProperties.blankAndNaNReplaceText,
             host.locale
           );
           dataGroup.isPercentage =
@@ -415,8 +423,13 @@ export function visualTransform(
         }
         if (dataValue.source.roles["additional"]) {
           let additionalMeasure: IAdditionalMeasure = {};
-          let additionalSettings = getAdditionalSettings(dataValue, settings);
-          additionalMeasure.displayName = additionalSettings.measureDisplayName;
+          let additionalFormatSettings = getAdditionFormatValues(
+            dataValue,
+            settings
+          );
+          let additionalColorSettings = getAdditionColor(dataValue, settings);
+          additionalMeasure.displayName =
+            additionalFormatSettings.measureDisplayName;
           additionalMeasure.measureValue =
             valueType.numeric || valueType.integer ? value : null;
 
@@ -427,157 +440,155 @@ export function visualTransform(
           additionalMeasure.calculatedValue = calculateAdditionalValue(
             dataGroup.mainMeasureValue,
             additionalMeasure.measureValue,
-            additionalSettings.componentType,
-            additionalSettings.invertVariance
+            additionalFormatSettings.componentType,
+            additionalFormatSettings.invertVariance
           );
           let additionalMeasureForColor = calculateAdditionalValue(
             dataGroup.mainMeasureValue,
             additionalMeasure.measureValue,
-            additionalSettings.componentTypeForColor,
-            additionalSettings.invertVarianceForColor
+            additionalColorSettings.componentType,
+            additionalColorSettings.invertVariance
           );
-          if (!additionalSettings.conditionFormatting) {
-            additionalMeasure.labelFill = additionalSettings.unmatchedColor;
+          if (!additionalColorSettings.conditionFormatting) {
+            additionalMeasure.labelFill =
+              additionalColorSettings.unmatchedColor.solid.color;
           }
 
-          if (additionalSettings.conditionFormatting) {
+          if (additionalColorSettings.conditionFormatting) {
             let color1, color2, color3: string;
-            switch (additionalSettings.componentTypeForColor) {
-              case "f(x)":
-                additionalMeasure.labelFill = additionalSettings.unmatchedColor;
-                break;
+            switch (additionalColorSettings.componentType) {
               case "measure":
                 color1 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   value,
                   "value1",
-                  additionalSettings.comparisonOperator1,
+                  additionalColorSettings.comparisonOperator1,
                   "condition1",
                   "assignColor1"
                 );
                 color2 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   value,
                   "value2",
-                  additionalSettings.comparisonOperator2,
+                  additionalColorSettings.comparisonOperator2,
                   "condition2",
                   "assignColor2"
                 );
                 color3 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   value,
                   "value3",
-                  additionalSettings.comparisonOperator3,
+                  additionalColorSettings.comparisonOperator3,
                   "condition3",
                   "assignColor3"
                 );
-
-                if (color1 != undefined) additionalMeasure.labelFill = color1;
-                else if (color2 != undefined)
-                  additionalMeasure.labelFill = color2;
-                else if (color3 != undefined)
-                  additionalMeasure.labelFill = color3;
                 break;
               case "changeOver":
                 color1 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor,
                   "value1",
-                  additionalSettings.comparisonOperator1,
+                  additionalColorSettings.comparisonOperator1,
                   "condition1",
                   "assignColor1"
                 );
                 color2 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor,
                   "value2",
-                  additionalSettings.comparisonOperator2,
+                  additionalColorSettings.comparisonOperator2,
                   "condition2",
                   "assignColor2"
                 );
                 color3 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor,
                   "value3",
-                  additionalSettings.comparisonOperator3,
+                  additionalColorSettings.comparisonOperator3,
                   "condition3",
                   "assignColor3"
                 );
-
-                if (color1 != undefined) additionalMeasure.labelFill = color1;
-                else if (color2 != undefined)
-                  additionalMeasure.labelFill = color2;
-                else if (color3 != undefined)
-                  additionalMeasure.labelFill = color3;
                 break;
               case "percentageChangeOver":
                 color1 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor * 100,
                   "value1",
-                  additionalSettings.comparisonOperator1,
+                  additionalColorSettings.comparisonOperator1,
                   "condition1",
                   "assignColor1"
                 );
                 color2 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor * 100,
                   "value2",
-                  additionalSettings.comparisonOperator2,
+                  additionalColorSettings.comparisonOperator2,
                   "condition2",
                   "assignColor2"
                 );
                 color3 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor * 100,
                   "value3",
-                  additionalSettings.comparisonOperator3,
+                  additionalColorSettings.comparisonOperator3,
                   "condition3",
                   "assignColor3"
                 );
-
-                if (color1 != undefined) additionalMeasure.labelFill = color1;
-                else if (color2 != undefined)
-                  additionalMeasure.labelFill = color2;
-                else if (color3 != undefined)
-                  additionalMeasure.labelFill = color3;
                 break;
               case "percentageOver":
                 color1 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor * 100,
                   "value1",
-                  additionalSettings.comparisonOperator1,
+                  additionalColorSettings.comparisonOperator1,
                   "condition1",
                   "assignColor1"
                 );
                 color2 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor * 100,
                   "value2",
-                  additionalSettings.comparisonOperator2,
+                  additionalColorSettings.comparisonOperator2,
                   "condition2",
                   "assignColor2"
                 );
                 color3 = updateAdditionalMeasureColor(
-                  additionalSettings,
+                  additionalColorSettings,
                   additionalMeasureForColor * 100,
                   "value3",
-                  additionalSettings.comparisonOperator3,
+                  additionalColorSettings.comparisonOperator3,
                   "condition3",
                   "assignColor3"
                 );
-
-                if (color1 != undefined) additionalMeasure.labelFill = color1;
-                else if (color2 != undefined)
-                  additionalMeasure.labelFill = color2;
-                else if (color3 != undefined)
-                  additionalMeasure.labelFill = color3;
                 break;
             }
+            if (color1 != undefined) additionalMeasure.labelFill = color1;
+            else if (color2 != undefined) additionalMeasure.labelFill = color2;
+            else if (color3 != undefined) additionalMeasure.labelFill = color3;
           }
 
-          switch (additionalSettings.componentType) {
+          if (!settings.color.additionalShow) {
+            additionalMeasure.labelFill = settings.color.color;
+          }
+
+          let formatProperties: IFormatProperties = {
+            displayUnit: additionalFormatSettings.displayUnit,
+            decimalPlaces: additionalFormatSettings.decimalPlaces,
+            suppressBlankAndNaN: additionalFormatSettings.suppressBlankAndNaN,
+            blankAndNaNReplaceText:
+              additionalFormatSettings.blankAndNaNReplaceText,
+          };
+
+          if (!settings.format.additionalShow) {
+            formatProperties = {
+              displayUnit: settings.format.displayUnit,
+              decimalPlaces: settings.format.decimalPlaces,
+              suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
+              blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
+            };
+          }
+
+          switch (additionalFormatSettings.componentType) {
             case "measure": {
               additionalMeasure.dataLabel = prepareMeasureText(
                 value,
@@ -585,11 +596,11 @@ export function visualTransform(
                 dataValue.objects
                   ? <string>dataValue.objects[0]["general"]["formatString"]
                   : valueFormatter.getFormatStringByColumn(dataValue.source),
-                additionalSettings.displayUnit,
-                additionalSettings.decimalPlaces,
+                formatProperties.displayUnit,
+                formatProperties.decimalPlaces,
                 false,
-                additionalSettings.suppressBlankAndNaN,
-                additionalSettings.blankAndNaNReplaceText,
+                formatProperties.suppressBlankAndNaN,
+                formatProperties.blankAndNaNReplaceText,
                 host.locale
               );
               break;
@@ -602,7 +613,7 @@ export function visualTransform(
                     { numeric: true },
                     "#,0.00",
                     1,
-                    additionalSettings.decimalPlaces,
+                    formatProperties.decimalPlaces,
                     true,
                     false,
                     "",
@@ -615,11 +626,11 @@ export function visualTransform(
                   dataValue.objects
                     ? <string>dataValue.objects[0]["general"]["formatString"]
                     : valueFormatter.getFormatStringByColumn(dataValue.source),
-                  additionalSettings.displayUnit,
-                  additionalSettings.decimalPlaces,
+                  formatProperties.displayUnit,
+                  formatProperties.decimalPlaces,
                   true,
-                  additionalSettings.suppressBlankAndNaN,
-                  additionalSettings.blankAndNaNReplaceText,
+                  formatProperties.suppressBlankAndNaN,
+                  formatProperties.blankAndNaNReplaceText,
                   host.locale
                 );
               }
@@ -632,7 +643,7 @@ export function visualTransform(
                   { numeric: true },
                   "#,0.00",
                   1,
-                  additionalSettings.decimalPlaces,
+                  formatProperties.decimalPlaces,
                   true,
                   false,
                   "",
@@ -647,7 +658,7 @@ export function visualTransform(
                   { numeric: true },
                   "#,0.00",
                   1,
-                  additionalSettings.decimalPlaces,
+                  formatProperties.decimalPlaces,
                   false,
                   false,
                   "",
@@ -656,6 +667,7 @@ export function visualTransform(
               break;
             }
           }
+
           dataGroup.additionalMeasures.push(additionalMeasure);
         }
         if (dataValue.source.roles["tooltips"]) {
@@ -697,5 +709,88 @@ export function visualTransform(
     console.log(dataGroups);
   }
 
+  // transform settings
+  if (!settings.alignment.show_additional_horizontal) {
+    settings.alignment.horizontalMainMeasure = settings.alignment.horizontal;
+    settings.alignment.horizontalCategory = settings.alignment.horizontal;
+    settings.alignment.horizontalAdditionalMeasureName =
+      settings.alignment.horizontal;
+    settings.alignment.horizontalAdditionalMeasureValue =
+      settings.alignment.horizontal;
+  }
+
+  if (!settings.font.additionalShow) {
+    let fontSettings = settings.font;
+    let allFontSettings = {
+      fontFamily: fontSettings.fontFamily,
+      textSize: fontSettings.textSize,
+      isItalic: fontSettings.isItalic,
+      isBold: fontSettings.isBold,
+      isUnderline: fontSettings.isUnderline,
+    };
+    updateFontSetting(allFontSettings, settings.font, "main");
+    updateFontSetting(
+      allFontSettings,
+      settings.font,
+      "category",
+      fontSettings.wordWrap_
+    );
+    updateFontSetting(
+      allFontSettings,
+      settings.font,
+      "additionalName",
+      fontSettings.wordWrap_
+    );
+    updateFontSetting(allFontSettings, settings.font, "additionalValue");
+  }
+
+  console.log(settings);
+
   return { settings, dataGroups };
+}
+
+function updateFontSetting(
+  allFontSettings: IFontProperties,
+  fontSettings: Font,
+  typeLabel: string,
+  wordWrapSetting = null
+) {
+  switch (typeLabel) {
+    case "main":
+      fontSettings.mainfontFamily = allFontSettings.fontFamily;
+      fontSettings.mainTextSize = allFontSettings.textSize;
+      fontSettings.mainIsItalic = allFontSettings.isItalic;
+      fontSettings.mainIsBold = allFontSettings.isBold;
+      fontSettings.mainIsUnderline = allFontSettings.isUnderline;
+      break;
+
+    case "category":
+      fontSettings.categoryfontFamily = allFontSettings.fontFamily;
+      fontSettings.categoryTextSize = allFontSettings.textSize;
+      fontSettings.categoryIsItalic = allFontSettings.isItalic;
+      fontSettings.categoryIsBold = allFontSettings.isBold;
+      fontSettings.categoryIsUnderline = allFontSettings.isUnderline;
+      fontSettings.wordWrap_ = wordWrapSetting;
+      break;
+
+    case "additionalName":
+      fontSettings.additionalNamefontFamily = allFontSettings.fontFamily;
+      fontSettings.additionalNameTextSize = allFontSettings.textSize;
+      fontSettings.additionalNameIsItalic = allFontSettings.isItalic;
+      fontSettings.additionalNameIsBold = allFontSettings.isBold;
+      fontSettings.additionalNameIsUnderline = allFontSettings.isUnderline;
+      fontSettings.additionalNameWordWrap_ = wordWrapSetting;
+      break;
+
+    case "additionalValue":
+      fontSettings.additionalValuefontFamily = allFontSettings.fontFamily;
+      fontSettings.additionalValueTextSize = allFontSettings.textSize;
+      fontSettings.additionalValueIsItalic = allFontSettings.isItalic;
+      fontSettings.additionalValueIsBold = allFontSettings.isBold;
+      fontSettings.additionalValueIsUnderline = allFontSettings.isUnderline;
+      break;
+
+    default:
+      break;
+  }
 }
