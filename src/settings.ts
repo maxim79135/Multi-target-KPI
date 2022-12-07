@@ -74,17 +74,6 @@ export class Category {
   public labelAsMeasurename: boolean = false;
 }
 
-export class Background1 {
-  public backFill: string = null;
-  public transparency: number = 0;
-  public borderShow: boolean = false;
-  public borderFill: string = "#000000";
-  public borderType: string = "solid";
-  public borderWeight: number = 1;
-  public show: boolean = false;
-  public percentageWidth: number = 50;
-  public layout: boolean = true;
-}
 export class DataLabel {
   public color: string = "#333333";
   public displayUnit: number = 0;
@@ -250,7 +239,8 @@ export class AdditiionalFormat {
 
 export class Color {
   public color: string = "#333333";
-  public maincolor: string = "#333333";
+  public mainColor: string = "#333333";
+  public categoryColor: string = "#333333";
 
   public mainShow: boolean = false;
   public additionalShow: boolean = false;
@@ -275,15 +265,10 @@ export class AdditiionalColor {
   public assignColor1 = { solid: { color: "#333333" } };
   public assignColor2 = { solid: { color: "#333333" } };
   public assignColor3 = { solid: { color: "#333333" } };
-  public conditions: boolean[] = [];
-  public comparisonOperators: string[] = [];
-  public values: number[] = [];
-  public assignColors: { solid: { color: string } }[] = [];
 }
 
 export class CardSettings extends DataViewObjectsParser {
   public category: Category = new Category();
-  public background1: Background1 = new Background1();
   public additional: Additional = new Additional();
   public additionalItems: AdditionalItem[] = [];
   public dataLabel: DataLabel = new DataLabel();

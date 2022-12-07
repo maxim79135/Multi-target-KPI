@@ -1246,7 +1246,28 @@ export class CardKPI implements IVisual {
                 propertyName: "mainColor",
                 instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
               },
-              value: { value: settings.color.maincolor },
+              value: { value: settings.color.mainColor },
+            },
+          },
+        },
+      ],
+    };
+    let color_category: powerbi.visuals.FormattingGroup = {
+      uid: "color_category",
+      displayName: "Category",
+      description: "Set Color for Category",
+      slices: [
+        {
+          uid: "color_category_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "color",
+                propertyName: "categoryColor",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.color.categoryColor },
             },
           },
         },
@@ -1367,6 +1388,7 @@ export class CardKPI implements IVisual {
 
     color.groups.push(color_all);
     color.groups.push(color_main);
+    color.groups.push(color_category);
     color.groups.push(color_additional);
 
     return {
@@ -1391,12 +1413,12 @@ export class CardKPI implements IVisual {
               metadata: item.metadata,
             },
           },
-          value: item.conditions[index - 1],
+          value: item[`condition${index}`],
         },
       },
     });
 
-    if (item.conditions[index - 1]) {
+    if (item[`condition${index}`]) {
       list.slices.push(
         {
           uid: `color_additional_operator${index}_${item.measureDisplayName}`,
@@ -1410,7 +1432,7 @@ export class CardKPI implements IVisual {
                   metadata: item.metadata,
                 },
               },
-              value: item.comparisonOperators[index - 1],
+              value: item[`comparisonOperator${index}`],
             },
           },
         },
@@ -1426,7 +1448,7 @@ export class CardKPI implements IVisual {
                   metadata: item.metadata,
                 },
               },
-              value: item.values[index - 1],
+              value: item[`value1${index}`],
             },
           },
         },
@@ -1442,7 +1464,7 @@ export class CardKPI implements IVisual {
                   metadata: item.metadata,
                 },
               },
-              value: { value: item.assignColors[index - 1].solid.color },
+              value: { value: item[`assignColor${index}`].solid.color },
             },
           },
         }

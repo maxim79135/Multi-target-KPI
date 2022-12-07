@@ -5,7 +5,7 @@
             "displayName": "Main measure",
             "description": "(Required). Set the measure display in the field. You can only add one value.",
             "displayNameKey": "mainMeasure",
-            "name": "Main Measure",
+            "name": "mainMeasure",
             "kind": "Measure"
         },
         {
@@ -660,6 +660,16 @@
                     }
                 },
                 "mainColor": {
+                    "displayName": "Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "categoryColor": {
                     "displayName": "Color",
                     "type": {
                         "fill": {
