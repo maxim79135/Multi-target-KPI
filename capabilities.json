@@ -34,7 +34,7 @@
         {
             "conditions": [
                 {
-                    "Main Measure": {
+                    "mainMeasure": {
                         "min": 1,
                         "max": 1
                     },
@@ -47,7 +47,7 @@
                     }
                 },
                 {
-                    "Main Measure": {
+                    "mainMeasure": {
                         "min": 1
                     },
                     "category": {
@@ -68,7 +68,7 @@
                     "select": [
                         {
                             "bind": {
-                                "to": "Main Measure"
+                                "to": "mainMeasure"
                             }
                         },
                         {
@@ -682,6 +682,16 @@
                                 "color": true
                             }
                         }
+                    }
+                },
+                "mainShow": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "categoryShow": {
+                    "type": {
+                        "bool": true
                     }
                 },
                 "additionalShow": {

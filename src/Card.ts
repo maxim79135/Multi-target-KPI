@@ -49,7 +49,7 @@ export class Card {
   private cards: Selection<BaseType, any, any, any>[];
   private svg: Selection<BaseType, any, any, any>[];
   private categoryLabels: Selection<BaseType, any, any, any>[];
-  public dataLabels: Selection<BaseType, any, any, any>[];
+  private dataLabels: Selection<BaseType, any, any, any>[];
   private additionalCategoryContainers: Selection<BaseType, any, any, any>[][];
   private additionalMeasureContainers: Selection<BaseType, any, any, any>[][];
   private cardViewport: { width: number; height: number };
@@ -294,6 +294,9 @@ export class Card {
 
       let svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
+      if (!settings.color.categoryShow) {
+        settings.color.categoryColor = settings.color.color;
+      }
       let style = {
         fontFamily: settings.font.categoryfontFamily,
         textSize: settings.font.categoryTextSize,
@@ -367,6 +370,9 @@ export class Card {
 
       let svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
+      if (!settings.color.mainShow) {
+        settings.color.mainColor = settings.color.color;
+      }
       let style = {
         fontFamily: settings.font.mainfontFamily,
         textSize: settings.font.mainTextSize,

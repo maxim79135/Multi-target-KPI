@@ -161,11 +161,11 @@ export class CardKPI implements IVisual {
           properties: {
             descriptor: {
               objectName: "grid",
-              propertyName: "showMeasureName"
+              propertyName: "showMeasureName",
             },
-            value: settings.grid.showMeasureName
-          }
-        }
+            value: settings.grid.showMeasureName,
+          },
+        },
       },
       slices: [
         {
@@ -927,7 +927,7 @@ export class CardKPI implements IVisual {
       uid: "format_all",
       displayName: "All",
       description: "Set the values format for all elements.",
-      disabled: settings.format.additionalShow,
+      disabled: settings.format.mainShow && settings.format.additionalShow,
       slices: [
         {
           uid: "format_all_unit",
@@ -1229,6 +1229,10 @@ export class CardKPI implements IVisual {
       uid: "color_all",
       displayName: "All",
       description: "Set color for all elements.",
+      disabled:
+        settings.color.mainShow &&
+        settings.color.categoryShow &&
+        settings.color.additionalShow,
       slices: [
         {
           uid: "color_all_color",
@@ -1249,6 +1253,20 @@ export class CardKPI implements IVisual {
       uid: "color_main",
       displayName: "Main measure value",
       description: "Set Color for Main Measure",
+      topLevelToggle: {
+        uid: "color_main_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "color",
+              propertyName: "mainShow",
+            },
+            value: settings.color.mainShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
       slices: [
         {
           uid: "color_main_color",
@@ -1270,6 +1288,20 @@ export class CardKPI implements IVisual {
       uid: "color_category",
       displayName: "Category",
       description: "Set Color for Category",
+      topLevelToggle: {
+        uid: "color_category_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "color",
+              propertyName: "categoryShow",
+            },
+            value: settings.color.categoryShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
       slices: [
         {
           uid: "color_category_color",

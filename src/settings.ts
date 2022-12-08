@@ -55,11 +55,11 @@ export class Alignment {
 }
 
 export class Background {
-  public layoutShow: boolean = true;
+  public layoutShow: boolean = false;
   public backFill: string = null;
   public transparency: number = 0;
   public borderShow: boolean = false;
-  public borderFill: string = "#000000";
+  public borderFill: string = "#ffffff";
   public borderWeight: number = 1;
   public roundEdges: number = 0;
 }
@@ -136,6 +136,7 @@ export class Color {
   public categoryColor: string = "#333333";
 
   public mainShow: boolean = false;
+  public categoryShow: boolean = false;
   public additionalShow: boolean = false;
 }
 

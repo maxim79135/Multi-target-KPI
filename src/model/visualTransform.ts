@@ -385,10 +385,19 @@ export function visualTransform(
         if (dataValue.source.roles["mainMeasure"]) {
           let formatProperties: IFormatProperties = {
             displayUnit: settings.format.mainDisplayUnit,
-            decimalPlaces: settings.format.decimalPlaces,
-            suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
-            blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
+            decimalPlaces: settings.format.mainDecimalPlaces,
+            suppressBlankAndNaN: settings.format.mainSuppressBlankAndNaN,
+            blankAndNaNReplaceText: settings.format.mainBlankAndNaNReplaceText,
           };
+          if (!settings.format.mainShow) {
+            formatProperties = {
+              displayUnit: settings.format.displayUnit,
+              decimalPlaces: settings.format.decimalPlaces,
+              suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
+              blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
+            };
+          }
+
           if (categories[i]) {
             if (settings.grid.labelAsMeasurename) {
               dataGroup.displayName = dataValue.source.displayName;
@@ -717,6 +726,11 @@ export function visualTransform(
       settings.alignment.horizontal;
     settings.alignment.horizontalAdditionalMeasureValue =
       settings.alignment.horizontal;
+  }
+
+  if (!settings.alignment.show_additional_vertical) {
+    settings.alignment.verticalAdditionalMeasure = settings.alignment.vertical;
+    settings.alignment.verticalMainMeasure = settings.alignment.vertical;
   }
 
   if (!settings.font.additionalShow) {
