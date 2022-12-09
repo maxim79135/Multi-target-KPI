@@ -715,7 +715,7 @@ export class CardKPI implements IVisual {
                   objectName: "font",
                   propertyName: "categoryFontFamily",
                 },
-                value: settings.font.categoryfontFamily,
+                value: settings.font.categoryFontFamily,
               },
               fontSize: {
                 descriptor: {
@@ -773,7 +773,7 @@ export class CardKPI implements IVisual {
                   objectName: "font",
                   propertyName: "mainFontFamily",
                 },
-                value: settings.font.mainfontFamily,
+                value: settings.font.mainFontFamily,
               },
               fontSize: {
                 descriptor: {
@@ -818,7 +818,7 @@ export class CardKPI implements IVisual {
                   objectName: "font",
                   propertyName: "additionalNameFontFamily",
                 },
-                value: settings.font.additionalNamefontFamily,
+                value: settings.font.additionalNameFontFamily,
               },
               fontSize: {
                 descriptor: {
@@ -876,7 +876,7 @@ export class CardKPI implements IVisual {
                   objectName: "font",
                   propertyName: "additionalValueFontFamily",
                 },
-                value: settings.font.additionalValuefontFamily,
+                value: settings.font.additionalValueFontFamily,
               },
               fontSize: {
                 descriptor: {

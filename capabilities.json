@@ -408,7 +408,7 @@
                         "bool": true
                     }
                 },
-                "categoryfontFamily": {
+                "categoryFontFamily": {
                     "type": {
                         "formatting": {
                             "fontFamily": true
@@ -444,7 +444,7 @@
                         "bool": true
                     }
                 },
-                "mainfontFamily": {
+                "mainFontFamily": {
                     "type": {
                         "formatting": {
                             "fontFamily": true
@@ -473,7 +473,7 @@
                         "bool": true
                     }
                 },
-                "additionalNamefontFamily": {
+                "additionalNameFontFamily": {
                     "type": {
                         "formatting": {
                             "fontFamily": true
@@ -509,7 +509,7 @@
                         "bool": true
                     }
                 },
-                "additionalValuefontFamily": {
+                "additionalValueFontFamily": {
                     "type": {
                         "formatting": {
                             "fontFamily": true

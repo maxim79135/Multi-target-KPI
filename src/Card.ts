@@ -298,7 +298,7 @@ export class Card {
         settings.color.categoryColor = settings.color.color;
       }
       let style = {
-        fontFamily: settings.font.categoryfontFamily,
+        fontFamily: settings.font.categoryFontFamily,
         textSize: settings.font.categoryTextSize,
         isItalic: settings.font.categoryIsItalic,
         isBold: settings.font.categoryIsBold,
@@ -374,7 +374,7 @@ export class Card {
         settings.color.mainColor = settings.color.color;
       }
       let style = {
-        fontFamily: settings.font.mainfontFamily,
+        fontFamily: settings.font.mainFontFamily,
         textSize: settings.font.mainTextSize,
         isItalic: settings.font.mainIsItalic,
         isBold: settings.font.mainIsBold,
@@ -478,7 +478,7 @@ export class Card {
       // tslint:disable-next-line: max-func-body-length
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         let style: IFontProperties = {
-          fontFamily: settings.font.additionalNamefontFamily,
+          fontFamily: settings.font.additionalNameFontFamily,
           textSize: settings.font.additionalNameTextSize,
           isItalic: settings.font.additionalNameIsItalic,
           isBold: settings.font.additionalNameIsBold,
@@ -635,7 +635,7 @@ export class Card {
           .classed(CardClassNames.AdditionalMeasureLabel + i + j, true);
         additionalMeasureLabel.append("text");
         let style: IFontProperties = {
-          fontFamily: settings.font.additionalValuefontFamily,
+          fontFamily: settings.font.additionalValueFontFamily,
           textSize: settings.font.additionalValueTextSize,
           isItalic: settings.font.additionalValueIsItalic,
           isBold: settings.font.additionalValueIsBold,

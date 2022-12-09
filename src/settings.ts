@@ -74,7 +74,7 @@ export class Font {
   public isUnderline: boolean = false;
 
   public additionalShow: boolean = false;
-  public categoryfontFamily: string =
+  public categoryFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public categoryWordWrap_: boolean = false;
   public categoryTextSize: number = 12;
@@ -82,14 +82,14 @@ export class Font {
   public categoryIsBold: boolean = false;
   public categoryIsUnderline: boolean = false;
 
-  public mainfontFamily: string =
+  public mainFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public mainTextSize: number = 12;
   public mainIsItalic: boolean = false;
   public mainIsBold: boolean = false;
   public mainIsUnderline: boolean = false;
 
-  public additionalNamefontFamily: string =
+  public additionalNameFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public additionalNameWordWrap_: boolean = false;
   public additionalNameTextSize: number = 12;
@@ -97,7 +97,7 @@ export class Font {
   public additionalNameIsBold: boolean = false;
   public additionalNameIsUnderline: boolean = false;
 
-  public additionalValuefontFamily: string =
+  public additionalValueFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public additionalValueTextSize: number = 12;
   public additionalValueIsItalic: boolean = false;

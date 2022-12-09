@@ -771,7 +771,7 @@ function updateFontSetting(
 ) {
   switch (typeLabel) {
     case "main":
-      fontSettings.mainfontFamily = allFontSettings.fontFamily;
+      fontSettings.mainFontFamily = allFontSettings.fontFamily;
       fontSettings.mainTextSize = allFontSettings.textSize;
       fontSettings.mainIsItalic = allFontSettings.isItalic;
       fontSettings.mainIsBold = allFontSettings.isBold;
@@ -779,7 +779,7 @@ function updateFontSetting(
       break;
 
     case "category":
-      fontSettings.categoryfontFamily = allFontSettings.fontFamily;
+      fontSettings.categoryFontFamily = allFontSettings.fontFamily;
       fontSettings.categoryTextSize = allFontSettings.textSize;
       fontSettings.categoryIsItalic = allFontSettings.isItalic;
       fontSettings.categoryIsBold = allFontSettings.isBold;
@@ -788,7 +788,7 @@ function updateFontSetting(
       break;
 
     case "additionalName":
-      fontSettings.additionalNamefontFamily = allFontSettings.fontFamily;
+      fontSettings.additionalNameFontFamily = allFontSettings.fontFamily;
       fontSettings.additionalNameTextSize = allFontSettings.textSize;
       fontSettings.additionalNameIsItalic = allFontSettings.isItalic;
       fontSettings.additionalNameIsBold = allFontSettings.isBold;
@@ -797,7 +797,7 @@ function updateFontSetting(
       break;
 
     case "additionalValue":
-      fontSettings.additionalValuefontFamily = allFontSettings.fontFamily;
+      fontSettings.additionalValueFontFamily = allFontSettings.fontFamily;
       fontSettings.additionalValueTextSize = allFontSettings.textSize;
       fontSettings.additionalValueIsItalic = allFontSettings.isItalic;
       fontSettings.additionalValueIsBold = allFontSettings.isBold;
