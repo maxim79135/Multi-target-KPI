@@ -45,17 +45,6 @@
                     "additional": {
                         "max": 3
                     }
-                },
-                {
-                    "mainMeasure": {
-                        "min": 1
-                    },
-                    "category": {
-                        "max": 0
-                    },
-                    "additional": {
-                        "max": 0
-                    }
                 }
             ],
             "categorical": {

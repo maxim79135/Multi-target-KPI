@@ -367,20 +367,14 @@ export function visualTransform(
     let category = dataCategorical.categories
       ? dataCategorical.categories[dataCategorical.categories.length - 1]
       : null;
-    let categories: PrimitiveValue[] = [];
-    if (category) {
-      categories = category.values;
-    } else {
-      dataCategorical.values.forEach(() => categories.push(null));
-    }
+    let categories = category ? category.values : [""];
 
     for (let i = 0; i < categories.length; i++) {
       let dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
 
       for (let ii = 0; ii < dataCategorical.values.length; ii++) {
-        let index = categories[i] ? ii : i;
-        let dataValue = dataCategorical.values[index];
-        let value: any = dataValue.values[categories[i] ? i : 0];
+        let dataValue = dataCategorical.values[ii];
+        let value: any = dataValue.values[i];
         let valueType = dataValue.source.type;
         if (dataValue.source.roles["mainMeasure"]) {
           let formatProperties: IFormatProperties = {
@@ -697,8 +691,6 @@ export function visualTransform(
             ),
           });
         }
-
-        if (index != ii) continue;
       }
 
       // add selectionId
