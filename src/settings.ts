@@ -56,7 +56,7 @@ export class Alignment {
 
 export class Background {
   public layoutShow: boolean = false;
-  public backFill: string = null;
+  public backFill: string = "#ffffff";
   public transparency: number = 0;
   public borderShow: boolean = false;
   public borderFill: string = "#ffffff";
@@ -133,10 +133,8 @@ export class AdditiionalFormat {
 export class Color {
   public color: string = "#333333";
   public mainColor: string = "#333333";
-  public categoryColor: string = "#333333";
 
   public mainShow: boolean = false;
-  public categoryShow: boolean = false;
   public additionalShow: boolean = false;
 }
 

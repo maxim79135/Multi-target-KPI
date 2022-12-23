@@ -663,22 +663,7 @@
                         }
                     }
                 },
-                "categoryColor": {
-                    "displayName": "Color",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
                 "mainShow": {
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "categoryShow": {
                     "type": {
                         "bool": true
                     }

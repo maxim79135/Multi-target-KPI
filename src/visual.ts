@@ -66,7 +66,7 @@ export class CardKPI implements IVisual {
     this.card.setModel(this.model);
     this.card.updateViewport(options.viewport);
     this.card.createCardContainer();
-    this.card.createLabels();
+    this.card.draw();
     this.card.createTooltip();
     this.handleLandingPage(options);
     this.events.renderingFinished(options);
@@ -419,7 +419,7 @@ export class CardKPI implements IVisual {
                 objectName: "alignment",
                 propertyName: "horizontalMainMeasure",
               },
-              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
               value: settings.alignment.horizontalMainMeasure,
             },
           },
@@ -433,7 +433,7 @@ export class CardKPI implements IVisual {
                 objectName: "alignment",
                 propertyName: "horizontalCategory",
               },
-              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
               value: settings.alignment.horizontalCategory,
             },
           },
@@ -447,7 +447,7 @@ export class CardKPI implements IVisual {
                 objectName: "alignment",
                 propertyName: "horizontalAdditionalMeasureName",
               },
-              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
               value: settings.alignment.horizontalAdditionalMeasureName,
             },
           },
@@ -461,7 +461,7 @@ export class CardKPI implements IVisual {
                 objectName: "alignment",
                 propertyName: "horizontalAdditionalMeasureValue",
               },
-              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
               value: settings.alignment.horizontalAdditionalMeasureValue,
             },
           },
@@ -1229,10 +1229,6 @@ export class CardKPI implements IVisual {
       uid: "color_all",
       displayName: "All",
       description: "Set color for all elements.",
-      disabled:
-        settings.color.mainShow &&
-        settings.color.categoryShow &&
-        settings.color.additionalShow,
       slices: [
         {
           uid: "color_all_color",
@@ -1279,41 +1275,6 @@ export class CardKPI implements IVisual {
                 instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
               },
               value: { value: settings.color.mainColor },
-            },
-          },
-        },
-      ],
-    };
-    let color_category: powerbi.visuals.FormattingGroup = {
-      uid: "color_category",
-      displayName: "Category",
-      description: "Set Color for Category",
-      topLevelToggle: {
-        uid: "color_category_show",
-        control: {
-          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-          properties: {
-            descriptor: {
-              objectName: "color",
-              propertyName: "categoryShow",
-            },
-            value: settings.color.categoryShow,
-          },
-        },
-        suppressDisplayName: true,
-      },
-      slices: [
-        {
-          uid: "color_category_color",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "categoryColor",
-                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
-              },
-              value: { value: settings.color.categoryColor },
             },
           },
         },
@@ -1434,7 +1395,6 @@ export class CardKPI implements IVisual {
 
     color.groups.push(color_all);
     color.groups.push(color_main);
-    color.groups.push(color_category);
     color.groups.push(color_additional);
 
     return {
