@@ -27,20 +27,124 @@
 "use strict";
 
 import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
-import powerbi from "powerbi-visuals-api";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
-export class AdditionalItem {
-  public measureDisplayName: string;
-  public metadata: string;
-  public componentType: string = "measure";
+export class Grid {
+  public percentageWidth: number = 50;
+  public wireframe: string = "left";
+  public showMeasureName: boolean = true;
+  public labelAsMeasurename: boolean = false;
+  public position: string = "aboveMainMeasure";
+  public cardsPerRow: number = 5;
+  public cardsMargin: number = 15;
+  public layoutType: string = "vertical";
+}
+
+export class Alignment {
+  public vertical: string = "middle";
+  public horizontal: string = "center";
+  public show_additional_vertical: boolean = false;
+  public show_additional_horizontal: boolean = false;
+  public verticalMainMeasure: string = "middle";
+  public verticalAdditionalMeasure: string = "middle";
+  public verticalAdditionalMeasureName: string = "left";
+  public horizontalMainMeasure: string = "center";
+  public horizontalAdditionalMeasureName: string = "center";
+  public horizontalAdditionalMeasureValue: string = "center";
+  public horizontalCategory: string = "center";
+  public verticalCategory: string = "middle";
+}
+
+export class Background {
+  public layoutShow: boolean = false;
+  public backFill: string = "#ffffff";
+  public transparency: number = 0;
+  public borderShow: boolean = false;
+  public borderFill: string = "#ffffff";
+  public borderWeight: number = 1;
+  public roundEdges: number = 0;
+}
+
+export class Font {
+  public fontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public wordWrap_: boolean = false;
+  public textSize: number = 12;
+  public isItalic: boolean = false;
+  public isBold: boolean = false;
+  public isUnderline: boolean = false;
+
+  public additionalShow: boolean = false;
+  public categoryFontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public categoryWordWrap_: boolean = false;
+  public categoryTextSize: number = 12;
+  public categoryIsItalic: boolean = false;
+  public categoryIsBold: boolean = false;
+  public categoryIsUnderline: boolean = false;
+
+  public mainFontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public mainTextSize: number = 12;
+  public mainIsItalic: boolean = false;
+  public mainIsBold: boolean = false;
+  public mainIsUnderline: boolean = false;
+
+  public additionalNameFontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public additionalNameWordWrap_: boolean = false;
+  public additionalNameTextSize: number = 12;
+  public additionalNameIsItalic: boolean = false;
+  public additionalNameIsBold: boolean = false;
+  public additionalNameIsUnderline: boolean = false;
+
+  public additionalValueFontFamily: string =
+    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
+  public additionalValueTextSize: number = 12;
+  public additionalValueIsItalic: boolean = false;
+  public additionalValueIsBold: boolean = false;
+  public additionalValueIsUnderline: boolean = false;
+}
+
+export class Format {
   public displayUnit: number = 0;
   public decimalPlaces: number = 0;
-  public suppressBlankAndNaN: boolean = false;
-  public blankAndNaNReplaceText: string = "";
+  public suppressBlankAndNaN: boolean = true;
+  public blankAndNaNReplaceText: string = "0";
+
+  public additionalShow: boolean = false;
+  public mainShow: boolean = false;
+  public mainDisplayUnit: number = 0;
+  public mainDecimalPlaces: number = 0;
+  public mainSuppressBlankAndNaN: boolean = true;
+  public mainBlankAndNaNReplaceText: string = "0";
+}
+
+export class AdditiionalFormat {
+  public metadata: string;
+  public measureDisplayName: string;
+  public displayUnit: number = 0;
+  public decimalPlaces: number = 0;
+  public suppressBlankAndNaN: boolean = true;
+  public blankAndNaNReplaceText: string = "0";
+  public componentType: string = "measure";
   public invertVariance: boolean = false;
-  public componentTypeForColor: string = "measure";
-  public unmatchedColor: string = "#333333";
+}
+
+export class Color {
+  public color: string = "#333333";
+  public mainColor: string = "#333333";
+
+  public mainShow: boolean = false;
+  public additionalShow: boolean = false;
+}
+
+export class AdditiionalColor {
+  public metadata: string;
+  public measureDisplayName: string;
+  public componentType: string = "measure";
+  public invertVariance: boolean = false;
+  public unmatchedColor = { solid: { color: "#333333" } };
   public conditionFormatting: boolean = false;
   public condition1: boolean = false;
   public comparisonOperator1: string = ">";
@@ -51,103 +155,32 @@ export class AdditionalItem {
   public value1: number = null;
   public value2: number = null;
   public value3: number = null;
-  public assignColor1: string = "#333333";
-  public assignColor2: string = "#333333";
-  public assignColor3: string = "#333333";
-  public invertVarianceForColor: boolean = false;
-}
-
-export class AdditionalCategory {
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public wordWrap_: boolean = false;
-  public textSize: number = 12;
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public color: string = "#333333";
-}
-
-export class Category {
-  public cardsPerRow: number = 5;
-  public cardsMargin: number = 15;
-  public spaceBeforeFirstComponent: number = 15;
-  public labelAsMeasurename: boolean = false;
-}
-
-export class Background {
-  public backFill: string = null;
-  public transparency: number = 0;
-  public borderShow: boolean = false;
-  public borderFill: string = "#000000";
-  public borderType: string = "solid";
-  public borderWeight: number = 1;
-  public show: boolean = false;
-  public percentageWidth: number = 50;
-  public layout: boolean = true;
-}
-export class DataLabel {
-  public color: string = "#333333";
-  public displayUnit: number = 0;
-  public decimalPlaces: number = 0;
-  public textSize: number = 27;
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-  public verticalAlignment: string = "middle";
-  public horizontalAlignment: string = "center";
-  public suppressBlankAndNaN: boolean = false;
-  public blankAndNaNReplaceText: string = "";
-  public paddingTop: number = 0;
-  public paddingBottom: number = 0;
-  public paddingSide: number = 0;
-}
-
-export class Additional {
-  public paddingTop: number = 0;
-  public paddingBottom: number = 0;
-  public paddingLeft: number = 0;
-  public paddingRight: number = 0;
-  public wordWrap_: boolean = false;
-  public horizontalAlignment: string = "center";
-  public layoutType: string = "vertical";
-  public verticalTextAnchor: string = "middle";
-  public textAnchor: string = "left";
-  public marginOfMeasure: number = 5;
-  public percentageWidth: number = 50;
-  public showAdditionalOptions: boolean = false;
-  public backFill: string = null;
-  public transparency: number = 0;
-
-  // text formatting
-  public textSize: number = 12;
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
-}
-
-export class CategoryLabel {
-  public show: boolean = true;
-  public position: string = "aboveMainMeasure";
-  public horizontalAlignment: string = "center";
-  public paddingTop: number = 0;
-  public paddingSide: number = 0;
-  public color: string = "#333333";
-  public textSize: number = 15;
-  public fontFamily: string =
-    "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public wordWrap_: boolean = false;
-  public isItalic: boolean = false;
-  public isBold: boolean = false;
+  public assignColor1 = { solid: { color: "#333333" } };
+  public assignColor2 = { solid: { color: "#333333" } };
+  public assignColor3 = { solid: { color: "#333333" } };
 }
 
 export class CardSettings extends DataViewObjectsParser {
-  public category: Category = new Category();
+  public grid: Grid = new Grid();
+  public alignment: Alignment = new Alignment();
   public background: Background = new Background();
-  public additional: Additional = new Additional();
-  public additionalItems: AdditionalItem[] = [];
-  public dataLabel: DataLabel = new DataLabel();
-  public categoryLabel: CategoryLabel = new CategoryLabel();
-  public additionalCategory: AdditionalCategory = new AdditionalCategory();
+  public font: Font = new Font();
+  public format: Format = new Format();
+  public additionalFormat: AdditiionalFormat[] = [];
+  public color: Color = new Color();
+  public additionalColor: AdditiionalColor[] = [];
+  public constants: Constants = new Constants();
+}
+
+export class Constants {
+  public categoryPaddingTop = 5;
+  public categoryPaddingSide = 5;
+  public mainMeasurePaddingSide = 5;
+  public mainMeasurePaddingBottom = 5;
+  public mainMeasurePaddingTop = 5;
+  public additionalPaddingLeft = 5;
+  public additionalPaddingRight = 5;
+  public additionalPaddingTop = 5;
+  public additionalPaddingBottom = 5;
+  public marginOfMeasure = 0;
 }
