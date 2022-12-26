@@ -440,6 +440,7 @@ export class CardKPI implements IVisual {
         },
         {
           uid: "alignment_additional_horizontal_additional_name",
+          disabled: settings.grid.layoutType == "horizontal",
           control: {
             type: powerbi.visuals.FormattingComponent.AlignmentGroup,
             properties: {

@@ -180,6 +180,6 @@ export class Constants {
   public additionalPaddingLeft = 15;
   public additionalPaddingRight = 15;
   public additionalPaddingTop = 15;
-  public additionalPaddingBottom = 15;
+  public additionalPaddingBottom = 10;
   public marginOfMeasure = 0;
 }
