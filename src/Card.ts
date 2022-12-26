@@ -317,10 +317,13 @@ export class Card {
       let xStartPos = 0;
       let yStartPos = 0;
       let maxWidth: number;
+      let maxHeight: number;
       if (settings.grid.position == "aboveMainMeasure") {
         maxWidth = this.maxMainMeasureWidth;
+        maxHeight = svgRect.height / 2
       } else {
         maxWidth = svgRect.width;
+        maxHeight = svgRect.height / 3
       }
 
       // update position
@@ -332,7 +335,12 @@ export class Card {
         settings.constants.categoryPaddingSide,
         settings.font.categoryWordWrap_
       );
-      this.setYPos(categoryLabel, svgRect.height / 2, "middle");
+      this.setYPos(
+        categoryLabel,
+        maxHeight,
+        settings.alignment.verticalCategory,
+        settings.constants.categoryPaddingTop
+      );
 
       categoryLabel.select("text").style("dominant-baseline", "middle");
       this.categoryLabels.push(categoryLabel);
@@ -435,21 +443,21 @@ export class Card {
         let maxHeight: number;
         let xStartPos: number;
         let yStartPos: number;
-        if (settings.grid.layoutType == "horizontal") {
-          xStartPos =
-            this.maxMainMeasureWidth +
-            settings.constants.additionalPaddingLeft +
-            j * this.additionalMeasureWidth +
-            j * settings.constants.marginOfMeasure;
-          if (settings.grid.position == "aboveMainMeasure") {
-            yStartPos = 0;
-            maxHeight = svgRect.height / 2;
-          } else {
-            yStartPos = svgRect.height / 3;
-            maxHeight = svgRect.height / 3;
-          }
+        // if (settings.grid.layoutType == "horizontal") {
+        xStartPos =
+          this.maxMainMeasureWidth +
+          settings.constants.additionalPaddingLeft +
+          j * this.additionalMeasureWidth +
+          j * settings.constants.marginOfMeasure;
+        if (settings.grid.position == "aboveMainMeasure") {
+          yStartPos = 0;
+          maxHeight = svgRect.height / 2;
         } else {
+          yStartPos = svgRect.height / 3;
+          maxHeight = svgRect.height / 3;
         }
+        // } else {
+        // }
         additionalCategoryLabel.attr(
           "transform",
           translate(xStartPos, yStartPos)
@@ -492,8 +500,8 @@ export class Card {
         this.setYPos(
           additionalCategoryLabel,
           maxHeight,
-          settings.alignment.verticalAdditionalMeasure
-          // settings.constants.additionalPaddingBottom
+          settings.alignment.verticalAdditionalMeasure,
+          settings.constants.additionalPaddingBottom
         );
         additionalCategoryLabel
           .select("text")
@@ -599,27 +607,27 @@ export class Card {
         let maxHeight: number;
         let xStartPos: number;
         let yStartPos: number;
-        if (settings.grid.layoutType == "horizontal") {
-          this.additionalMeasureWidth =
-            (svgRect.width -
-              this.maxMainMeasureWidth -
-              settings.constants.additionalPaddingLeft -
-              settings.constants.additionalPaddingRight -
-              (array.length - 1) * settings.constants.marginOfMeasure) /
-            array.length;
-          xStartPos =
-            this.maxMainMeasureWidth +
-            settings.constants.additionalPaddingLeft +
-            j * this.additionalMeasureWidth +
-            j * settings.constants.marginOfMeasure;
-          if (settings.grid.position == "aboveMainMeasure") {
-            yStartPos = svgRect.height / 2;
-          } else {
-            yStartPos = (svgRect.height * 2) / 3;
-          }
-          maxHeight = svgRect.height - yStartPos;
+        // if (settings.grid.layoutType == "horizontal") {
+        this.additionalMeasureWidth =
+          (svgRect.width -
+            this.maxMainMeasureWidth -
+            settings.constants.additionalPaddingLeft -
+            settings.constants.additionalPaddingRight -
+            (array.length - 1) * settings.constants.marginOfMeasure) /
+          array.length;
+        xStartPos =
+          this.maxMainMeasureWidth +
+          settings.constants.additionalPaddingLeft +
+          j * this.additionalMeasureWidth +
+          j * settings.constants.marginOfMeasure;
+        if (settings.grid.position == "aboveMainMeasure") {
+          yStartPos = svgRect.height / 2;
         } else {
+          yStartPos = (svgRect.height * 2) / 3;
         }
+        maxHeight = svgRect.height - yStartPos;
+        // } else {
+        // }
         additionalMeasureLabel.attr(
           "transform",
           translate(xStartPos, yStartPos)
@@ -644,8 +652,8 @@ export class Card {
         this.setYPos(
           additionalMeasureLabel,
           maxHeight,
-          settings.alignment.verticalAdditionalMeasure
-          // settings.constants.additionalPaddingBottom
+          settings.alignment.verticalAdditionalMeasure, 
+          settings.constants.additionalPaddingBottom
         );
         additionalMeasureLabel
           .select("text")

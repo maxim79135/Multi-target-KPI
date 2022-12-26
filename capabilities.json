@@ -293,6 +293,16 @@
                             "alignment": true
                         }
                     }
+                },
+                "verticalCategory": {
+                    "displayName": "Category",
+                    "description": "Category.",
+                    "displayNameKey": "verticalCategory",
+                    "type": {
+                        "formatting": {
+                            "alignment": true
+                        }
+                    }
                 }
             }
         },

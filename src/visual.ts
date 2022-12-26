@@ -350,6 +350,20 @@ export class CardKPI implements IVisual {
           },
         },
         {
+          uid: "alignment_additional_vertical_category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+            properties: {
+              descriptor: {
+                objectName: "alignment",
+                propertyName: "verticalCategory",
+              },
+              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+              value: settings.alignment.verticalCategory,
+            },
+          },
+        },
+        {
           uid: "alignment_additional_vertical_additional_measure",
           displayName:
             settings.grid.layoutType == "horizontal"

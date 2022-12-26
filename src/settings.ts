@@ -52,6 +52,7 @@ export class Alignment {
   public horizontalAdditionalMeasureName: string = "center";
   public horizontalAdditionalMeasureValue: string = "center";
   public horizontalCategory: string = "center";
+  public verticalCategory: string = "middle";
 }
 
 export class Background {
@@ -172,14 +173,14 @@ export class CardSettings extends DataViewObjectsParser {
 }
 
 export class Constants {
-  public categoryPaddingTop = 10;
-  public categoryPaddingSide = 15;
-  public mainMeasurePaddingSide = 15;
-  public mainMeasurePaddingBottom = 15;
-  public mainMeasurePaddingTop = 15;
-  public additionalPaddingLeft = 15;
-  public additionalPaddingRight = 15;
-  public additionalPaddingTop = 15;
-  public additionalPaddingBottom = 10;
+  public categoryPaddingTop = 5;
+  public categoryPaddingSide = 5;
+  public mainMeasurePaddingSide = 5;
+  public mainMeasurePaddingBottom = 5;
+  public mainMeasurePaddingTop = 5;
+  public additionalPaddingLeft = 5;
+  public additionalPaddingRight = 5;
+  public additionalPaddingTop = 5;
+  public additionalPaddingBottom = 5;
   public marginOfMeasure = 0;
 }
