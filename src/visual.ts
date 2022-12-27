@@ -89,11 +89,11 @@ export class CardKPI implements IVisual {
     }
   }
 
-  // tslint:disable-next-line: max-func-body-length
+  // eslint-disable-next-line max-lines-per-function
   public getFormattingModel(): powerbi.visuals.FormattingModel {
-    let settings = this.model.settings;
+    const settings = this.model.settings;
 
-    let grid: powerbi.visuals.FormattingCard = {
+    const grid: powerbi.visuals.FormattingCard = {
       description: "Grid Description",
       displayName: "Grid",
       uid: "grid",
@@ -106,7 +106,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    let mainMeasureValue: powerbi.visuals.FormattingGroup = {
+    const mainMeasureValue: powerbi.visuals.FormattingGroup = {
       displayName: "Main measure value",
       description:
         "Enable this field if you want to change the position of the Main Measure",
@@ -150,7 +150,7 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let mainMeasureName: powerbi.visuals.FormattingGroup = {
+    const mainMeasureName: powerbi.visuals.FormattingGroup = {
       displayName: "Main measure name",
       uid: "grid_category",
       topLevelToggle: {
@@ -196,7 +196,7 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let category: powerbi.visuals.FormattingGroup = {
+    const category: powerbi.visuals.FormattingGroup = {
       displayName: "Category",
       description:
         "Enable this field if you want to change the position of the Categories.",
@@ -242,7 +242,7 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let additionalMeasures: powerbi.visuals.FormattingGroup = {
+    const additionalMeasures: powerbi.visuals.FormattingGroup = {
       displayName: "Additional measures",
       description:
         "Еnable this field if you want to change the position of Additional Measures.",
@@ -269,7 +269,7 @@ export class CardKPI implements IVisual {
     grid.groups.push(category);
     grid.groups.push(additionalMeasures);
 
-    let alignment: powerbi.visuals.FormattingCard = {
+    const alignment: powerbi.visuals.FormattingCard = {
       description: "Alignment Description",
       displayName: "Alignment",
       uid: "alignment",
@@ -277,7 +277,7 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    let alignment_all: powerbi.visuals.FormattingGroup = {
+    const alignment_all: powerbi.visuals.FormattingGroup = {
       displayName: "All",
       description: "Set alignment for all elements.",
       uid: "alignment_all",
@@ -315,7 +315,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    let alignment_additional_vertical: powerbi.visuals.FormattingGroup = {
+    const alignment_additional_vertical: powerbi.visuals.FormattingGroup = {
       displayName: "Vertical alignment",
       description:
         "Enable this field if you want to change the vertical position of the element.",
@@ -404,7 +404,7 @@ export class CardKPI implements IVisual {
       });
     }
 
-    let alignment_additional_horizontal: powerbi.visuals.FormattingGroup = {
+    const alignment_additional_horizontal: powerbi.visuals.FormattingGroup = {
       displayName: "Horizontal alignment",
       description:
         "Enable this field if you want to change the horizontal position of the element.",
@@ -488,7 +488,7 @@ export class CardKPI implements IVisual {
     alignment.groups.push(alignment_additional_vertical);
     alignment.groups.push(alignment_additional_horizontal);
 
-    let background: powerbi.visuals.FormattingCard = {
+    const background: powerbi.visuals.FormattingCard = {
       description: "Background",
       displayName: "Background",
       uid: "background",
@@ -496,7 +496,7 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    let background_layout: powerbi.visuals.FormattingGroup = {
+    const background_layout: powerbi.visuals.FormattingGroup = {
       uid: "background_layout",
       displayName: "Layout",
       description: "Add layout background.",
@@ -545,7 +545,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    let background_border: powerbi.visuals.FormattingGroup = {
+    const background_border: powerbi.visuals.FormattingGroup = {
       uid: "background_border",
       displayName: "Border",
       description: "Add a border to the card.",
@@ -626,7 +626,7 @@ export class CardKPI implements IVisual {
     background.groups.push(background_layout);
     background.groups.push(background_border);
 
-    let font: powerbi.visuals.FormattingCard = {
+    const font: powerbi.visuals.FormattingCard = {
       description: "Font",
       displayName: "Font",
       uid: "font",
@@ -634,7 +634,7 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    let font_all: powerbi.visuals.FormattingGroup = {
+    const font_all: powerbi.visuals.FormattingGroup = {
       uid: "font_all",
       displayName: "All",
       disabled: settings.font.additionalShow,
@@ -700,7 +700,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    let font_additional: powerbi.visuals.FormattingGroup = {
+    const font_additional: powerbi.visuals.FormattingGroup = {
       uid: "font_additional",
       displayName: "Additiional settings",
       topLevelToggle: {
@@ -930,7 +930,7 @@ export class CardKPI implements IVisual {
     font.groups.push(font_all);
     font.groups.push(font_additional);
 
-    let format: powerbi.visuals.FormattingCard = {
+    const format: powerbi.visuals.FormattingCard = {
       description: "Value format",
       displayName: "Value format",
       uid: "format",
@@ -938,7 +938,7 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    let format_all: powerbi.visuals.FormattingGroup = {
+    const format_all: powerbi.visuals.FormattingGroup = {
       uid: "format_all",
       displayName: "All",
       description: "Set the values format for all elements.",
@@ -1007,7 +1007,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    let format_main: powerbi.visuals.FormattingGroup = {
+    const format_main: powerbi.visuals.FormattingGroup = {
       uid: "format_main",
       displayName: "Main measure value",
       description:
@@ -1089,7 +1089,7 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let format_additional: powerbi.visuals.FormattingGroup = {
+    const format_additional: powerbi.visuals.FormattingGroup = {
       uid: "format_additional",
       displayName: "Additional measure values",
       description:
@@ -1113,7 +1113,7 @@ export class CardKPI implements IVisual {
         displayName: "Additional options",
         containerItems: [
           ...settings.additionalFormat.map(
-            // tslint:disable-next-line: max-func-body-length
+            // eslint-disable-next-line max-lines-per-function
             (item): powerbi.visuals.FormattingContainerItem => {
               return {
                 uid: `format_additional_${item.measureDisplayName}`,
@@ -1232,7 +1232,7 @@ export class CardKPI implements IVisual {
     format.groups.push(format_main);
     format.groups.push(format_additional);
 
-    let color: powerbi.visuals.FormattingCard = {
+    const color: powerbi.visuals.FormattingCard = {
       description: "Color",
       displayName: "Color",
       uid: "color",
@@ -1240,7 +1240,7 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    let color_all: powerbi.visuals.FormattingGroup = {
+    const color_all: powerbi.visuals.FormattingGroup = {
       uid: "color_all",
       displayName: "All",
       description: "Set color for all elements.",
@@ -1260,7 +1260,7 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let color_main: powerbi.visuals.FormattingGroup = {
+    const color_main: powerbi.visuals.FormattingGroup = {
       uid: "color_main",
       displayName: "Main measure value",
       description: "Set Color for Main Measure",
@@ -1295,7 +1295,7 @@ export class CardKPI implements IVisual {
         },
       ],
     };
-    let color_additional: powerbi.visuals.FormattingGroup = {
+    const color_additional: powerbi.visuals.FormattingGroup = {
       uid: "color_additional",
       displayName: "Additional measure values",
       description: "Additional measure values",
@@ -1320,7 +1320,7 @@ export class CardKPI implements IVisual {
           ...settings.additionalColor.map(
             // tslint:disable-next-line: max-func-body-length
             (item, index): powerbi.visuals.FormattingContainerItem => {
-              let list: powerbi.visuals.FormattingContainerItem = {
+              const list: powerbi.visuals.FormattingContainerItem = {
                 uid: `color_additional_${item.measureDisplayName}`,
                 displayName: item.measureDisplayName,
                 slices: [

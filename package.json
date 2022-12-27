@@ -4,15 +4,20 @@
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
     "package": "pbiviz package",
-    "lint": "tslint -c tslint.json -p tsconfig.json"
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "@babel/runtime": "7.6.0",
     "@babel/runtime-corejs2": "7.6.0",
     "@types/d3": "5.7.2",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
     "core-js": "3.2.1",
     "d3": "^7.6.1",
     "d3-color": "^3.1.0",
+    "eslint": "^8.30.0",
+    "eslint-plugin-powerbi-visuals": "^0.8.1",
     "minimist": "^1.2.6",
     "powerbi-visuals-api": "^5.1.0",
     "powerbi-visuals-utils-dataviewutils": "^2.4.1",

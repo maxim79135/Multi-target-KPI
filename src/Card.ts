@@ -121,9 +121,9 @@ export class Card {
     const settings = this.model.settings;
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
-      let marginRight =
+      const marginRight =
         (i + 1) % this.cardsPerRow == 0 && i != 0 ? 0 : this.cardMargin.right;
-      let cardContainer = this.cardsContainer
+      const cardContainer = this.cardsContainer
         .append("div")
         .classed(CardClassNames.CardContainer + i, true)
         .style("margin-left", this.cardMargin.left + "px")
@@ -135,7 +135,7 @@ export class Card {
       this.cardsContainer.on("contextmenu", () => {
         const mouseEvent: MouseEvent = getEvent();
         const eventTarget: EventTarget = mouseEvent.target;
-        let dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+        const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
 
         this.selectionManager.showContextMenu(
           dataPoint ? dataPoint.selectionId : {},
@@ -153,7 +153,7 @@ export class Card {
         if (this.host.hostCapabilities.allowInteractions) {
           const mouseEvent: MouseEvent = getEvent();
           const eventTarget: EventTarget = mouseEvent.target;
-          let dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+          const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
           if (!dataPoint) this.selectionManager.clear();
         }
       });
@@ -164,7 +164,7 @@ export class Card {
         if (this.host.hostCapabilities.allowInteractions) {
           const mouseEvent: MouseEvent = getEvent();
           const eventTarget: EventTarget = mouseEvent.target;
-          let dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+          const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
           const isCtrlPressed: boolean = mouseEvent.ctrlKey;
           this.selectionManager.select(
             dataPoint ? dataPoint.selectionId : {},
@@ -173,7 +173,7 @@ export class Card {
         }
       });
       if (settings.background.layoutShow) {
-        let backgroundColor = d3.color(settings.background.backFill);
+        const backgroundColor = d3.color(settings.background.backFill);
         backgroundColor.opacity = 1 - settings.background.transparency / 100;
         cardContainer.style("background-color", backgroundColor.formatRgb());
       }
@@ -199,7 +199,7 @@ export class Card {
           .style("height", "100%")
       );
     }
-    let svgRect = this.getSVGRect(this.svg[0]);
+    const svgRect = this.getSVGRect(this.svg[0]);
     if (this.model.dataGroups.length > 0) {
       this.maxMainMeasureWidth =
         (svgRect.width * this.maxMainMeasureWidth) / 100;
@@ -233,10 +233,10 @@ export class Card {
   }
 
   public createTooltip() {
-    let cardSelection = this.cardsContainer
+    const cardSelection = this.cardsContainer
       .selectAll(".card")
       .data(this.model.dataGroups);
-    let cardSelectionMerged = cardSelection
+    const cardSelectionMerged = cardSelection
       .enter()
       .append("rect")
       .merge(<any>cardSelection);
@@ -249,14 +249,14 @@ export class Card {
   }
 
   private getTooltipData(values: IDataGroup): VisualTooltipDataItem[] {
-    let tooltipData: VisualTooltipDataItem[] = [];
+    const tooltipData: VisualTooltipDataItem[] = [];
 
     tooltipData.push({
       displayName: values.displayName,
       value: values.mainMeasureDataLabel,
     });
 
-    let additionalMeasures = values.additionalMeasures;
+    const additionalMeasures = values.additionalMeasures;
     for (let i = 0; i < additionalMeasures.length; i++) {
       tooltipData.push({
         displayName: additionalMeasures[i].displayName,
@@ -276,15 +276,15 @@ export class Card {
 
   private createCategoryLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
-      let svg = this.svg[i];
-      let categoryLabel = svg
+      const svg = this.svg[i];
+      const categoryLabel = svg
         .append("g")
         .classed(CardClassNames.CategoryLabel + i, true);
       categoryLabel.append("text");
 
-      let svgRect = this.getSVGRect(svg);
+      const svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
-      let style = {
+      const style = {
         fontFamily: settings.font.categoryFontFamily,
         textSize: settings.font.categoryTextSize,
         isItalic: settings.font.categoryIsItalic,
@@ -292,12 +292,12 @@ export class Card {
         isUnderline: settings.font.categoryIsUnderline,
         color: settings.color.color,
       };
-      let textProperties = this.getTextProperties(style);
+      const textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].displayName;
       this.updateLabelStyles(categoryLabel, style);
 
       if (settings.font.categoryWordWrap_) {
-        let maxDataHeight = svgRect.height / 2;
+        const maxDataHeight = svgRect.height / 2;
         this.updateLabelValueWithWrapping(
           categoryLabel,
           textProperties,
@@ -306,7 +306,7 @@ export class Card {
           maxDataHeight
         );
       } else {
-        let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
+        const categoryValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
           svgRect.width
         );
@@ -314,16 +314,16 @@ export class Card {
       }
 
       // init start position
-      let xStartPos = 0;
-      let yStartPos = 0;
+      const xStartPos = 0;
+      const yStartPos = 0;
       let maxWidth: number;
       let maxHeight: number;
       if (settings.grid.position == "aboveMainMeasure") {
         maxWidth = this.maxMainMeasureWidth;
-        maxHeight = svgRect.height / 2
+        maxHeight = svgRect.height / 2;
       } else {
         maxWidth = svgRect.width;
-        maxHeight = svgRect.height / 3
+        maxHeight = svgRect.height / 3;
       }
 
       // update position
@@ -349,18 +349,18 @@ export class Card {
 
   private createDataLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
-      let svg = this.svg[i];
-      let dataLabel = svg
+      const svg = this.svg[i];
+      const dataLabel = svg
         .append("g")
         .classed(CardClassNames.DataLabel + i, true);
       dataLabel.append("text");
 
-      let svgRect = this.getSVGRect(svg);
+      const svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
       if (!settings.color.mainShow) {
         settings.color.mainColor = settings.color.color;
       }
-      let style = {
+      const style = {
         fontFamily: settings.font.mainFontFamily,
         textSize: settings.font.mainTextSize,
         isItalic: settings.font.mainIsItalic,
@@ -368,17 +368,17 @@ export class Card {
         isUnderline: settings.font.mainIsUnderline,
         color: settings.color.mainColor,
       };
-      let textProperties = this.getTextProperties(style);
+      const textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].mainMeasureDataLabel;
       this.updateLabelStyles(dataLabel, style);
-      let mainMeasure = TextMeasurementService.getTailoredTextOrDefault(
+      const mainMeasure = TextMeasurementService.getTailoredTextOrDefault(
         textProperties,
         this.maxMainMeasureWidth
       );
       this.updateLabelValueWithoutWrapping(dataLabel, mainMeasure);
 
       // init start position
-      let xStartPos = 0;
+      const xStartPos = 0;
       let yStartPos: number;
       if (this.categoryLabels.length == 0) {
         yStartPos = 0;
@@ -389,7 +389,7 @@ export class Card {
           yStartPos = svgRect.height / 3;
         }
       }
-      let maxHeight = svgRect.height - yStartPos;
+      const maxHeight = svgRect.height - yStartPos;
       dataLabel.attr("transform", translate(xStartPos, yStartPos));
 
       // update position
@@ -410,22 +410,22 @@ export class Card {
     }
   }
 
-  // tslint:disable-next-line: max-func-body-length
+  // eslint:disable-next-line: max-func-body-length
   private createAdditionalCategoryLabel() {
     this.additionalCategoryContainers = [];
     const settings = this.model.settings;
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
-      let svg = this.svg[i];
-      let svgRect = this.getSVGRect(svg);
-      let additionalCategoryContainter = svg
+      const svg = this.svg[i];
+      const svgRect = this.getSVGRect(svg);
+      const additionalCategoryContainter = svg
         .append("g")
         .classed(CardClassNames.AdditionalCategoryContainer + i, true);
-      let additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
+      const additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
 
       // tslint:disable-next-line: max-func-body-length
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
-        let style: IFontProperties = {
+        const style: IFontProperties = {
           fontFamily: settings.font.additionalNameFontFamily,
           textSize: settings.font.additionalNameTextSize,
           isItalic: settings.font.additionalNameIsItalic,
@@ -433,18 +433,18 @@ export class Card {
           isUnderline: settings.font.additionalNameIsUnderline,
           color: settings.color.color,
         };
-        let additionalCategoryLabel = additionalCategoryContainter
+        const additionalCategoryLabel = additionalCategoryContainter
           .append("g")
           .classed(CardClassNames.AdditionalCategoryLabel + i + j, true);
         additionalCategoryLabel.append("text");
-        let textProperties = this.getTextProperties(style);
+        const textProperties = this.getTextProperties(style);
         textProperties.text = v.displayName;
 
         let maxHeight: number;
-        let xStartPos: number;
+        // let xStartPos: number;
         let yStartPos: number;
         // if (settings.grid.layoutType == "horizontal") {
-        xStartPos =
+        const xStartPos =
           this.maxMainMeasureWidth +
           settings.constants.additionalPaddingLeft +
           j * this.additionalMeasureWidth +
@@ -473,7 +473,7 @@ export class Card {
             maxHeight
           );
         } else {
-          let categoryValue = TextMeasurementService.getTailoredTextOrDefault(
+          const categoryValue = TextMeasurementService.getTailoredTextOrDefault(
             textProperties,
             this.additionalMeasureWidth
           );
@@ -507,70 +507,6 @@ export class Card {
           .select("text")
           .style("dominant-baseline", "middle");
 
-        // let textAnchor = additionalMeasureContainer[j]
-        //   .select("text")
-        //   .attr("text-anchor");
-        // let x: number, y: number;
-
-        // if (settings.grid.layoutType == "horizontal") {
-        //   x = Number(
-        //     parseTranslateTransform(
-        //       additionalMeasureContainer[j].attr("transform")
-        //     ).x
-        //   );
-        //   y = minYPos - this.getSVGRect(additionalCategoryLabel).height / 2;
-        //   additionalCategoryLabel
-        //     .select("text")
-        //     .style("dominant-baseline", "text-bottom");
-        // } else {
-        //   let startXPosition: number;
-        //   if (
-        //     settings.alignment.verticalAdditionalMeasureName == "left" ||
-        //     settings.alignment.verticalAdditionalMeasureName == "right"
-        //   ) {
-        //     startXPosition =
-        //       this.maxMainMeasureWidth +
-        //       settings.constants.additionalPaddingLeft +
-        //       (settings.alignment.verticalAdditionalMeasureName == "left"
-        //         ? 0
-        //         : this.additionalMeasureWidth);
-        //     y = Number(
-        //       parseTranslateTransform(
-        //         additionalMeasureContainer[j].attr("transform")
-        //       ).y
-        //     );
-        //     additionalCategoryLabel
-        //       .select("text")
-        //       .style("dominant-baseline", "middle");
-        //   } else {
-        //     startXPosition =
-        //       this.maxMainMeasureWidth +
-        //       settings.constants.additionalPaddingLeft;
-        //     y =
-        //       settings.alignment.verticalAdditionalMeasureName == "top"
-        //         ? Math.abs(
-        //             this.getSVGRect(svg).y -
-        //               this.getSVGRect(additionalMeasureContainer[j]).top
-        //           ) - 5
-        //         : Math.abs(
-        //             this.getSVGRect(svg).y -
-        //               this.getSVGRect(additionalMeasureContainer[j]).bottom
-        //           ) + this.getSVGRect(additionalCategoryLabel).height;
-        //   }
-        //   switch (textAnchor) {
-        //     case "middle":
-        //       x = startXPosition + this.additionalCategoryWidth / 2;
-        //       break;
-        //     case "start":
-        //       x = startXPosition;
-        //       break;
-        //     case "end":
-        //       x = startXPosition + this.additionalCategoryWidth;
-        //       break;
-        //   }
-        // }
-        // additionalCategoryLabel.select("text").attr("text-anchor", textAnchor);
-        // additionalCategoryLabel.attr("transform", translate(x, y));
         additionalCategoryLabels.push(additionalCategoryLabel);
       });
       this.additionalCategoryContainers.push(additionalCategoryLabels);
@@ -579,21 +515,21 @@ export class Card {
 
   private createAdditionalMeasureLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
-      let svg = this.svg[i];
-      let svgRect = this.getSVGRect(svg);
-      let additionalMeasureContainter = svg
+      const svg = this.svg[i];
+      const svgRect = this.getSVGRect(svg);
+      const additionalMeasureContainter = svg
         .append("g")
         .classed(CardClassNames.AdditionalMeasureContainer + i, true);
 
-      let additionalMeasureLabels = [];
+      const additionalMeasureLabels = [];
       const settings = this.model.settings;
 
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
-        let additionalMeasureLabel = additionalMeasureContainter
+        const additionalMeasureLabel = additionalMeasureContainter
           .append("g")
           .classed(CardClassNames.AdditionalMeasureLabel + i + j, true);
         additionalMeasureLabel.append("text");
-        let style: IFontProperties = {
+        const style: IFontProperties = {
           fontFamily: settings.font.additionalValueFontFamily,
           textSize: settings.font.additionalValueTextSize,
           isItalic: settings.font.additionalValueIsItalic,
@@ -601,11 +537,11 @@ export class Card {
           isUnderline: settings.font.additionalValueIsUnderline,
           color: v.labelFill,
         };
-        let textProperties = this.getTextProperties(style);
+        const textProperties = this.getTextProperties(style);
         textProperties.text = v.dataLabel;
 
-        let maxHeight: number;
-        let xStartPos: number;
+        // let maxHeight: number;
+        // let xStartPos: number;
         let yStartPos: number;
         // if (settings.grid.layoutType == "horizontal") {
         this.additionalMeasureWidth =
@@ -615,7 +551,7 @@ export class Card {
             settings.constants.additionalPaddingRight -
             (array.length - 1) * settings.constants.marginOfMeasure) /
           array.length;
-        xStartPos =
+        const xStartPos =
           this.maxMainMeasureWidth +
           settings.constants.additionalPaddingLeft +
           j * this.additionalMeasureWidth +
@@ -625,7 +561,7 @@ export class Card {
         } else {
           yStartPos = (svgRect.height * 2) / 3;
         }
-        maxHeight = svgRect.height - yStartPos;
+        const maxHeight = svgRect.height - yStartPos;
         // } else {
         // }
         additionalMeasureLabel.attr(
@@ -634,7 +570,7 @@ export class Card {
         );
 
         this.updateLabelStyles(additionalMeasureLabel, style);
-        let measureValue = TextMeasurementService.getTailoredTextOrDefault(
+        const measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
           this.additionalMeasureWidth
         );
@@ -652,7 +588,7 @@ export class Card {
         this.setYPos(
           additionalMeasureLabel,
           maxHeight,
-          settings.alignment.verticalAdditionalMeasure, 
+          settings.alignment.verticalAdditionalMeasure,
           settings.constants.additionalPaddingBottom
         );
         additionalMeasureLabel
@@ -672,7 +608,7 @@ export class Card {
     padding = 0
   ) {
     let y: number;
-    let elemHeight = this.getSVGRect(elem).height;
+    const elemHeight = this.getSVGRect(elem).height;
     switch (alignment) {
       case "middle":
         y = maxHeight / 2;
@@ -717,11 +653,11 @@ export class Card {
     if (wordWrap_) elem.select("text").selectAll("tspan").attr("x", x);
   }
 
-  // tslint:disable-next-line: max-func-body-length
+  // eslint-disable-next-line max-lines-per-function
   public async createLandingPage() {
     this.removeLandingPage();
     this.cardsContainer.style("width", "100%").style("height", "100%");
-    let landingPage = this.cardsContainer
+    const landingPage = this.cardsContainer
       .append("div")
       .classed("landing-page", true)
       .style("overflow-x", "hidden")
@@ -730,7 +666,7 @@ export class Card {
       .style("height", this.getSVGRect(this.cardsContainer).height + "px");
 
     // header
-    let headerContainer = landingPage
+    const headerContainer = landingPage
       .append("div")
       .classed("landing-header-container", true);
     headerContainer
@@ -739,7 +675,7 @@ export class Card {
       .append("div")
       .classed("landing-logo-card", true);
 
-    let headerTextContainer = headerContainer
+    const headerTextContainer = headerContainer
       .append("div")
       .classed("landing-header-text", true);
     headerTextContainer
@@ -752,25 +688,38 @@ export class Card {
       .text("by Institute of Business Intelligence");
 
     // description
-    landingPage.append("div").classed("landing-description", true).html(
-      "Crisp-n-clear visualization for your KPIs! <br> \
-        We are developing dashboards for 12 years, and business customers often ask for several indicators for cards: v/s target, previous year and something else. <br> \
-        Also specific labels alignment, which is possible with separate text labels. Instead of this we developed “all-in-one” KPI card and share it with you for free."
-    );
+    const landing_description = landingPage
+      .append("div")
+      .classed("landing-description", true);
+    landing_description
+      .append("text")
+      .text("Crisp-n-clear visualization for your KPIs!");
+    landing_description.append("br");
+    landing_description
+      .append("text")
+      .text(
+        "We are developing dashboards for 12 years, and business customers often ask for several indicators for cards: v/s target, previous year and something else."
+      );
+    landing_description.append("br");
+    landing_description
+      .append("text")
+      .text(
+        "Also specific labels alignment, which is possible with separate text labels. Instead of this we developed “all-in-one” KPI card and share it with you for free."
+      );
 
     // main
-    let mainContainer = landingPage
+    const mainContainer = landingPage
       .append("div")
       .classed("landing-main-container", true);
     mainContainer.append("div").classed("landing-main-card", true);
-    let mainInfo = mainContainer
+    const mainInfo = mainContainer
       .append("div")
       .classed("landing-main-info", true);
     mainInfo
       .append("div")
       .classed("landing-main-info-header", true)
       .text("Key features:");
-    let mainInfoDescription = mainInfo
+    const mainInfoDescription = mainInfo
       .append("ul")
       .classed("landing-main-info-description", true);
     mainInfoDescription
@@ -782,24 +731,32 @@ export class Card {
       .text("Pixel perfect alignment setting for non-designers");
     mainInfoDescription.append("li").text("Built-in (blank) & NaN turn-off");
     mainInfoDescription.append("li").text("Simple conditional formatting");
-    mainInfo.append("div").classed("landing-main-info-footer", true).html(
-      "You will save your time for design and developing supplementary measures. Also you will optimize report performance: it works in a single query. <br> \
-        Start a new level of business dashboarding!"
-    );
+    const landing_main_info_footer = mainInfo
+      .append("div")
+      .classed("landing-main-info-footer", true);
+    landing_main_info_footer
+      .append("text")
+      .text(
+        "You will save your time for design and developing supplementary measures. Also you will optimize report performance: it works in a single query."
+      );
+    landing_main_info_footer.append("br");
+    landing_main_info_footer
+      .append("text")
+      .text("Start a new level of business dashboarding!");
 
     // footer
     landingPage.append("hr").classed("landgin-footer-hr", true);
-    let footerContainer = landingPage
+    const footerContainer = landingPage
       .append("div")
       .classed("landing-footer-container", true);
-    let footerContactsContainer = footerContainer
+    const footerContactsContainer = footerContainer
       .append("div")
       .classed("landing-footer-contacts-container", true);
     footerContactsContainer
       .append("div")
       .classed("landing-footer-contact-header", true)
       .text("Contacts");
-    let footerContactsEmailContainer = footerContactsContainer
+    const footerContactsEmailContainer = footerContactsContainer
       .append("div")
       .classed("landing-footer-contact-email", true);
     footerContactsEmailContainer
@@ -810,7 +767,7 @@ export class Card {
       // .attr("rel", "noopener noreferrer")
       .append("div")
       .classed("landing-footer-contact-email-icon", true);
-    let email = footerContactsEmailContainer
+    const email = footerContactsEmailContainer
       .append("div")
       .classed("landing-footer-contact-email-text", true);
     email.append("div").text("Alex Kolokolov");
@@ -824,11 +781,11 @@ export class Card {
       .text("Email: dashboard@alexkolokolov.com");
 
     // icons
-    let footerContactsIconsContainer = footerContainer
+    const footerContactsIconsContainer = footerContainer
       .append("div")
       .classed("landing-footer-contact-icon-container", true);
 
-    let footerContactsIcon1 = footerContactsIconsContainer
+    const footerContactsIcon1 = footerContactsIconsContainer
       .append("div")
       .classed("landing-footer-contact-icon1", true);
     footerContactsIcon1
@@ -839,7 +796,7 @@ export class Card {
       .classed("landing-footer-contact-icon1-text", true)
       .text("Go to the instructions");
 
-    let footerContactsIcon2 = footerContactsIconsContainer
+    const footerContactsIcon2 = footerContactsIconsContainer
       .append("div")
       .classed("landing-footer-contact-icon2", true);
     footerContactsIcon2
@@ -850,7 +807,7 @@ export class Card {
       .classed("landing-footer-contact-icon2-text", true)
       .text("View the video instructions");
 
-    let footerContactsIcon3 = footerContactsIconsContainer
+    const footerContactsIcon3 = footerContactsIconsContainer
       .append("div")
       .classed("landing-footer-contact-icon3", true);
     footerContactsIcon3
@@ -909,10 +866,10 @@ export class Card {
     maxWidth: number,
     maxHeight: number
   ) {
-    let textHeight: number =
+    const textHeight: number =
       TextMeasurementService.estimateSvgTextHeight(textProperties);
-    let maxNumLines: number = Math.max(1, Math.floor(maxHeight / textHeight));
-    let labelValues = wordBreaker.splitByWidth(
+    const maxNumLines: number = Math.max(1, Math.floor(maxHeight / textHeight));
+    const labelValues = wordBreaker.splitByWidth(
       value,
       textProperties,
       TextMeasurementService.measureSvgTextWidth,

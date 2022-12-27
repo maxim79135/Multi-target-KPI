@@ -18,7 +18,7 @@ function formatMeasure(data, properties) {
 }
 
 function localizeUnit(value: string, unit: string, culture: string): string {
-  let localizedUnit = localizedUnits[culture + "_" + unit];
+  const localizedUnit = localizedUnits[culture + "_" + unit];
   if (localizeUnit) {
     return value.replace(unit, localizedUnit);
   } else return value;
