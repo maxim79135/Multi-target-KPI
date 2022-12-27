@@ -20,9 +20,9 @@ export function getValue<T>(
   defaultValue: T
 ): T {
   if (objects) {
-    let object = objects[objectName];
+    const object = objects[objectName];
     if (object) {
-      let property: T = <any>object[propertyName];
+      const property: T = <any>object[propertyName];
       if (property !== undefined) {
         return property;
       }
@@ -48,14 +48,14 @@ export function getCategoricalObjectValue<T>(
   propertyName: string,
   defaultValue: T
 ): T {
-  let categoryObjects = category.objects;
+  const categoryObjects = category.objects;
 
   if (categoryObjects) {
-    let categoryObject: DataViewObject = categoryObjects[index];
+    const categoryObject: DataViewObject = categoryObjects[index];
     if (categoryObject) {
-      let object = categoryObject[objectName];
+      const object = categoryObject[objectName];
       if (object) {
-        let property: T = object[propertyName];
+        const property: T = object[propertyName];
         if (property !== undefined) {
           return property;
         }

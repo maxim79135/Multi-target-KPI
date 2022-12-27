@@ -130,7 +130,7 @@ function getAdditionFormatValues(
   return format;
 }
 
-// tslint:disable-next-line: max-func-body-length
+// eslint-disable-next-line max-lines-per-function
 function getAdditionColor(
   value: DataViewValueColumn,
   settings: CardSettings
@@ -349,33 +349,33 @@ function updateAdditionalMeasureColor(
   return undefined;
 }
 
-// tslint:disable-next-line: max-func-body-length
+// eslint-disable-next-line max-lines-per-function
 export function visualTransform(
   options: VisualUpdateOptions,
   host: IVisualHost
 ): ICardViewModel {
-  let dataViews: DataView[] = options.dataViews;
-  let dataGroups: IDataGroup[] = [];
-  let settings: CardSettings = parseSettings(dataViews[0]);
+  const dataViews: DataView[] = options.dataViews;
+  const dataGroups: IDataGroup[] = [];
+  const settings: CardSettings = parseSettings(dataViews[0]);
   if (
     dataViews &&
     dataViews[0] &&
     dataViews[0].categorical &&
     dataViews[0].categorical.values
   ) {
-    let dataCategorical = dataViews[0].categorical;
-    let category = dataCategorical.categories
+    const dataCategorical = dataViews[0].categorical;
+    const category = dataCategorical.categories
       ? dataCategorical.categories[dataCategorical.categories.length - 1]
       : null;
-    let categories = category ? category.values : [""];
+    const categories = category ? category.values : [""];
 
     for (let i = 0; i < categories.length; i++) {
-      let dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
+      const dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
 
       for (let ii = 0; ii < dataCategorical.values.length; ii++) {
-        let dataValue = dataCategorical.values[ii];
-        let value: any = dataValue.values[i];
-        let valueType = dataValue.source.type;
+        const dataValue = dataCategorical.values[ii];
+        const value: any = dataValue.values[i];
+        const valueType = dataValue.source.type;
         if (dataValue.source.roles["mainMeasure"]) {
           let formatProperties: IFormatProperties = {
             displayUnit: settings.format.mainDisplayUnit,
@@ -425,12 +425,12 @@ export function visualTransform(
             dataValue.source.format.indexOf("%") != -1;
         }
         if (dataValue.source.roles["additional"]) {
-          let additionalMeasure: IAdditionalMeasure = {};
-          let additionalFormatSettings = getAdditionFormatValues(
+          const additionalMeasure: IAdditionalMeasure = {};
+          const additionalFormatSettings = getAdditionFormatValues(
             dataValue,
             settings
           );
-          let additionalColorSettings = getAdditionColor(dataValue, settings);
+          const additionalColorSettings = getAdditionColor(dataValue, settings);
           additionalMeasure.displayName =
             additionalFormatSettings.measureDisplayName;
           additionalMeasure.measureValue =
@@ -446,7 +446,7 @@ export function visualTransform(
             additionalFormatSettings.componentType,
             additionalFormatSettings.invertVariance
           );
-          let additionalMeasureForColor = calculateAdditionalValue(
+          const additionalMeasureForColor = calculateAdditionalValue(
             dataGroup.mainMeasureValue,
             additionalMeasure.measureValue,
             additionalColorSettings.componentType,
@@ -726,8 +726,8 @@ export function visualTransform(
   }
 
   if (!settings.font.additionalShow) {
-    let fontSettings = settings.font;
-    let allFontSettings = {
+    const fontSettings = settings.font;
+    const allFontSettings = {
       fontFamily: fontSettings.fontFamily,
       textSize: fontSettings.textSize,
       isItalic: fontSettings.isItalic,
