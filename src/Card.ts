@@ -762,9 +762,6 @@ export class Card {
     footerContactsEmailContainer
       .append("a")
       .on("click", () => this.host.launchUrl("https://alexkolokolov.com/en/"))
-      // .attr("href", "https://alexkolokolov.com/en/")
-      // .attr("target", "_blank")
-      // .attr("rel", "noopener noreferrer")
       .append("div")
       .classed("landing-footer-contact-email-icon", true);
     const email = footerContactsEmailContainer
@@ -772,10 +769,6 @@ export class Card {
       .classed("landing-footer-contact-email-text", true);
     email.append("div").text("Alex Kolokolov");
     email
-      // .append("a")
-      // .on("click", () => this.host.launchUrl("mailto:dashboard@alexkolokolov.com"))
-      // .attr("href", "mailto:dashboard@alexkolokolov.com")
-      // .attr("target", "_blank")
       .append("div")
       .classed("footer-email", true)
       .text("Email: dashboard@alexkolokolov.com");
