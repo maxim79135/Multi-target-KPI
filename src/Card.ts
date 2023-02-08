@@ -114,11 +114,34 @@ export class Card {
     this.maxMainMeasureWidth = settings.grid.percentageWidth;
   }
 
+  // eslint:disable-next-line: max-func-body-length
   public createCardContainer() {
     this.cardsContainer.selectAll(".card").remove();
     this.cards = [];
     this.svg = [];
     const settings = this.model.settings;
+
+    this.cardsContainer.on("click", (event: PointerEvent) => {
+      if (this.model.dataGroups.length <= 1) return;
+      const dataPoint = select(<d3.BaseType>event.target).datum();
+      if (this.host.hostCapabilities.allowInteractions) {
+        if (!dataPoint) this.selectionManager.clear();
+      }
+    });
+
+    this.cardsContainer.on("contextmenu", (event: PointerEvent) => {
+      const eventTarget: EventTarget = event.target;
+      const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
+
+      this.selectionManager.showContextMenu(
+        dataPoint ? dataPoint.selectionId : {},
+        {
+          x: event.clientX,
+          y: event.clientY,
+        }
+      );
+      event.preventDefault();
+    });
 
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       const marginRight =
@@ -132,46 +155,21 @@ export class Card {
         .style("margin-bottom", this.cardMargin.bottom + "px")
         .style("width", this.cardViewport.width + "px")
         .style("height", this.cardViewport.height + "px");
-      this.cardsContainer.on("contextmenu", () => {
-        const mouseEvent: MouseEvent = getEvent();
-        const eventTarget: EventTarget = mouseEvent.target;
-        const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
 
-        this.selectionManager.showContextMenu(
-          dataPoint ? dataPoint.selectionId : {},
-          {
-            x: mouseEvent.clientX,
-            y: mouseEvent.clientY,
+      cardContainer.on(
+        "click",
+        (event: PointerEvent, dataPoint: IDataGroup) => {
+          if (this.model.dataGroups.length <= 1) return;
+
+          if (this.host.hostCapabilities.allowInteractions) {
+            const isCtrlPressed: boolean = event.ctrlKey;
+            this.selectionManager.select(
+              dataPoint ? dataPoint.selectionId : {},
+              isCtrlPressed
+            );
           }
-        );
-        mouseEvent.preventDefault();
-      });
-
-      this.cardsContainer.on("click", () => {
-        if (this.model.dataGroups.length <= 1) return;
-
-        if (this.host.hostCapabilities.allowInteractions) {
-          const mouseEvent: MouseEvent = getEvent();
-          const eventTarget: EventTarget = mouseEvent.target;
-          const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
-          if (!dataPoint) this.selectionManager.clear();
         }
-      });
-
-      cardContainer.on("click", () => {
-        if (this.model.dataGroups.length <= 1) return;
-
-        if (this.host.hostCapabilities.allowInteractions) {
-          const mouseEvent: MouseEvent = getEvent();
-          const eventTarget: EventTarget = mouseEvent.target;
-          const dataPoint: any = select(<d3.BaseType>eventTarget).datum();
-          const isCtrlPressed: boolean = mouseEvent.ctrlKey;
-          this.selectionManager.select(
-            dataPoint ? dataPoint.selectionId : {},
-            isCtrlPressed
-          );
-        }
-      });
+      );
       if (settings.background.layoutShow) {
         const backgroundColor = d3.color(settings.background.backFill);
         backgroundColor.opacity = 1 - settings.background.transparency / 100;
