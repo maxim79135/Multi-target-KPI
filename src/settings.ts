@@ -30,7 +30,7 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class Grid {
-  public percentageWidth: number = 50;
+  public percentageWidth: number = 40;
   public wireframe: string = "left";
   public showMeasureName: boolean = true;
   public labelAsMeasurename: boolean = false;

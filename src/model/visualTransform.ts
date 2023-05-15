@@ -370,7 +370,10 @@ export function visualTransform(
     const categories = category ? category.values : [""];
 
     for (let i = 0; i < categories.length; i++) {
-      const dataGroup: IDataGroup = { additionalMeasures: [], tooltipValues: [] };
+      const dataGroup: IDataGroup = {
+        additionalMeasures: [],
+        tooltipValues: [],
+      };
 
       for (let ii = 0; ii < dataCategorical.values.length; ii++) {
         const dataValue = dataCategorical.values[ii];
