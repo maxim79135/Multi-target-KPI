@@ -272,6 +272,7 @@ export class Card {
     return tooltipData;
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private createCategoryLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       const svg = this.svg[i];
@@ -318,10 +319,51 @@ export class Card {
       let maxHeight: number;
       if (settings.grid.position == "aboveMainMeasure") {
         maxWidth = this.maxMainMeasureWidth;
-        maxHeight = svgRect.height / 2;
+        if (settings.grid.layoutType == "horizontal") {
+          maxHeight = svgRect.height / 2;
+        } else {
+          if (
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
+          ) {
+            if (
+              this.model.dataGroups[0].additionalMeasures.length == 1 ||
+              this.model.dataGroups[0].additionalMeasures.length == 2
+            )
+              maxHeight = svgRect.height / 2;
+            else maxHeight = svgRect.height / 3;
+          } else {
+            maxHeight =
+              svgRect.height /
+              this.model.dataGroups[0].additionalMeasures.length /
+              2;
+          }
+        }
       } else {
-        maxWidth = svgRect.width;
-        maxHeight = svgRect.height / 3;
+        if (
+          settings.grid.layoutType == "vertical" &&
+          (settings.alignment.verticalAdditionalMeasureName == "top" ||
+            settings.alignment.verticalAdditionalMeasureName == "bottom")
+        )
+          maxWidth = this.maxMainMeasureWidth;
+        else maxWidth = svgRect.width;
+        if (settings.grid.layoutType == "horizontal") {
+          maxHeight = svgRect.height / 3;
+        } else {
+          if (
+            settings.alignment.verticalAdditionalMeasureName == "left" ||
+            settings.alignment.verticalAdditionalMeasureName == "right"
+          ) {
+            maxHeight =
+              svgRect.height /
+              (this.model.dataGroups[0].additionalMeasures.length + 1);
+          } else {
+            maxHeight =
+              svgRect.height /
+              this.model.dataGroups[0].additionalMeasures.length /
+              2;
+          }
+        }
       }
 
       // update position
@@ -382,9 +424,45 @@ export class Card {
         yStartPos = 0;
       } else {
         if (settings.grid.position == "aboveMainMeasure") {
-          yStartPos = svgRect.height / 2;
+          if (settings.grid.layoutType == "horizontal") {
+            yStartPos = svgRect.height / 2;
+          } else {
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              if (
+                this.model.dataGroups[0].additionalMeasures.length == 1 ||
+                this.model.dataGroups[0].additionalMeasures.length == 2
+              )
+                yStartPos = svgRect.height / 2;
+              else yStartPos = svgRect.height / 3;
+            } else {
+              yStartPos =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+            }
+          }
         } else {
-          yStartPos = svgRect.height / 3;
+          yStartPos = svgRect.width;
+          if (settings.grid.layoutType == "horizontal") {
+            yStartPos = svgRect.height / 3;
+          } else {
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              yStartPos =
+                svgRect.height /
+                (this.model.dataGroups[0].additionalMeasures.length + 1);
+            } else {
+              yStartPos =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+            }
+          }
         }
       }
       const maxHeight = svgRect.height - yStartPos;
@@ -408,7 +486,7 @@ export class Card {
     }
   }
 
-  // eslint:disable-next-line: max-func-body-length
+  // eslint-disable-next-line max-lines-per-function
   private createAdditionalCategoryLabel() {
     this.additionalCategoryContainers = [];
     const settings = this.model.settings;
@@ -421,7 +499,7 @@ export class Card {
         .classed(CardClassNames.AdditionalCategoryContainer + i, true);
       const additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
 
-      // tslint:disable-next-line: max-func-body-length
+      // eslint-disable-next-line max-lines-per-function
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         const style: IFontProperties = {
           fontFamily: settings.font.additionalNameFontFamily,
@@ -439,23 +517,97 @@ export class Card {
         textProperties.text = v.displayName;
 
         let maxHeight: number;
-        // let xStartPos: number;
+        let xStartPos: number;
         let yStartPos: number;
-        // if (settings.grid.layoutType == "horizontal") {
-        const xStartPos =
-          this.maxMainMeasureWidth +
-          settings.constants.additionalPaddingLeft +
-          j * this.additionalMeasureWidth +
-          j * settings.constants.marginOfMeasure;
-        if (settings.grid.position == "aboveMainMeasure") {
-          yStartPos = 0;
-          maxHeight = svgRect.height / 2;
+        if (settings.grid.layoutType == "horizontal") {
+          xStartPos =
+            this.maxMainMeasureWidth +
+            settings.constants.additionalPaddingLeft +
+            j * this.additionalMeasureWidth +
+            j * settings.constants.marginOfMeasure;
+          if (settings.grid.position == "aboveMainMeasure") {
+            yStartPos = 0;
+            maxHeight = svgRect.height / 2;
+          } else {
+            yStartPos = svgRect.height / 3;
+            maxHeight = svgRect.height / 3;
+          }
         } else {
-          yStartPos = svgRect.height / 3;
-          maxHeight = svgRect.height / 3;
+          const isTopBottomAlignment =
+            settings.alignment.verticalAdditionalMeasureName == "top" ||
+            settings.alignment.verticalAdditionalMeasureName == "bottom";
+          this.additionalMeasureWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight -
+              settings.constants.marginOfMeasure *
+                (isTopBottomAlignment ? 0 : 1)) /
+            (isTopBottomAlignment ? 1 : 2);
+          xStartPos =
+            this.maxMainMeasureWidth +
+            settings.constants.additionalPaddingLeft +
+            (isTopBottomAlignment
+              ? 0
+              : settings.alignment.verticalAdditionalMeasureName == "right"
+              ? this.additionalMeasureWidth
+              : 0);
+
+          if (settings.grid.position == "aboveMainMeasure") {
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              if (
+                this.model.dataGroups[0].additionalMeasures.length == 1 ||
+                this.model.dataGroups[0].additionalMeasures.length == 2
+              )
+                maxHeight = svgRect.height / 2;
+              else maxHeight = svgRect.height / 3;
+            } else {
+              maxHeight =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+            }
+
+            if (!isTopBottomAlignment) yStartPos = j * maxHeight;
+            else {
+              yStartPos =
+                (array.length - 1) * settings.constants.marginOfMeasure +
+                (j * 2 +
+                  (settings.alignment.verticalAdditionalMeasureName == "top"
+                    ? 0
+                    : 1)) *
+                  maxHeight;
+            }
+          } else {
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              maxHeight =
+                svgRect.height /
+                (this.model.dataGroups[0].additionalMeasures.length + 1);
+              yStartPos =
+                maxHeight +
+                (array.length - 1) * settings.constants.marginOfMeasure +
+                j * maxHeight;
+            } else {
+              maxHeight =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+              yStartPos =
+                (array.length - 1) * settings.constants.marginOfMeasure +
+                (j * 2 +
+                  (settings.alignment.verticalAdditionalMeasureName == "top"
+                    ? 0
+                    : 1)) *
+                  maxHeight;
+            }
+          }
         }
-        // } else {
-        // }
         additionalCategoryLabel.attr(
           "transform",
           translate(xStartPos, yStartPos)
@@ -511,6 +663,7 @@ export class Card {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private createAdditionalMeasureLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       const svg = this.svg[i];
@@ -522,6 +675,7 @@ export class Card {
       const additionalMeasureLabels = [];
       const settings = this.model.settings;
 
+      // eslint-disable-next-line max-lines-per-function
       this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
         const additionalMeasureLabel = additionalMeasureContainter
           .append("g")
@@ -538,30 +692,104 @@ export class Card {
         const textProperties = this.getTextProperties(style);
         textProperties.text = v.dataLabel;
 
-        // let maxHeight: number;
-        // let xStartPos: number;
+        let maxHeight: number;
+        let xStartPos: number;
         let yStartPos: number;
-        // if (settings.grid.layoutType == "horizontal") {
-        this.additionalMeasureWidth =
-          (svgRect.width -
-            this.maxMainMeasureWidth -
-            settings.constants.additionalPaddingLeft -
-            settings.constants.additionalPaddingRight -
-            (array.length - 1) * settings.constants.marginOfMeasure) /
-          array.length;
-        const xStartPos =
-          this.maxMainMeasureWidth +
-          settings.constants.additionalPaddingLeft +
-          j * this.additionalMeasureWidth +
-          j * settings.constants.marginOfMeasure;
-        if (settings.grid.position == "aboveMainMeasure") {
-          yStartPos = svgRect.height / 2;
+        if (settings.grid.layoutType == "horizontal") {
+          this.additionalMeasureWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight -
+              (array.length - 1) * settings.constants.marginOfMeasure) /
+            array.length;
+          xStartPos =
+            this.maxMainMeasureWidth +
+            settings.constants.additionalPaddingLeft +
+            j * this.additionalMeasureWidth +
+            j * settings.constants.marginOfMeasure;
+          if (settings.grid.position == "aboveMainMeasure") {
+            yStartPos = svgRect.height / 2;
+          } else {
+            yStartPos = (svgRect.height * 2) / 3;
+          }
+          maxHeight = svgRect.height - yStartPos;
         } else {
-          yStartPos = (svgRect.height * 2) / 3;
+          const isTopBottomAlignment =
+            settings.alignment.verticalAdditionalMeasureName == "top" ||
+            settings.alignment.verticalAdditionalMeasureName == "bottom";
+          this.additionalMeasureWidth =
+            (svgRect.width -
+              this.maxMainMeasureWidth -
+              settings.constants.additionalPaddingLeft -
+              settings.constants.additionalPaddingRight -
+              settings.constants.marginOfMeasure *
+                (isTopBottomAlignment ? 0 : 1)) /
+            (isTopBottomAlignment ? 1 : 2);
+          xStartPos =
+            this.maxMainMeasureWidth +
+            settings.constants.additionalPaddingLeft +
+            (isTopBottomAlignment
+              ? 0
+              : settings.alignment.verticalAdditionalMeasureName == "left"
+              ? this.additionalMeasureWidth
+              : 0);
+
+          if (settings.grid.position == "aboveMainMeasure") {
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              if (
+                this.model.dataGroups[0].additionalMeasures.length == 1 ||
+                this.model.dataGroups[0].additionalMeasures.length == 2
+              )
+                maxHeight = svgRect.height / 2;
+              else maxHeight = svgRect.height / 3;
+            } else {
+              maxHeight =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+            }
+
+            if (!isTopBottomAlignment) yStartPos = j * maxHeight;
+            else {
+              yStartPos =
+                (array.length - 1) * settings.constants.marginOfMeasure +
+                (j * 2 +
+                  (settings.alignment.verticalAdditionalMeasureName == "top"
+                    ? 1
+                    : 0)) *
+                  maxHeight;
+            }
+          } else {
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              maxHeight =
+                svgRect.height /
+                (this.model.dataGroups[0].additionalMeasures.length + 1);
+              yStartPos =
+                maxHeight +
+                (array.length - 1) * settings.constants.marginOfMeasure +
+                j * maxHeight;
+            } else {
+              maxHeight =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+              yStartPos =
+                (array.length - 1) * settings.constants.marginOfMeasure +
+                (j * 2 +
+                  (settings.alignment.verticalAdditionalMeasureName == "top"
+                    ? 1
+                    : 0)) *
+                  maxHeight;
+            }
+          }
         }
-        const maxHeight = svgRect.height - yStartPos;
-        // } else {
-        // }
         additionalMeasureLabel.attr(
           "transform",
           translate(xStartPos, yStartPos)
