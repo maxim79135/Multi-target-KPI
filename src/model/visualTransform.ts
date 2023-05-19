@@ -726,6 +726,7 @@ export function visualTransform(
   if (!settings.alignment.show_additional_vertical) {
     settings.alignment.verticalAdditionalMeasure = settings.alignment.vertical;
     settings.alignment.verticalMainMeasure = settings.alignment.vertical;
+    settings.alignment.verticalCategory = settings.alignment.vertical;
   }
 
   if (!settings.font.additionalShow) {
