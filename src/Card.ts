@@ -340,13 +340,7 @@ export class Card {
           }
         }
       } else {
-        if (
-          settings.grid.layoutType == "vertical" &&
-          (settings.alignment.verticalAdditionalMeasureName == "top" ||
-            settings.alignment.verticalAdditionalMeasureName == "bottom")
-        )
-          maxWidth = this.maxMainMeasureWidth;
-        else maxWidth = svgRect.width;
+        maxWidth = svgRect.width;
         if (settings.grid.layoutType == "horizontal") {
           maxHeight = svgRect.height / 3;
         } else {
@@ -360,8 +354,7 @@ export class Card {
           } else {
             maxHeight =
               svgRect.height /
-              this.model.dataGroups[0].additionalMeasures.length /
-              2;
+              (this.model.dataGroups[0].additionalMeasures.length * 2 + 1);
           }
         }
       }
@@ -459,8 +452,7 @@ export class Card {
             } else {
               yStartPos =
                 svgRect.height /
-                this.model.dataGroups[0].additionalMeasures.length /
-                2;
+                (this.model.dataGroups[0].additionalMeasures.length * 2 + 1);
             }
           }
         }
@@ -478,7 +470,8 @@ export class Card {
       this.setYPos(
         dataLabel,
         maxHeight,
-        settings.alignment.verticalMainMeasure
+        settings.alignment.verticalMainMeasure,
+        settings.constants.mainMeasurePaddingBottom
       );
       dataLabel.select("text").style("dominant-baseline", "middle");
 
@@ -596,10 +589,9 @@ export class Card {
             } else {
               maxHeight =
                 svgRect.height /
-                this.model.dataGroups[0].additionalMeasures.length /
-                2;
+                (this.model.dataGroups[0].additionalMeasures.length * 2 + 1);
               yStartPos =
-                (array.length - 1) * settings.constants.marginOfMeasure +
+                maxHeight +
                 (j * 2 +
                   (settings.alignment.verticalAdditionalMeasureName == "top"
                     ? 0
@@ -778,10 +770,9 @@ export class Card {
             } else {
               maxHeight =
                 svgRect.height /
-                this.model.dataGroups[0].additionalMeasures.length /
-                2;
+                (this.model.dataGroups[0].additionalMeasures.length * 2 + 1);
               yStartPos =
-                (array.length - 1) * settings.constants.marginOfMeasure +
+                maxHeight +
                 (j * 2 +
                   (settings.alignment.verticalAdditionalMeasureName == "top"
                     ? 1
@@ -848,6 +839,8 @@ export class Card {
         y = maxHeight - elemHeight / 2 - padding;
         break;
     }
+    console.log(elem, alignment, y);
+
     elem.select("text").attr("y", y);
   }
 
