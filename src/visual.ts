@@ -1464,12 +1464,12 @@ export class CardKPI implements IVisual {
             properties: {
               descriptor: {
                 objectName: "color",
-                propertyName: `value1${index}`,
+                propertyName: `value${index}`,
                 selector: {
                   metadata: item.metadata,
                 },
               },
-              value: item[`value1${index}`],
+              value: item[`value${index}`],
             },
           },
         },

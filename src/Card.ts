@@ -375,7 +375,7 @@ export class Card {
         settings.constants.categoryPaddingTop
       );
 
-      categoryLabel.select("text").style("dominant-baseline", "middle");
+      // categoryLabel.select("text").style("dominant-baseline", "middle");
       this.categoryLabels.push(categoryLabel);
     }
   }
@@ -473,7 +473,7 @@ export class Card {
         settings.alignment.verticalMainMeasure,
         settings.constants.mainMeasurePaddingBottom
       );
-      dataLabel.select("text").style("dominant-baseline", "middle");
+      // dataLabel.select("text").style("dominant-baseline", "middle");
 
       this.dataLabels.push(dataLabel);
     }
@@ -645,9 +645,9 @@ export class Card {
           settings.alignment.verticalAdditionalMeasure,
           settings.constants.additionalPaddingBottom
         );
-        additionalCategoryLabel
-          .select("text")
-          .style("dominant-baseline", "middle");
+        // additionalCategoryLabel
+        //   .select("text")
+        //   .style("dominant-baseline", "middle");
 
         additionalCategoryLabels.push(additionalCategoryLabel);
       });
@@ -808,9 +808,9 @@ export class Card {
           settings.alignment.verticalAdditionalMeasure,
           settings.constants.additionalPaddingBottom
         );
-        additionalMeasureLabel
-          .select("text")
-          .style("dominant-baseline", "middle");
+        // additionalMeasureLabel
+        //   .select("text")
+        //   .style("dominant-baseline", "middle");
 
         additionalMeasureLabels.push(additionalMeasureLabel);
       });
@@ -912,18 +912,18 @@ export class Card {
       .classed("landing-description", true);
     landing_description
       .append("text")
-      .text("Crisp-n-clear visualization for your KPIs!");
+      .text("Enhance your KPIs with Crisp-n-Clear Visualization!");
     landing_description.append("br");
     landing_description
       .append("text")
       .text(
-        "We are developing dashboards for 12 years, and business customers often ask for several indicators for cards: v/s target, previous year and something else."
+        "With over 12 years of experience in dashboard development, we understand the needs of our business customers. They often require multiple indicators for their cards, such as comparisons with targets and previous year data."
       );
     landing_description.append("br");
     landing_description
       .append("text")
       .text(
-        "Also specific labels alignment, which is possible with separate text labels. Instead of this we developed “all-in-one” KPI card and share it with you for free."
+        `Additionally, specific label alignment has been a common request. To address these needs, we have created the revolutionary "all-in-one" KPI card, and we are delighted to share it with you for free.`
       );
 
     // main
@@ -943,12 +943,16 @@ export class Card {
       .classed("landing-main-info-description", true);
     mainInfoDescription
       .append("li")
-      .text("Up to 3 additional indicators in the single card");
-    mainInfoDescription.append("li").text("Category multiplies");
+      .text("Incorporate up to 3 additional indicators");
     mainInfoDescription
       .append("li")
-      .text("Pixel perfect alignment setting for non-designers");
-    mainInfoDescription.append("li").text("Built-in (blank) & NaN turn-off");
+      .text("Pixel-perfect alignment for non-designers");
+    mainInfoDescription
+      .append("li")
+      .text("Toggle built-in (blank) & NaN values");
+    mainInfoDescription
+      .append("li")
+      .text("Simple conditional formatting for clarity");
     mainInfoDescription.append("li").text("Simple conditional formatting");
     const landing_main_info_footer = mainInfo
       .append("div")
@@ -956,12 +960,12 @@ export class Card {
     landing_main_info_footer
       .append("text")
       .text(
-        "You will save your time for design and developing supplementary measures. Also you will optimize report performance: it works in a single query."
+        "By using our KPI card, you will not only save time in designing and developing supplementary measures, but also optimize report performance as it operates within a single query. Take your business dashboarding to a whole new level with our innovative solution."
       );
     landing_main_info_footer.append("br");
     landing_main_info_footer
       .append("text")
-      .text("Start a new level of business dashboarding!");
+      .text("Unlock the power of visually compelling KPIs today!");
 
     // footer
     landingPage.append("hr").classed("landgin-footer-hr", true);
