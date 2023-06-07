@@ -375,7 +375,7 @@ export class Card {
         settings.constants.categoryPaddingTop
       );
 
-      categoryLabel.select("text").style("dominant-baseline", "middle");
+      // categoryLabel.select("text").style("dominant-baseline", "middle");
       this.categoryLabels.push(categoryLabel);
     }
   }
@@ -473,7 +473,7 @@ export class Card {
         settings.alignment.verticalMainMeasure,
         settings.constants.mainMeasurePaddingBottom
       );
-      dataLabel.select("text").style("dominant-baseline", "middle");
+      // dataLabel.select("text").style("dominant-baseline", "middle");
 
       this.dataLabels.push(dataLabel);
     }
@@ -645,9 +645,9 @@ export class Card {
           settings.alignment.verticalAdditionalMeasure,
           settings.constants.additionalPaddingBottom
         );
-        additionalCategoryLabel
-          .select("text")
-          .style("dominant-baseline", "middle");
+        // additionalCategoryLabel
+        //   .select("text")
+        //   .style("dominant-baseline", "middle");
 
         additionalCategoryLabels.push(additionalCategoryLabel);
       });
@@ -808,9 +808,9 @@ export class Card {
           settings.alignment.verticalAdditionalMeasure,
           settings.constants.additionalPaddingBottom
         );
-        additionalMeasureLabel
-          .select("text")
-          .style("dominant-baseline", "middle");
+        // additionalMeasureLabel
+        //   .select("text")
+        //   .style("dominant-baseline", "middle");
 
         additionalMeasureLabels.push(additionalMeasureLabel);
       });
