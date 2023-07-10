@@ -944,5 +944,6 @@
     },
     "supportsLandingPage": true,
     "supportsEmptyDataView": true,
-    "suppressDefaultTitle": true
+    "suppressDefaultTitle": true,
+    "supportsMultiVisualSelection": true
 }
