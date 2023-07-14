@@ -4,7 +4,7 @@
         {
             "displayName": "Main measure",
             "description": "(Required). Set the measure display in the field. You can only add one value.",
-            "displayNameKey": "mainMeasure",
+            "displayNameKey": "Main Measure",
             "name": "mainMeasure",
             "kind": "Measure"
         },
@@ -34,7 +34,7 @@
         {
             "conditions": [
                 {
-                    "mainMeasure": {
+                    "Main Measure": {
                         "min": 1,
                         "max": 1
                     },
@@ -57,7 +57,7 @@
                     "select": [
                         {
                             "bind": {
-                                "to": "mainMeasure"
+                                "to": "Main Measure"
                             }
                         },
                         {

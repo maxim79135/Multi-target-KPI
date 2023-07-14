@@ -379,7 +379,7 @@ export function visualTransform(
         const dataValue = dataCategorical.values[ii];
         const value: any = dataValue.values[i];
         const valueType = dataValue.source.type;
-        if (dataValue.source.roles["mainMeasure"]) {
+        if (dataValue.source.roles["Main Measure"]) {
           let formatProperties: IFormatProperties = {
             displayUnit: settings.format.mainDisplayUnit,
             decimalPlaces: settings.format.mainDecimalPlaces,
