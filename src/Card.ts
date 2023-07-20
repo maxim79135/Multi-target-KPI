@@ -666,9 +666,10 @@ export class Card {
 
       const additionalMeasureLabels = [];
       const settings = this.model.settings;
+      const dataGroup = this.model.dataGroups[i]
 
       // eslint-disable-next-line max-lines-per-function
-      this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
+      dataGroup.additionalMeasures.map((v, j, array) => {
         const additionalMeasureLabel = additionalMeasureContainter
           .append("g")
           .classed(CardClassNames.AdditionalMeasureLabel + i + j, true);
@@ -839,7 +840,7 @@ export class Card {
         y = maxHeight - elemHeight / 2 - padding;
         break;
     }
-    console.log(elem, alignment, y);
+    // console.log(elem, alignment, y);
 
     elem.select("text").attr("y", y);
   }

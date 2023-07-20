@@ -93,6 +93,8 @@ export class CardKPI implements IVisual {
   public getFormattingModel(): powerbi.visuals.FormattingModel {
     const settings = this.model.settings;
 
+    console.log(settings.additionalFormat);
+
     const grid: powerbi.visuals.FormattingCard = {
       description: "Grid Description",
       displayName: "Grid",
