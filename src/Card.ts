@@ -491,9 +491,10 @@ export class Card {
         .append("g")
         .classed(CardClassNames.AdditionalCategoryContainer + i, true);
       const additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
+      const dataGroup = this.model.dataGroups[i]
 
       // eslint-disable-next-line max-lines-per-function
-      this.model.dataGroups[0].additionalMeasures.map((v, j, array) => {
+      dataGroup.additionalMeasures.map((v, j, array) => {
         const style: IFontProperties = {
           fontFamily: settings.font.additionalNameFontFamily,
           textSize: settings.font.additionalNameTextSize,
