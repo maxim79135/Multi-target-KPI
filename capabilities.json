@@ -5,7 +5,7 @@
             "displayName": "Main measure",
             "description": "(Required). Set the measure display in the field. You can only add one value.",
             "displayNameKey": "Main Measure",
-            "name": "mainMeasure",
+            "name": "Main Measure",
             "kind": "Measure"
         },
         {

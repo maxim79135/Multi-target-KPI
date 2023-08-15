@@ -710,7 +710,7 @@ export function visualTransform(
       }
       dataGroups.push(dataGroup);
     }
-    console.log(dataGroups);
+    // console.log(dataGroups);
   }
 
   // transform settings
@@ -754,7 +754,7 @@ export function visualTransform(
     updateFontSetting(allFontSettings, settings.font, "additionalValue");
   }
 
-  console.log(settings);
+  // console.log(settings);
 
   return { settings, dataGroups };
 }
