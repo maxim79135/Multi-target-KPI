@@ -830,18 +830,17 @@ export class Card {
     const elemHeight = this.getSVGRect(elem).height;
     switch (alignment) {
       case "middle":
-        y = maxHeight / 2;
+        y = Math.max(maxHeight / 2, elemHeight / 2);
         break;
 
       case "top":
-        y = elemHeight / 2 + padding;
+        y = Math.min(elemHeight / 2 + padding, elemHeight / 2);
         break;
 
       case "bottom":
-        y = maxHeight - elemHeight / 2 - padding;
+        y = Math.max(maxHeight - elemHeight / 2 - padding, elemHeight / 2);
         break;
     }
-    // console.log(elem, alignment, y);
 
     elem.select("text").attr("y", y);
   }

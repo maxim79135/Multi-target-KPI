@@ -19,7 +19,7 @@
     "eslint": "^8.43.0",
     "eslint-plugin-powerbi-visuals": "^0.8.1",
     "minimist": "^1.2.8",
-    "powerbi-visuals-api": "5.3.0",
+    "powerbi-visuals-api": "^5.3.0",
     "powerbi-visuals-utils-dataviewutils": "^2.4.1",
     "powerbi-visuals-utils-formattingutils": "^6.0.1",
     "powerbi-visuals-utils-svgutils": "^6.0.1",
