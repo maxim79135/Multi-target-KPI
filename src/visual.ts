@@ -1414,8 +1414,144 @@ export class CardKPI implements IVisual {
     color.groups.push(color_main);
     color.groups.push(color_additional);
 
+    const bullet: powerbi.visuals.FormattingCard = {
+      description: "Bullet chart",
+      displayName: "Bullet chart",
+      uid: "bullet",
+      groups: [],
+      revertToDefaultDescriptors: [],
+      topLevelToggle: {
+        uid: "bullet_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "bulletChart",
+              propertyName: "show",
+            },
+            value: settings.bulletChart.show,
+          },
+        },
+        suppressDisplayName: true,
+      },
+    };
+
+    const bullet_colors: powerbi.visuals.FormattingGroup = {
+      uid: "bullet_colors",
+      displayName: "Data colors",
+      description: "Set color for bullet chart.",
+      slices: [
+        {
+          uid: "bullet_color_main",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "mainColor",
+              },
+              value: { value: settings.bulletChart.mainColor },
+            },
+          },
+        },
+        {
+          uid: "bullet_color_target",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "targetColor",
+              },
+              value: { value: settings.bulletChart.targetColor },
+            },
+          },
+        },
+      ],
+    };
+    const bullet_shape: powerbi.visuals.FormattingGroup = {
+      uid: "bullet_shape",
+      displayName: "Bullet shape",
+      description: "Add shape.",
+      topLevelToggle: {
+        uid: "bullet_shape_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "bulletChart",
+              propertyName: "borderShow",
+            },
+            value: settings.bulletChart.borderShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "bullet_shape_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "borderFill",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.bulletChart.borderFill },
+            },
+          },
+        },
+        {
+          uid: "bullet_shape_borderWeight",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "borderWeight",
+              },
+              value: settings.bulletChart.borderWeight,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
+            },
+          },
+        },
+        {
+          uid: "bullet_shape_roundEdges",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "roundEdges",
+              },
+              value: settings.bulletChart.roundEdges,
+              options: {
+                minValue: {
+                  type: powerbi.visuals.ValidatorType.Min,
+                  value: 1,
+                },
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
+            },
+          },
+        },
+      ],
+    };
+
+    bullet.groups.push(bullet_colors);
+    bullet.groups.push(bullet_shape);
+
     return {
-      cards: [grid, alignment, format, font, color, background],
+      cards: [grid, alignment, format, font, color, background, bullet],
     };
   }
 

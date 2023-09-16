@@ -159,7 +159,16 @@ export class AdditiionalColor {
   public assignColor2 = { solid: { color: "#333333" } };
   public assignColor3 = { solid: { color: "#333333" } };
 }
-
+export class BulletChart {
+  public show = false;
+  public mainColor = "#333333";
+  public targetColor = "#333333";
+  public borderShow: boolean = false;
+  public borderFill: string = "#ffffff";
+  public borderWeight: number = 1;
+  public roundEdges: number = 1;
+  public targetLineWeight: number = 3;
+}
 export class CardSettings extends DataViewObjectsParser {
   public grid: Grid = new Grid();
   public alignment: Alignment = new Alignment();
@@ -170,6 +179,7 @@ export class CardSettings extends DataViewObjectsParser {
   public color: Color = new Color();
   public additionalColor: AdditiionalColor[] = [];
   public constants: Constants = new Constants();
+  public bulletChart: BulletChart = new BulletChart();
 }
 
 export class Constants {
