@@ -1534,7 +1534,7 @@ export class CardKPI implements IVisual {
               options: {
                 minValue: {
                   type: powerbi.visuals.ValidatorType.Min,
-                  value: 1,
+                  value: 0,
                 },
                 maxValue: {
                   type: powerbi.visuals.ValidatorType.Max,

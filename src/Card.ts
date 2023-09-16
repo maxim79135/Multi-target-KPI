@@ -18,6 +18,8 @@ import powerbi from "powerbi-visuals-api";
 import { TextProperties } from "powerbi-visuals-utils-formattingutils/lib/src/interfaces";
 import { ICardViewModel, IDataGroup } from "./model/ViewModel";
 import { IFontProperties } from "./model/visualTransform";
+import { BulletChart } from "./BulletChart";
+
 import {
   createTooltipServiceWrapper,
   ITooltipServiceWrapper,
@@ -66,8 +68,10 @@ export class Card {
   private additionalMeasureWidth: number;
   private additionalCategoryWidth: number;
   private additionalMeasureContainerWidth: number;
+  private mainCardContainerHeightPerc: number;
 
   private model: ICardViewModel;
+  private bulletCharts: BulletChart[];
 
   constructor(target: VisualConstructorOptions) {
     this.root = select(target.element).classed(CardClassNames.Root, true);
@@ -77,7 +81,7 @@ export class Card {
       .classed(CardClassNames.CardsContainer, true);
     this.tooltipServiceWrapper = createTooltipServiceWrapper(
       target.host.tooltipService,
-      target.element
+      target.element,
     );
     this.selectionManager = target.host.createSelectionManager();
   }
@@ -103,15 +107,16 @@ export class Card {
         (viewport.width -
           (this.cardMargin.left + this.cardMargin.right) *
             (this.cardsPerRow - 1)) /
-          this.cardsPerRow
+          this.cardsPerRow,
       ),
       height: Math.floor(
         (viewport.height -
           (this.cardMargin.top + this.cardMargin.bottom) * this.numberOfRows) /
-          this.numberOfRows
+          this.numberOfRows,
       ),
     };
     this.maxMainMeasureWidth = settings.grid.percentageWidth;
+    this.mainCardContainerHeightPerc = settings.bulletChart.show ? 70 : 100;
   }
 
   // eslint:disable-next-line: max-func-body-length
@@ -119,6 +124,7 @@ export class Card {
     this.cardsContainer.selectAll(".card").remove();
     this.cards = [];
     this.svg = [];
+    this.bulletCharts = [];
     const settings = this.model.settings;
 
     this.cardsContainer.on("click", (event: PointerEvent) => {
@@ -138,7 +144,7 @@ export class Card {
         {
           x: event.clientX,
           y: event.clientY,
-        }
+        },
       );
       event.preventDefault();
     });
@@ -165,10 +171,10 @@ export class Card {
             const isCtrlPressed: boolean = event.ctrlKey;
             this.selectionManager.select(
               dataPoint ? dataPoint.selectionId : {},
-              isCtrlPressed
+              isCtrlPressed,
             );
           }
-        }
+        },
       );
       if (settings.background.layoutShow) {
         const backgroundColor = d3.color(settings.background.backFill);
@@ -185,7 +191,7 @@ export class Card {
                   // settings.background.borderType +
                   // " " +
                   settings.background.borderFill
-              : ""
+              : "",
           )
           .style("border-radius", `${settings.background.roundEdges}px`);
       }
@@ -194,7 +200,14 @@ export class Card {
         cardContainer
           .append("svg")
           .style("width", "100%")
-          .style("height", "100%")
+          .style("height", `${this.mainCardContainerHeightPerc}%`),
+      );
+      this.bulletCharts.push(
+        new BulletChart(
+          cardContainer,
+          this.model.dataGroups[i],
+          this.model.settings,
+        ),
       );
     }
     const svgRect = this.getSVGRect(this.svg[0]);
@@ -228,6 +241,10 @@ export class Card {
       this.createAdditionalCategoryLabel();
     }
     this.createDataLabel();
+
+    if (this.model.settings.bulletChart.show) {
+      this.bulletCharts.map((v) => v.draw());
+    }
   }
 
   public createTooltip() {
@@ -242,7 +259,7 @@ export class Card {
     this.tooltipServiceWrapper.addTooltip(
       cardSelectionMerged.select("svg"),
       (datapoint: IDataGroup) => this.getTooltipData(datapoint),
-      (datapoint: IDataGroup) => datapoint.selectionId
+      (datapoint: IDataGroup) => datapoint.selectionId,
     );
   }
 
@@ -302,12 +319,12 @@ export class Card {
           textProperties,
           this.model.dataGroups[i].displayName,
           svgRect.width,
-          maxDataHeight
+          maxDataHeight,
         );
       } else {
         const categoryValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
-          svgRect.width
+          svgRect.width,
         );
         this.updateLabelValueWithoutWrapping(categoryLabel, categoryValue);
       }
@@ -366,13 +383,13 @@ export class Card {
         maxWidth,
         settings.alignment.horizontalCategory,
         settings.constants.categoryPaddingSide,
-        settings.font.categoryWordWrap_
+        settings.font.categoryWordWrap_,
       );
       this.setYPos(
         categoryLabel,
         maxHeight,
         settings.alignment.verticalCategory,
-        settings.constants.categoryPaddingTop
+        settings.constants.categoryPaddingTop,
       );
 
       // categoryLabel.select("text").style("dominant-baseline", "middle");
@@ -406,7 +423,7 @@ export class Card {
       this.updateLabelStyles(dataLabel, style);
       const mainMeasure = TextMeasurementService.getTailoredTextOrDefault(
         textProperties,
-        this.maxMainMeasureWidth
+        this.maxMainMeasureWidth,
       );
       this.updateLabelValueWithoutWrapping(dataLabel, mainMeasure);
 
@@ -465,13 +482,13 @@ export class Card {
         dataLabel,
         this.maxMainMeasureWidth,
         settings.alignment.horizontalMainMeasure,
-        settings.constants.mainMeasurePaddingSide
+        settings.constants.mainMeasurePaddingSide,
       );
       this.setYPos(
         dataLabel,
         maxHeight,
         settings.alignment.verticalMainMeasure,
-        settings.constants.mainMeasurePaddingBottom
+        settings.constants.mainMeasurePaddingBottom,
       );
       // dataLabel.select("text").style("dominant-baseline", "middle");
 
@@ -491,7 +508,7 @@ export class Card {
         .append("g")
         .classed(CardClassNames.AdditionalCategoryContainer + i, true);
       const additionalCategoryLabels: Selection<BaseType, any, any, any>[] = [];
-      const dataGroup = this.model.dataGroups[i]
+      const dataGroup = this.model.dataGroups[i];
 
       // eslint-disable-next-line max-lines-per-function
       dataGroup.additionalMeasures.map((v, j, array) => {
@@ -603,7 +620,7 @@ export class Card {
         }
         additionalCategoryLabel.attr(
           "transform",
-          translate(xStartPos, yStartPos)
+          translate(xStartPos, yStartPos),
         );
 
         this.updateLabelStyles(additionalCategoryLabel, style);
@@ -613,16 +630,16 @@ export class Card {
             textProperties,
             v.displayName,
             this.additionalMeasureWidth,
-            maxHeight
+            maxHeight,
           );
         } else {
           const categoryValue = TextMeasurementService.getTailoredTextOrDefault(
             textProperties,
-            this.additionalMeasureWidth
+            this.additionalMeasureWidth,
           );
           this.updateLabelValueWithoutWrapping(
             additionalCategoryLabel,
-            categoryValue
+            categoryValue,
           );
         }
 
@@ -638,13 +655,13 @@ export class Card {
           this.additionalMeasureWidth,
           alignment,
           0,
-          settings.font.additionalNameWordWrap_
+          settings.font.additionalNameWordWrap_,
         );
         this.setYPos(
           additionalCategoryLabel,
           maxHeight,
           settings.alignment.verticalAdditionalMeasure,
-          settings.constants.additionalPaddingBottom
+          settings.constants.additionalPaddingBottom,
         );
         // additionalCategoryLabel
         //   .select("text")
@@ -667,7 +684,7 @@ export class Card {
 
       const additionalMeasureLabels = [];
       const settings = this.model.settings;
-      const dataGroup = this.model.dataGroups[i]
+      const dataGroup = this.model.dataGroups[i];
 
       // eslint-disable-next-line max-lines-per-function
       dataGroup.additionalMeasures.map((v, j, array) => {
@@ -785,30 +802,30 @@ export class Card {
         }
         additionalMeasureLabel.attr(
           "transform",
-          translate(xStartPos, yStartPos)
+          translate(xStartPos, yStartPos),
         );
 
         this.updateLabelStyles(additionalMeasureLabel, style);
         const measureValue = TextMeasurementService.getTailoredTextOrDefault(
           textProperties,
-          this.additionalMeasureWidth
+          this.additionalMeasureWidth,
         );
         this.updateLabelValueWithoutWrapping(
           additionalMeasureLabel,
-          measureValue
+          measureValue,
         );
 
         // update position
         this.setXPos(
           additionalMeasureLabel,
           this.additionalMeasureWidth,
-          settings.alignment.horizontalAdditionalMeasureValue
+          settings.alignment.horizontalAdditionalMeasureValue,
         );
         this.setYPos(
           additionalMeasureLabel,
           maxHeight,
           settings.alignment.verticalAdditionalMeasure,
-          settings.constants.additionalPaddingBottom
+          settings.constants.additionalPaddingBottom,
         );
         // additionalMeasureLabel
         //   .select("text")
@@ -824,7 +841,7 @@ export class Card {
     elem: Selection<BaseType, any, any, any>,
     maxHeight: number,
     alignment: string,
-    padding = 0
+    padding = 0,
   ) {
     let y: number;
     const elemHeight = this.getSVGRect(elem).height;
@@ -850,7 +867,7 @@ export class Card {
     maxWidth: number,
     alignment: string,
     padding = 0,
-    wordWrap_ = false
+    wordWrap_ = false,
   ) {
     let x: number;
     switch (alignment) {
@@ -918,13 +935,13 @@ export class Card {
     landing_description
       .append("text")
       .text(
-        "With over 12 years of experience in dashboard development, we understand the needs of our business customers. They often require multiple indicators for their cards, such as comparisons with targets and previous year data."
+        "With over 12 years of experience in dashboard development, we understand the needs of our business customers. They often require multiple indicators for their cards, such as comparisons with targets and previous year data.",
       );
     landing_description.append("br");
     landing_description
       .append("text")
       .text(
-        `Additionally, specific label alignment has been a common request. To address these needs, we have created the revolutionary "all-in-one" KPI card, and we are delighted to share it with you for free.`
+        `Additionally, specific label alignment has been a common request. To address these needs, we have created the revolutionary "all-in-one" KPI card, and we are delighted to share it with you for free.`,
       );
 
     // main
@@ -961,7 +978,7 @@ export class Card {
     landing_main_info_footer
       .append("text")
       .text(
-        "By using our KPI card, you will not only save time in designing and developing supplementary measures, but also optimize report performance as it operates within a single query. Take your business dashboarding to a whole new level with our innovative solution."
+        "By using our KPI card, you will not only save time in designing and developing supplementary measures, but also optimize report performance as it operates within a single query. Take your business dashboarding to a whole new level with our innovative solution.",
       );
     landing_main_info_footer.append("br");
     landing_main_info_footer
@@ -1051,7 +1068,7 @@ export class Card {
 
   private updateLabelStyles(
     label: Selection<BaseType, any, any, any>,
-    style: IFontProperties
+    style: IFontProperties,
   ) {
     label
       .select("text")
@@ -1071,7 +1088,7 @@ export class Card {
 
   private updateLabelValueWithoutWrapping(
     label: Selection<BaseType, any, any, any>,
-    value: string
+    value: string,
   ) {
     label.select("text").text(value);
   }
@@ -1081,7 +1098,7 @@ export class Card {
     textProperties: TextProperties,
     value: string,
     maxWidth: number,
-    maxHeight: number
+    maxHeight: number,
   ) {
     const textHeight: number =
       TextMeasurementService.estimateSvgTextHeight(textProperties);
@@ -1092,7 +1109,7 @@ export class Card {
       TextMeasurementService.measureSvgTextWidth,
       maxWidth,
       maxNumLines,
-      TextMeasurementService.getTailoredTextOrDefault
+      TextMeasurementService.getTailoredTextOrDefault,
     );
     label
       .select("text")
