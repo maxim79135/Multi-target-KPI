@@ -33,7 +33,9 @@ export class BulletChart {
       .append("svg")
       .classed(BulletClassNames.BulletContainer, true)
       .style("width", "100%")
-      .style("height", "30%");
+      .style("height", "30%")
+      .style("margin-left", "2%")
+      .style("margin-right", "2%");
     this.data = data;
     this.settings = settings;
   }
@@ -58,9 +60,14 @@ export class BulletChart {
     this.bulletChartTargetRect = this.bulletChartContainer
       .append("rect")
       .classed(BulletClassNames.BulletTargetRect, true)
-      .attr("width", "100%")
+      .attr("width", "96%")
       .attr("height", "100%")
-      .style("fill", bulletSettings.targetColor);
+      .style(
+        "fill",
+        maxValue == this.data.mainMeasureValue
+          ? bulletSettings.mainColor
+          : bulletSettings.targetColor,
+      );
     if (bulletSettings.borderShow) {
       this.bulletChartTargetRect
         .attr("rx", bulletSettings.roundEdges)
@@ -83,6 +90,21 @@ export class BulletChart {
           .attr("stroke", bulletSettings.borderFill)
           .attr("stroke-width", bulletSettings.borderWeight);
       }
+    }
+
+    if (
+      maxValue == this.data.mainMeasureValue &&
+      this.data.additionalMeasures.length > 0
+    ) {
+      console.log(this.getSVGRect(this.bulletChartContainer));
+      this.bulletChartContainer
+        .append("line")
+        .attr("x1", () => xScale(this.data.additionalMeasures[0]?.measureValue))
+        .attr("y1", 0)
+        .attr("x2", () => xScale(this.data.additionalMeasures[0]?.measureValue))
+        .attr("y2", this.getSVGRect(this.bulletChartContainer).height)
+        .style("stroke", "black")
+        .style("stroke-width", 3);
     }
   }
 
