@@ -986,6 +986,28 @@
           "type": {
             "integer": true
           }
+        },
+        "targetLineColor": {
+          "displayName": "Target line color",
+          "displayNameKey": "targetLineColor",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        },
+        "targetLineShow": {
+          "type": {
+            "bool": true
+          }
+        },
+        "targetLineWeight": {
+          "displayName": "Target line weight",
+          "type": {
+            "integer": true
+          }
         }
       }
     }

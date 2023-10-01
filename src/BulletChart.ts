@@ -33,9 +33,8 @@ export class BulletChart {
       .append("svg")
       .classed(BulletClassNames.BulletContainer, true)
       .style("width", "100%")
-      .style("height", "30%")
-      .style("margin-left", "2%")
-      .style("margin-right", "2%");
+      .style("height", "calc(30% - 10px)")
+      .style("margin-left", "2%");
     this.data = data;
     this.settings = settings;
   }
@@ -51,6 +50,10 @@ export class BulletChart {
       this.data.additionalMeasures[0]?.measureValue ??
         this.data.mainMeasureValue,
     );
+    const baseRectHeight =
+      bulletSettings.targetLineShow && maxValue == this.data.mainMeasureValue
+        ? "70%"
+        : "100%";
 
     const xScale = d3
       .scaleLinear()
@@ -61,13 +64,19 @@ export class BulletChart {
       .append("rect")
       .classed(BulletClassNames.BulletTargetRect, true)
       .attr("width", "96%")
-      .attr("height", "100%")
+      .attr("height", baseRectHeight)
       .style(
         "fill",
         maxValue == this.data.mainMeasureValue
           ? bulletSettings.mainColor
           : bulletSettings.targetColor,
       );
+    if (
+      bulletSettings.targetLineShow &&
+      maxValue == this.data.mainMeasureValue
+    ) {
+      this.bulletChartTargetRect.attr("y", "15%");
+    }
     if (bulletSettings.borderShow) {
       this.bulletChartTargetRect
         .attr("rx", bulletSettings.roundEdges)
@@ -81,8 +90,14 @@ export class BulletChart {
         .append("rect")
         .classed(BulletClassNames.BulletMainRect, true)
         .attr("width", () => xScale(this.data.mainMeasureValue))
-        .attr("height", "100%")
+        .attr("height", baseRectHeight)
         .style("fill", bulletSettings.mainColor);
+      if (
+        bulletSettings.targetLineShow &&
+        maxValue == this.data.mainMeasureValue
+      ) {
+        this.bulletChartMainRect.attr("y", "15%");
+      }
       if (bulletSettings.borderShow) {
         this.bulletChartMainRect
           .attr("rx", bulletSettings.roundEdges)
@@ -94,17 +109,17 @@ export class BulletChart {
 
     if (
       maxValue == this.data.mainMeasureValue &&
-      this.data.additionalMeasures.length > 0
+      this.data.additionalMeasures.length > 0 &&
+      bulletSettings.targetLineShow
     ) {
-      console.log(this.getSVGRect(this.bulletChartContainer));
       this.bulletChartContainer
         .append("line")
         .attr("x1", () => xScale(this.data.additionalMeasures[0]?.measureValue))
         .attr("y1", 0)
         .attr("x2", () => xScale(this.data.additionalMeasures[0]?.measureValue))
         .attr("y2", this.getSVGRect(this.bulletChartContainer).height)
-        .style("stroke", "black")
-        .style("stroke-width", 3);
+        .style("stroke", bulletSettings.targetLineColor)
+        .style("stroke-width", bulletSettings.targetLineWeight);
     }
   }
 

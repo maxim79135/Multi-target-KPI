@@ -168,6 +168,8 @@ export class BulletChart {
   public borderWeight: number = 1;
   public roundEdges: number = 1;
   public targetLineWeight: number = 3;
+  public targetLineColor = "#333333";
+  public targetLineShow = false;
 }
 export class CardSettings extends DataViewObjectsParser {
   public grid: Grid = new Grid();

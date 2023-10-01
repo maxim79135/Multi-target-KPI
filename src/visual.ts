@@ -1224,7 +1224,7 @@ export class CardKPI implements IVisual {
                   },
                 ],
               };
-            }
+            },
           ),
         ],
       },
@@ -1397,14 +1397,14 @@ export class CardKPI implements IVisual {
                         value: item.invertVariance,
                       },
                     },
-                  }
+                  },
                 );
                 this.addConditionColor(list, item, 1);
                 this.addConditionColor(list, item, 2);
                 this.addConditionColor(list, item, 3);
               }
               return list;
-            }
+            },
           ),
         ],
       },
@@ -1546,9 +1546,64 @@ export class CardKPI implements IVisual {
         },
       ],
     };
+    const bullet_target_line: powerbi.visuals.FormattingGroup = {
+      uid: "bullet_target_line",
+      displayName: "Target line",
+      description: "Target line",
+      topLevelToggle: {
+        uid: "bullet_target_line_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "bulletChart",
+              propertyName: "targetLineShow",
+            },
+            value: settings.bulletChart.targetLineShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "bullet_target_line_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "targetLineColor",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.bulletChart.targetLineColor },
+            },
+          },
+        },
+        {
+          uid: "bullet_target_line_weight",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "targetLineWeight",
+              },
+              value: settings.bulletChart.targetLineWeight,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
+            },
+          },
+        },
+      ],
+    };
 
     bullet.groups.push(bullet_colors);
     bullet.groups.push(bullet_shape);
+    bullet.groups.push(bullet_target_line);
 
     return {
       cards: [grid, alignment, format, font, color, background, bullet],
@@ -1558,7 +1613,7 @@ export class CardKPI implements IVisual {
   private addConditionColor(
     list: powerbi.visuals.FormattingContainerItem,
     item: AdditiionalColor,
-    index: number
+    index: number,
   ) {
     list.slices.push({
       uid: `color_additional_condition${index}_${item.measureDisplayName}`,
@@ -1626,7 +1681,7 @@ export class CardKPI implements IVisual {
               value: { value: item[`assignColor${index}`].solid.color },
             },
           },
-        }
+        },
       );
     }
   }
