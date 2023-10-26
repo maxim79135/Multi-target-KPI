@@ -30,11 +30,11 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class Grid {
-  public percentageWidth: number = 40;
-  public wireframe: string = "left";
+  public percentageWidth: number = 50;
+  public wireframe: string = "top";
   public showMeasureName: boolean = true;
   public labelAsMeasurename: boolean = false;
-  public position: string = "aboveMainMeasure";
+  public position: string = "topCenter";
   public cardsPerRow: number = 5;
   public cardsMargin: number = 15;
   public layoutType: string = "vertical";
@@ -43,14 +43,14 @@ export class Grid {
 export class Alignment {
   public vertical: string = "middle";
   public horizontal: string = "center";
-  public show_additional_vertical: boolean = false;
-  public show_additional_horizontal: boolean = false;
+  public show_additional_vertical: boolean = true;
+  public show_additional_horizontal: boolean = true;
   public verticalMainMeasure: string = "middle";
   public verticalAdditionalMeasure: string = "middle";
   public verticalAdditionalMeasureName: string = "left";
   public horizontalMainMeasure: string = "center";
-  public horizontalAdditionalMeasureName: string = "center";
-  public horizontalAdditionalMeasureValue: string = "center";
+  public horizontalAdditionalMeasureName: string = "left";
+  public horizontalAdditionalMeasureValue: string = "right";
   public horizontalCategory: string = "center";
   public verticalCategory: string = "middle";
 }
@@ -74,18 +74,18 @@ export class Font {
   public isBold: boolean = false;
   public isUnderline: boolean = false;
 
-  public additionalShow: boolean = false;
+  public additionalShow: boolean = true;
   public categoryFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
   public categoryWordWrap_: boolean = false;
-  public categoryTextSize: number = 12;
+  public categoryTextSize: number = 18;
   public categoryIsItalic: boolean = false;
   public categoryIsBold: boolean = false;
   public categoryIsUnderline: boolean = false;
 
   public mainFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public mainTextSize: number = 12;
+  public mainTextSize: number = 32;
   public mainIsItalic: boolean = false;
   public mainIsBold: boolean = false;
   public mainIsUnderline: boolean = false;
@@ -100,7 +100,7 @@ export class Font {
 
   public additionalValueFontFamily: string =
     "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif";
-  public additionalValueTextSize: number = 12;
+  public additionalValueTextSize: number = 18;
   public additionalValueIsItalic: boolean = false;
   public additionalValueIsBold: boolean = false;
   public additionalValueIsUnderline: boolean = false;
@@ -112,9 +112,9 @@ export class Format {
   public suppressBlankAndNaN: boolean = true;
   public blankAndNaNReplaceText: string = "0";
 
-  public additionalShow: boolean = false;
-  public mainShow: boolean = false;
-  public mainDisplayUnit: number = 0;
+  public additionalShow: boolean = true;
+  public mainShow: boolean = true;
+  public mainDisplayUnit: number = 1000;
   public mainDecimalPlaces: number = 0;
   public mainSuppressBlankAndNaN: boolean = true;
   public mainBlankAndNaNReplaceText: string = "0";
@@ -127,7 +127,7 @@ export class AdditiionalFormat {
   public decimalPlaces: number = 0;
   public suppressBlankAndNaN: boolean = true;
   public blankAndNaNReplaceText: string = "0";
-  public componentType: string = "measure";
+  public componentType: string = "percentageChangeOver";
   public invertVariance: boolean = false;
 }
 
@@ -142,21 +142,21 @@ export class Color {
 export class AdditiionalColor {
   public metadata: string;
   public measureDisplayName: string;
-  public componentType: string = "measure";
+  public componentType: string = "percentageChangeOver";
   public invertVariance: boolean = false;
-  public unmatchedColor = { solid: { color: "#333333" } };
+  public unmatchedColor = { solid: { color: "#000000" } };
   public conditionFormatting: boolean = false;
-  public condition1: boolean = false;
-  public comparisonOperator1: string = ">";
-  public condition2: boolean = false;
-  public comparisonOperator2: string = ">";
+  public condition1: boolean = true;
+  public comparisonOperator1: string = ">=";
+  public condition2: boolean = true;
+  public comparisonOperator2: string = "<";
   public condition3: boolean = false;
   public comparisonOperator3: string = ">";
-  public value1: number = null;
-  public value2: number = null;
+  public value1: number = 0;
+  public value2: number = 0;
   public value3: number = null;
-  public assignColor1 = { solid: { color: "#333333" } };
-  public assignColor2 = { solid: { color: "#333333" } };
+  public assignColor1 = { solid: { color: "#008864" } };
+  public assignColor2 = { solid: { color: "#CB5033" } };
   public assignColor3 = { solid: { color: "#333333" } };
 }
 export class BulletChart {
