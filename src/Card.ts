@@ -336,29 +336,36 @@ export class Card {
       let maxHeight: number;
       if (settings.grid.position == "aboveMainMeasure") {
         maxWidth = this.maxMainMeasureWidth;
-        if (settings.grid.layoutType == "horizontal") {
-          maxHeight = svgRect.height / 2;
+        if (this.model.dataGroups[0].additionalMeasures.length == 0) {
+          maxHeight = svgRect.height / 3;
         } else {
-          if (
-            settings.alignment.verticalAdditionalMeasureName == "left" ||
-            settings.alignment.verticalAdditionalMeasureName == "right"
-          ) {
-            if (
-              this.model.dataGroups[0].additionalMeasures.length == 1 ||
-              this.model.dataGroups[0].additionalMeasures.length == 2
-            )
-              maxHeight = svgRect.height / 2;
-            else maxHeight = svgRect.height / 3;
+          if (settings.grid.layoutType == "horizontal") {
+            maxHeight = svgRect.height / 2;
           } else {
-            maxHeight =
-              svgRect.height /
-              this.model.dataGroups[0].additionalMeasures.length /
-              2;
+            if (
+              settings.alignment.verticalAdditionalMeasureName == "left" ||
+              settings.alignment.verticalAdditionalMeasureName == "right"
+            ) {
+              if (
+                this.model.dataGroups[0].additionalMeasures.length == 1 ||
+                this.model.dataGroups[0].additionalMeasures.length == 2
+              )
+                maxHeight = svgRect.height / 2;
+              else maxHeight = svgRect.height / 3;
+            } else {
+              maxHeight =
+                svgRect.height /
+                this.model.dataGroups[0].additionalMeasures.length /
+                2;
+            }
           }
         }
       } else {
         maxWidth = svgRect.width;
-        if (settings.grid.layoutType == "horizontal") {
+        if (
+          settings.grid.layoutType == "horizontal" ||
+          this.model.dataGroups[0].additionalMeasures.length == 0
+        ) {
           maxHeight = svgRect.height / 3;
         } else {
           if (
@@ -434,42 +441,50 @@ export class Card {
         yStartPos = 0;
       } else {
         if (settings.grid.position == "aboveMainMeasure") {
-          if (settings.grid.layoutType == "horizontal") {
-            yStartPos = svgRect.height / 2;
+          if (this.model.dataGroups[0].additionalMeasures.length == 0) {
+            yStartPos = svgRect.height / 3;
           } else {
-            if (
-              settings.alignment.verticalAdditionalMeasureName == "left" ||
-              settings.alignment.verticalAdditionalMeasureName == "right"
-            ) {
-              if (
-                this.model.dataGroups[0].additionalMeasures.length == 1 ||
-                this.model.dataGroups[0].additionalMeasures.length == 2
-              )
-                yStartPos = svgRect.height / 2;
-              else yStartPos = svgRect.height / 3;
+            if (settings.grid.layoutType == "horizontal") {
+              yStartPos = svgRect.height / 2;
             } else {
-              yStartPos =
-                svgRect.height /
-                this.model.dataGroups[0].additionalMeasures.length /
-                2;
+              if (
+                settings.alignment.verticalAdditionalMeasureName == "left" ||
+                settings.alignment.verticalAdditionalMeasureName == "right"
+              ) {
+                if (
+                  this.model.dataGroups[0].additionalMeasures.length == 1 ||
+                  this.model.dataGroups[0].additionalMeasures.length == 2
+                )
+                  yStartPos = svgRect.height / 2;
+                else yStartPos = svgRect.height / 3;
+              } else {
+                yStartPos =
+                  svgRect.height /
+                  this.model.dataGroups[0].additionalMeasures.length /
+                  2;
+              }
             }
           }
         } else {
           yStartPos = svgRect.width;
-          if (settings.grid.layoutType == "horizontal") {
+          if (this.model.dataGroups[0].additionalMeasures.length == 0) {
             yStartPos = svgRect.height / 3;
           } else {
-            if (
-              settings.alignment.verticalAdditionalMeasureName == "left" ||
-              settings.alignment.verticalAdditionalMeasureName == "right"
-            ) {
-              yStartPos =
-                svgRect.height /
-                (this.model.dataGroups[0].additionalMeasures.length + 1);
+            if (settings.grid.layoutType == "horizontal") {
+              yStartPos = svgRect.height / 3;
             } else {
-              yStartPos =
-                svgRect.height /
-                (this.model.dataGroups[0].additionalMeasures.length * 2 + 1);
+              if (
+                settings.alignment.verticalAdditionalMeasureName == "left" ||
+                settings.alignment.verticalAdditionalMeasureName == "right"
+              ) {
+                yStartPos =
+                  svgRect.height /
+                  (this.model.dataGroups[0].additionalMeasures.length + 1);
+              } else {
+                yStartPos =
+                  svgRect.height /
+                  (this.model.dataGroups[0].additionalMeasures.length * 2 + 1);
+              }
             }
           }
         }
