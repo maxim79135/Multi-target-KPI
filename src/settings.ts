@@ -161,8 +161,8 @@ export class AdditiionalColor {
 }
 export class BulletChart {
   public show = false;
-  public mainColor = "#333333";
-  public targetColor = "#333333";
+  public mainColor = "";
+  public targetColor = "#ffffff";
   public borderShow: boolean = false;
   public borderFill: string = "#ffffff";
   public borderWeight: number = 1;

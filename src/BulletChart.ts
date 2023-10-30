@@ -28,6 +28,7 @@ export class BulletChart {
     target: Selection<BaseType, any, any, any>,
     data: IDataGroup,
     settings: CardSettings,
+    host: IVisualHost,
   ) {
     this.bulletChartContainer = target
       .append("svg")
@@ -37,6 +38,7 @@ export class BulletChart {
       .style("margin-left", "2%");
     this.data = data;
     this.settings = settings;
+    this.host = host;
   }
 
   public getBulletChart(): Selection<BaseType, any, any, any> {
@@ -59,6 +61,10 @@ export class BulletChart {
       .scaleLinear()
       .domain([0, maxValue])
       .range([0, this.getSVGRect(this.bulletChartContainer).width]);
+
+      if (bulletSettings.mainColor == "") {
+        bulletSettings.mainColor = this.host.colorPalette.getColor(this.data.mainMeasureDataLabel).value
+      }
 
     this.bulletChartTargetRect = this.bulletChartContainer
       .append("rect")

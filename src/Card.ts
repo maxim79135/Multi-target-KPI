@@ -207,6 +207,7 @@ export class Card {
           cardContainer,
           this.model.dataGroups[i],
           this.model.settings,
+          this.host
         ),
       );
     }
