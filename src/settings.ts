@@ -118,6 +118,8 @@ export class Format {
   public mainDecimalPlaces: number = 0;
   public mainSuppressBlankAndNaN: boolean = true;
   public mainBlankAndNaNReplaceText: string = "0";
+  public mainComponentType: string = "percentageChangeOver";
+  public mainInvertVariance: boolean = false;
 }
 
 export class AdditiionalFormat {
@@ -133,6 +135,8 @@ export class AdditiionalFormat {
 
 export class Color {
   public color: string = "#333333";
+  public categoryColor: string = "#333333";
+  public additionalCategoryColor: string = "#333333";
   public mainColor: string = "#333333";
 
   public mainShow: boolean = false;

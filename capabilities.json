@@ -640,6 +640,43 @@
             ]
           }
         },
+        "mainInvertVariance": {
+          "displayName": "Invert Variance",
+          "description": "Changes the calculation order for an additional measure value",
+          "displayNameKey": "invertVariance",
+          "type": {
+            "bool": true
+          }
+        },
+        "mainComponentType": {
+          "displayName": "Component type",
+          "description": "It is possible for an additional measure to output not only its value, but also a deviation from the main measure. Choose one of the 4 options for each measure.",
+          "displayNameKey": "componentType",
+          "type": {
+            "enumeration": [
+              {
+                "displayName": "Measure",
+                "displayNameKey": "measure",
+                "value": "measure"
+              },
+              {
+                "displayName": "Change over Main Measure",
+                "displayNameKey": "changeOver",
+                "value": "changeOver"
+              },
+              {
+                "displayName": "Percentage over Main Measure",
+                "displayNameKey": "percentageOver",
+                "value": "percentageOver"
+              },
+              {
+                "displayName": "Percentage change over Main Measure",
+                "displayNameKey": "percentageChangeOver",
+                "value": "percentageChangeOver"
+              }
+            ]
+          }
+        },
         "invertVariance": {
           "displayName": "Invert Variance",
           "description": "Changes the calculation order for an additional measure value",

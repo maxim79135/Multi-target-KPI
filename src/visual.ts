@@ -1006,6 +1006,32 @@ export class CardKPI implements IVisual {
             },
           },
         },
+        {
+          uid: "format_all_component_type",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "mainComponentType",
+              },
+              value: settings.format.mainComponentType,
+            },
+          },
+        },
+        {
+          uid: "format_all_invert_variance",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "mainInvertVariance",
+              },
+              value: settings.format.mainInvertVariance,
+            },
+          },
+        },
       ],
     };
 
@@ -1088,7 +1114,7 @@ export class CardKPI implements IVisual {
               value: settings.format.mainBlankAndNaNReplaceText,
             },
           },
-        },
+        }
       ],
     };
     const format_additional: powerbi.visuals.FormattingGroup = {

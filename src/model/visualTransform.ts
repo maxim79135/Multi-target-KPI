@@ -592,6 +592,8 @@ export function visualTransform(
               suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
               blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
             };
+            additionalFormatSettings.componentType = settings.format.mainComponentType
+            additionalFormatSettings.invertVariance = settings.format.mainInvertVariance
           }
 
           switch (additionalFormatSettings.componentType) {
