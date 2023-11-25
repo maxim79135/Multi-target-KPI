@@ -663,6 +663,28 @@
             }
           }
         },
+        "categoryColor": {
+          "displayName": "Category",
+          "description": "Color for category",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        },
+        "additionalCategoryColor": {
+          "displayName": "Additional category",
+          "description": "Color for additional category",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        },
         "mainColor": {
           "displayName": "Color",
           "type": {

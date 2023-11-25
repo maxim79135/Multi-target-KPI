@@ -1260,6 +1260,32 @@ export class CardKPI implements IVisual {
             },
           },
         },
+        {
+          uid: "color_all_category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "color",
+                propertyName: "categoryColor",
+              },
+              value: { value: settings.color.categoryColor },
+            },
+          },
+        },
+        {
+          uid: "color_all_additional",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "color",
+                propertyName: "additionalCategoryColor",
+              },
+              value: { value: settings.color.additionalCategoryColor },
+            },
+          },
+        },
       ],
     };
     const color_main: powerbi.visuals.FormattingGroup = {

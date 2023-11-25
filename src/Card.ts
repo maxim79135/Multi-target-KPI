@@ -307,7 +307,7 @@ export class Card {
         isItalic: settings.font.categoryIsItalic,
         isBold: settings.font.categoryIsBold,
         isUnderline: settings.font.categoryIsUnderline,
-        color: settings.color.color,
+        color: settings.color.categoryColor,
       };
       const textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].displayName;
@@ -534,7 +534,7 @@ export class Card {
           isItalic: settings.font.additionalNameIsItalic,
           isBold: settings.font.additionalNameIsBold,
           isUnderline: settings.font.additionalNameIsUnderline,
-          color: settings.color.color,
+          color: settings.color.additionalCategoryColor,
         };
         const additionalCategoryLabel = additionalCategoryContainter
           .append("g")
