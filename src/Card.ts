@@ -717,7 +717,7 @@ export class Card {
           color: v.labelFill,
         };
         const textProperties = this.getTextProperties(style);
-        textProperties.text = v.dataLabel;
+        textProperties.text = `${v.dataLabel} \u25B2`;
 
         let maxHeight: number;
         let xStartPos: number;
