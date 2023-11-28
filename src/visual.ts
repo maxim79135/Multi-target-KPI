@@ -137,19 +137,19 @@ export class CardKPI implements IVisual {
             },
           },
         },
-        {
-          uid: "mainMeasureValue_wireframe",
-          control: {
-            type: powerbi.visuals.FormattingComponent.Dropdown,
-            properties: {
-              descriptor: {
-                objectName: "grid",
-                propertyName: "wireframe",
-              },
-              value: settings.grid.wireframe,
-            },
-          },
-        },
+        // {
+        //   uid: "mainMeasureValue_wireframe",
+        //   control: {
+        //     type: powerbi.visuals.FormattingComponent.Dropdown,
+        //     properties: {
+        //       descriptor: {
+        //         objectName: "grid",
+        //         propertyName: "wireframe",
+        //       },
+        //       value: settings.grid.wireframe,
+        //     },
+        //   },
+        // },
       ],
     };
     const mainMeasureName: powerbi.visuals.FormattingGroup = {
@@ -279,43 +279,43 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    const alignment_all: powerbi.visuals.FormattingGroup = {
-      displayName: "All",
-      description: "Set alignment for all elements.",
-      uid: "alignment_all",
-      slices: [
-        {
-          uid: "alignment_vertical_alignment",
-          disabled: settings.alignment.show_additional_vertical,
-          control: {
-            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
-            properties: {
-              descriptor: {
-                objectName: "alignment",
-                propertyName: "vertical",
-              },
-              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
-              value: settings.alignment.vertical,
-            },
-          },
-        },
-        {
-          uid: "alignment_horizontal_alignment",
-          disabled: settings.alignment.show_additional_horizontal,
-          control: {
-            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
-            properties: {
-              descriptor: {
-                objectName: "alignment",
-                propertyName: "horizontal",
-              },
-              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
-              value: settings.alignment.horizontal,
-            },
-          },
-        },
-      ],
-    };
+    // const alignment_all: powerbi.visuals.FormattingGroup = {
+    //   displayName: "All",
+    //   description: "Set alignment for all elements.",
+    //   uid: "alignment_all",
+    //   slices: [
+    //     {
+    //       uid: "alignment_vertical_alignment",
+    //       disabled: settings.alignment.show_additional_vertical,
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "alignment",
+    //             propertyName: "vertical",
+    //           },
+    //           mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+    //           value: settings.alignment.vertical,
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "alignment_horizontal_alignment",
+    //       disabled: settings.alignment.show_additional_horizontal,
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "alignment",
+    //             propertyName: "horizontal",
+    //           },
+    //           mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
+    //           value: settings.alignment.horizontal,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
 
     const alignment_additional_vertical: powerbi.visuals.FormattingGroup = {
       displayName: "Vertical alignment",
@@ -486,7 +486,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    alignment.groups.push(alignment_all);
+    // alignment.groups.push(alignment_all);
     alignment.groups.push(alignment_additional_vertical);
     alignment.groups.push(alignment_additional_horizontal);
 
