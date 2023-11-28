@@ -104,6 +104,10 @@ export class Font {
   public additionalValueIsItalic: boolean = false;
   public additionalValueIsBold: boolean = false;
   public additionalValueIsUnderline: boolean = false;
+
+  public color: string = "#333333";
+  public categoryColor: string = "#333333";
+  public additionalCategoryColor: string = "#333333";
 }
 
 export class Format {
@@ -134,9 +138,6 @@ export class AdditiionalFormat {
 }
 
 export class Color {
-  public color: string = "#333333";
-  public categoryColor: string = "#333333";
-  public additionalCategoryColor: string = "#333333";
   public mainColor: string = "#333333";
 
   public mainShow: boolean = false;

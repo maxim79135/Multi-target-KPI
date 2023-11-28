@@ -307,7 +307,7 @@ export class Card {
         isItalic: settings.font.categoryIsItalic,
         isBold: settings.font.categoryIsBold,
         isUnderline: settings.font.categoryIsUnderline,
-        color: settings.color.categoryColor,
+        color: settings.font.categoryColor,
       };
       const textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].displayName;
@@ -416,7 +416,7 @@ export class Card {
       const svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
       if (!settings.color.mainShow) {
-        settings.color.mainColor = settings.color.color;
+        settings.color.mainColor = settings.font.color;
       }
       const style = {
         fontFamily: settings.font.mainFontFamily,
@@ -534,7 +534,7 @@ export class Card {
           isItalic: settings.font.additionalNameIsItalic,
           isBold: settings.font.additionalNameIsBold,
           isUnderline: settings.font.additionalNameIsUnderline,
-          color: settings.color.additionalCategoryColor,
+          color: settings.font.additionalCategoryColor,
         };
         const additionalCategoryLabel = additionalCategoryContainter
           .append("g")

@@ -699,6 +699,45 @@ export class CardKPI implements IVisual {
             },
           },
         },
+        {
+          uid: "font_all_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "color",
+              },
+              value: { value: settings.font.color },
+            },
+          },
+        },
+        {
+          uid: "font_all_category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "categoryColor",
+              },
+              value: { value: settings.font.categoryColor },
+            },
+          },
+        },
+        {
+          uid: "font_all_additional",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "additionalCategoryColor",
+              },
+              value: { value: settings.font.additionalCategoryColor },
+            },
+          },
+        },
       ],
     };
 
@@ -1268,52 +1307,52 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    const color_all: powerbi.visuals.FormattingGroup = {
-      uid: "color_all",
-      displayName: "All",
-      description: "Set color for all elements.",
-      slices: [
-        {
-          uid: "color_all_color",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "color",
-              },
-              value: { value: settings.color.color },
-            },
-          },
-        },
-        {
-          uid: "color_all_category",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "categoryColor",
-              },
-              value: { value: settings.color.categoryColor },
-            },
-          },
-        },
-        {
-          uid: "color_all_additional",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "additionalCategoryColor",
-              },
-              value: { value: settings.color.additionalCategoryColor },
-            },
-          },
-        },
-      ],
-    };
+    // const color_all: powerbi.visuals.FormattingGroup = {
+    //   uid: "color_all",
+    //   displayName: "All",
+    //   description: "Set color for all elements.",
+    //   slices: [
+    //     {
+    //       uid: "color_all_color",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "color",
+    //           },
+    //           value: { value: settings.font.color },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "color_all_category",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "categoryColor",
+    //           },
+    //           value: { value: settings.font.categoryColor },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "color_all_additional",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "additionalCategoryColor",
+    //           },
+    //           value: { value: settings.font.additionalCategoryColor },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
     const color_main: powerbi.visuals.FormattingGroup = {
       uid: "color_main",
       displayName: "Main measure value",
@@ -1462,7 +1501,7 @@ export class CardKPI implements IVisual {
       },
     };
 
-    color.groups.push(color_all);
+    // color.groups.push(color_all);
     color.groups.push(color_main);
     color.groups.push(color_additional);
 
