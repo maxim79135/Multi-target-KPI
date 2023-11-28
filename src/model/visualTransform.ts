@@ -696,6 +696,9 @@ export function visualTransform(
             ),
           });
         }
+        if (dataValue.source.roles["bulletTarget"]) {
+          dataGroup.bulletTargetValue = valueType.numeric || valueType.integer ? value : null
+        }
       }
 
       // add selectionId

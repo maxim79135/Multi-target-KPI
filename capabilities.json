@@ -23,6 +23,12 @@
       "kind": "Measure"
     },
     {
+      "displayName": "Bullet target",
+      "displayNameKey": "bulletTarget",
+      "name": "bulletTarget",
+      "kind": "Measure"
+    },
+    {
       "displayName": "Tooltips",
       "description": "Add additional measures that will be included in the tooltip of the card.",
       "displayNameKey": "tooltips",
@@ -44,6 +50,9 @@
           },
           "additional": {
             "max": 3
+          },
+          "bulletTarget": {
+            "max": 1
           }
         }
       ],
@@ -68,6 +77,11 @@
             {
               "bind": {
                 "to": "additional"
+              }
+            },
+            {
+              "bind": {
+                "to": "bulletTarget"
               }
             }
           ]

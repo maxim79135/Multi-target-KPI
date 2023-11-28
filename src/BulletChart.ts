@@ -23,6 +23,7 @@ export class BulletChart {
   private host: IVisualHost;
   private data: IDataGroup;
   private settings: CardSettings;
+  private targetValue: number;
 
   constructor(
     target: Selection<BaseType, any, any, any>,
@@ -37,6 +38,7 @@ export class BulletChart {
       .style("height", "calc(30% - 10px)")
       .style("margin-left", "2%");
     this.data = data;
+    this.targetValue = this.data.bulletTargetValue ?? this.data.mainMeasureValue;
     this.settings = settings;
     this.host = host;
   }
@@ -49,8 +51,7 @@ export class BulletChart {
     const bulletSettings = this.settings.bulletChart;
     const maxValue = Math.max(
       this.data.mainMeasureValue,
-      this.data.additionalMeasures[0]?.measureValue ??
-        this.data.mainMeasureValue,
+      this.targetValue ?? this.data.mainMeasureValue,
     );
     const baseRectHeight =
       bulletSettings.targetLineShow && maxValue == this.data.mainMeasureValue
@@ -62,9 +63,11 @@ export class BulletChart {
       .domain([0, maxValue])
       .range([0, this.getSVGRect(this.bulletChartContainer).width]);
 
-      if (bulletSettings.mainColor == "") {
-        bulletSettings.mainColor = this.host.colorPalette.getColor(this.data.mainMeasureDataLabel).value
-      }
+    if (bulletSettings.mainColor == "") {
+      bulletSettings.mainColor = this.host.colorPalette.getColor(
+        this.data.mainMeasureDataLabel,
+      ).value;
+    }
 
     this.bulletChartTargetRect = this.bulletChartContainer
       .append("rect")
@@ -120,9 +123,9 @@ export class BulletChart {
     ) {
       this.bulletChartContainer
         .append("line")
-        .attr("x1", () => xScale(this.data.additionalMeasures[0]?.measureValue))
+        .attr("x1", () => xScale(this.targetValue))
         .attr("y1", 0)
-        .attr("x2", () => xScale(this.data.additionalMeasures[0]?.measureValue))
+        .attr("x2", () => xScale(this.targetValue))
         .attr("y2", this.getSVGRect(this.bulletChartContainer).height)
         .style("stroke", bulletSettings.targetLineColor)
         .style("stroke-width", bulletSettings.targetLineWeight);
