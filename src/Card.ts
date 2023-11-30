@@ -407,6 +407,7 @@ export class Card {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private createDataLabel() {
     for (let i = 0; i < this.model.dataGroups.length; i++) {
       const svg = this.svg[i];
@@ -417,7 +418,6 @@ export class Card {
 
       const svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
-      debugger
       const style = {
         fontFamily: settings.font.mainFontFamily,
         textSize: settings.font.mainTextSize,
