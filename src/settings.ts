@@ -105,6 +105,9 @@ export class Font {
   public additionalValueIsBold: boolean = false;
   public additionalValueIsUnderline: boolean = false;
 
+  public allColor: string = "#333333";
+  public allCategoryColor: string = "#333333";
+  public allAdditionalCategoryColor: string = "#333333";
   public color: string = "#333333";
   public categoryColor: string = "#333333";
   public additionalCategoryColor: string = "#333333";

@@ -636,128 +636,114 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    const font_all: powerbi.visuals.FormattingGroup = {
-      uid: "font_all",
-      displayName: "All",
-      disabled: settings.font.additionalShow,
-      slices: [
-        {
-          uid: "font_all_font",
-          displayName: "Font family",
-          description: "Specify the font family",
-          control: {
-            type: powerbi.visuals.FormattingComponent.FontControl,
-            properties: {
-              fontFamily: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "fontFamily",
-                },
-                value: settings.font.fontFamily,
-              },
-              fontSize: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "textSize",
-                },
-                value: settings.font.textSize,
-              },
-              bold: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "isBold",
-                },
-                value: settings.font.isBold,
-              },
-              italic: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "isItalic",
-                },
-                value: settings.font.isItalic,
-              },
-              underline: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "isUnderline",
-                },
-                value: settings.font.isUnderline,
-              },
-            },
-          },
-        },
-        {
-          uid: "font_all_word_wrap",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-            properties: {
-              descriptor: {
-                objectName: "font",
-                propertyName: "wordWrap_",
-              },
-              value: settings.font.wordWrap_,
-            },
-          },
-        },
-        {
-          uid: "font_all_color",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "font",
-                propertyName: "color",
-              },
-              value: { value: settings.font.color },
-            },
-          },
-        },
-        {
-          uid: "font_all_category",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "font",
-                propertyName: "categoryColor",
-              },
-              value: { value: settings.font.categoryColor },
-            },
-          },
-        },
-        {
-          uid: "font_all_additional",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "font",
-                propertyName: "additionalCategoryColor",
-              },
-              value: { value: settings.font.additionalCategoryColor },
-            },
-          },
-        },
-      ],
-    };
+    // const font_all: powerbi.visuals.FormattingGroup = {
+    //   uid: "font_all",
+    //   displayName: "All",
+    //   disabled: settings.font.additionalShow,
+    //   slices: [
+    //     {
+    //       uid: "font_all_font",
+    //       displayName: "Font family",
+    //       description: "Specify the font family",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.FontControl,
+    //         properties: {
+    //           fontFamily: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "fontFamily",
+    //             },
+    //             value: settings.font.fontFamily,
+    //           },
+    //           fontSize: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "textSize",
+    //             },
+    //             value: settings.font.textSize,
+    //           },
+    //           bold: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "isBold",
+    //             },
+    //             value: settings.font.isBold,
+    //           },
+    //           italic: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "isItalic",
+    //             },
+    //             value: settings.font.isItalic,
+    //           },
+    //           underline: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "isUnderline",
+    //             },
+    //             value: settings.font.isUnderline,
+    //           },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_word_wrap",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "wordWrap_",
+    //           },
+    //           value: settings.font.wordWrap_,
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_color",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "allColor",
+    //           },
+    //           value: { value: settings.font.allColor },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_category",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "allCategoryColor",
+    //           },
+    //           value: { value: settings.font.allCategoryColor },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_additional",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "allAdditionalCategoryColor",
+    //           },
+    //           value: { value: settings.font.allAdditionalCategoryColor },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
 
     const font_additional: powerbi.visuals.FormattingGroup = {
       uid: "font_additional",
       displayName: "Additiional settings",
-      topLevelToggle: {
-        uid: "font_additional_show",
-        control: {
-          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-          properties: {
-            descriptor: {
-              objectName: "font",
-              propertyName: "additionalShow",
-            },
-            value: settings.font.additionalShow,
-          },
-        },
-        suppressDisplayName: true,
-      },
       slices: [
         {
           uid: "font_additional_font_category",
@@ -801,6 +787,19 @@ export class CardKPI implements IVisual {
                 },
                 value: settings.font.categoryIsUnderline,
               },
+            },
+          },
+        },
+        {
+          uid: "font_category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "categoryColor",
+              },
+              value: { value: settings.font.categoryColor },
             },
           },
         },
@@ -863,6 +862,19 @@ export class CardKPI implements IVisual {
           },
         },
         {
+          uid: "font_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "color",
+              },
+              value: { value: settings.font.color },
+            },
+          },
+        },
+        {
           uid: "font_additional_font_additional_name",
           displayName: "Additional measure names",
           description: "Specify the font family",
@@ -904,6 +916,19 @@ export class CardKPI implements IVisual {
                 },
                 value: settings.font.additionalNameIsUnderline,
               },
+            },
+          },
+        },
+        {
+          uid: "font_additional",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "additionalCategoryColor",
+              },
+              value: { value: settings.font.additionalCategoryColor },
             },
           },
         },
@@ -968,7 +993,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    font.groups.push(font_all);
+    // font.groups.push(font_all);
     font.groups.push(font_additional);
 
     const format: powerbi.visuals.FormattingCard = {
@@ -1153,7 +1178,7 @@ export class CardKPI implements IVisual {
               value: settings.format.mainBlankAndNaNReplaceText,
             },
           },
-        }
+        },
       ],
     };
     const format_additional: powerbi.visuals.FormattingGroup = {
@@ -1300,8 +1325,8 @@ export class CardKPI implements IVisual {
     format.groups.push(format_additional);
 
     const color: powerbi.visuals.FormattingCard = {
-      description: "Color",
-      displayName: "Color",
+      description: "Conditional formatting",
+      displayName: "Conditional formatting",
       uid: "color",
       groups: [],
       revertToDefaultDescriptors: [],
@@ -1353,41 +1378,41 @@ export class CardKPI implements IVisual {
     //     },
     //   ],
     // };
-    const color_main: powerbi.visuals.FormattingGroup = {
-      uid: "color_main",
-      displayName: "Main measure value",
-      description: "Set Color for Main Measure",
-      topLevelToggle: {
-        uid: "color_main_show",
-        control: {
-          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-          properties: {
-            descriptor: {
-              objectName: "color",
-              propertyName: "mainShow",
-            },
-            value: settings.color.mainShow,
-          },
-        },
-        suppressDisplayName: true,
-      },
-      slices: [
-        {
-          uid: "color_main_color",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "mainColor",
-                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
-              },
-              value: { value: settings.color.mainColor },
-            },
-          },
-        },
-      ],
-    };
+    // const color_main: powerbi.visuals.FormattingGroup = {
+    //   uid: "color_main",
+    //   displayName: "Main measure value",
+    //   description: "Set Color for Main Measure",
+    //   topLevelToggle: {
+    //     uid: "color_main_show",
+    //     control: {
+    //       type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+    //       properties: {
+    //         descriptor: {
+    //           objectName: "color",
+    //           propertyName: "mainShow",
+    //         },
+    //         value: settings.color.mainShow,
+    //       },
+    //     },
+    //     suppressDisplayName: true,
+    //   },
+    //   slices: [
+    //     {
+    //       uid: "color_main_color",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "mainColor",
+    //             instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+    //           },
+    //           value: { value: settings.color.mainColor },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
     const color_additional: powerbi.visuals.FormattingGroup = {
       uid: "color_additional",
       displayName: "Additional measure values",
@@ -1502,7 +1527,7 @@ export class CardKPI implements IVisual {
     };
 
     // color.groups.push(color_all);
-    color.groups.push(color_main);
+    // color.groups.push(color_main);
     color.groups.push(color_additional);
 
     const bullet: powerbi.visuals.FormattingCard = {

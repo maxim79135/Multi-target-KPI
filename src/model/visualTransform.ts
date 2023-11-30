@@ -574,7 +574,7 @@ export function visualTransform(
           }
 
           if (!settings.color.additionalShow) {
-            additionalMeasure.labelFill = settings.font.color;
+            additionalMeasure.labelFill = settings.font.allColor;
           }
 
           let formatProperties: IFormatProperties = {

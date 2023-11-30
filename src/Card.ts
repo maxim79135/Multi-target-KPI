@@ -207,7 +207,7 @@ export class Card {
           cardContainer,
           this.model.dataGroups[i],
           this.model.settings,
-          this.host
+          this.host,
         ),
       );
     }
@@ -307,7 +307,9 @@ export class Card {
         isItalic: settings.font.categoryIsItalic,
         isBold: settings.font.categoryIsBold,
         isUnderline: settings.font.categoryIsUnderline,
-        color: settings.font.categoryColor,
+        color: settings.font.additionalShow
+          ? settings.font.categoryColor
+          : settings.font.allCategoryColor,
       };
       const textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].displayName;
@@ -415,16 +417,16 @@ export class Card {
 
       const svgRect = this.getSVGRect(svg);
       const settings = this.model.settings;
-      if (!settings.color.mainShow) {
-        settings.color.mainColor = settings.font.color;
-      }
+      debugger
       const style = {
         fontFamily: settings.font.mainFontFamily,
         textSize: settings.font.mainTextSize,
         isItalic: settings.font.mainIsItalic,
         isBold: settings.font.mainIsBold,
         isUnderline: settings.font.mainIsUnderline,
-        color: settings.color.mainColor,
+        color: settings.font.additionalShow
+          ? settings.font.color
+          : settings.font.allColor,
       };
       const textProperties = this.getTextProperties(style);
       textProperties.text = this.model.dataGroups[i].mainMeasureDataLabel;
@@ -534,7 +536,9 @@ export class Card {
           isItalic: settings.font.additionalNameIsItalic,
           isBold: settings.font.additionalNameIsBold,
           isUnderline: settings.font.additionalNameIsUnderline,
-          color: settings.font.additionalCategoryColor,
+          color: settings.font.additionalShow
+            ? settings.font.additionalCategoryColor
+            : settings.font.allAdditionalCategoryColor,
         };
         const additionalCategoryLabel = additionalCategoryContainter
           .append("g")
@@ -717,7 +721,7 @@ export class Card {
           color: v.labelFill,
         };
         const textProperties = this.getTextProperties(style);
-        textProperties.text = `${v.dataLabel} \u25B2`;
+        textProperties.text = v.dataLabel;
 
         let maxHeight: number;
         let xStartPos: number;
