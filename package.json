@@ -24,6 +24,7 @@
     "powerbi-visuals-utils-formattingutils": "^6.0.1",
     "powerbi-visuals-utils-svgutils": "^6.0.1",
     "powerbi-visuals-utils-tooltiputils": "^2.5.2",
+    "prettier": "^3.0.3",
     "qs": "^6.11.2",
     "regenerator-runtime": "^0.13.11"
   },

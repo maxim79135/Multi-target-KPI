@@ -46,6 +46,7 @@ export interface IDataGroup {
   additionalMeasures?: IAdditionalMeasure[];
   tooltipValues?: ITooltipValue[];
   selectionId?: ISelectionId;
+  bulletTargetValue?: number;
 }
 
 export interface ITooltipValue {
