@@ -574,7 +574,7 @@ export function visualTransform(
           }
 
           if (!settings.color.additionalShow) {
-            additionalMeasure.labelFill = settings.color.color;
+            additionalMeasure.labelFill = settings.font.allColor;
           }
 
           let formatProperties: IFormatProperties = {
@@ -592,6 +592,8 @@ export function visualTransform(
               suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
               blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
             };
+            additionalFormatSettings.componentType = settings.format.mainComponentType
+            additionalFormatSettings.invertVariance = settings.format.mainInvertVariance
           }
 
           switch (additionalFormatSettings.componentType) {
@@ -693,6 +695,9 @@ export function visualTransform(
               "ru-RU"
             ),
           });
+        }
+        if (dataValue.source.roles["bulletTarget"]) {
+          dataGroup.bulletTargetValue = valueType.numeric || valueType.integer ? value : null
         }
       }
 

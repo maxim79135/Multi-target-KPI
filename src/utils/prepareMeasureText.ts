@@ -4,7 +4,6 @@ import powerbi from "powerbi-visuals-api";
 import { valueFormatter } from "powerbi-visuals-utils-formattingutils";
 import ValueTypeDescriptor = powerbi.ValueTypeDescriptor;
 
-
 const localizedUnits = {
   "ru-RU_K": " тыс.",
   "ru-RU_M": " млн",
@@ -54,7 +53,7 @@ export function prepareMeasureText(
           allowFormatBeautification: false,
           cultureSelector: culture,
         });
-        if (culture != "en-US") {
+        if (culture == "ru-RU") {
           valueFormatted = localizeUnit(valueFormatted, "K", culture);
           valueFormatted = localizeUnit(valueFormatted, "M", culture);
           valueFormatted = localizeUnit(valueFormatted, "bn", culture);

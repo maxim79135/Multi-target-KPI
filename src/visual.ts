@@ -137,19 +137,19 @@ export class CardKPI implements IVisual {
             },
           },
         },
-        {
-          uid: "mainMeasureValue_wireframe",
-          control: {
-            type: powerbi.visuals.FormattingComponent.Dropdown,
-            properties: {
-              descriptor: {
-                objectName: "grid",
-                propertyName: "wireframe",
-              },
-              value: settings.grid.wireframe,
-            },
-          },
-        },
+        // {
+        //   uid: "mainMeasureValue_wireframe",
+        //   control: {
+        //     type: powerbi.visuals.FormattingComponent.Dropdown,
+        //     properties: {
+        //       descriptor: {
+        //         objectName: "grid",
+        //         propertyName: "wireframe",
+        //       },
+        //       value: settings.grid.wireframe,
+        //     },
+        //   },
+        // },
       ],
     };
     const mainMeasureName: powerbi.visuals.FormattingGroup = {
@@ -279,43 +279,43 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    const alignment_all: powerbi.visuals.FormattingGroup = {
-      displayName: "All",
-      description: "Set alignment for all elements.",
-      uid: "alignment_all",
-      slices: [
-        {
-          uid: "alignment_vertical_alignment",
-          disabled: settings.alignment.show_additional_vertical,
-          control: {
-            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
-            properties: {
-              descriptor: {
-                objectName: "alignment",
-                propertyName: "vertical",
-              },
-              mode: powerbi.visuals.AlignmentGroupMode.Vertical,
-              value: settings.alignment.vertical,
-            },
-          },
-        },
-        {
-          uid: "alignment_horizontal_alignment",
-          disabled: settings.alignment.show_additional_horizontal,
-          control: {
-            type: powerbi.visuals.FormattingComponent.AlignmentGroup,
-            properties: {
-              descriptor: {
-                objectName: "alignment",
-                propertyName: "horizontal",
-              },
-              mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
-              value: settings.alignment.horizontal,
-            },
-          },
-        },
-      ],
-    };
+    // const alignment_all: powerbi.visuals.FormattingGroup = {
+    //   displayName: "All",
+    //   description: "Set alignment for all elements.",
+    //   uid: "alignment_all",
+    //   slices: [
+    //     {
+    //       uid: "alignment_vertical_alignment",
+    //       disabled: settings.alignment.show_additional_vertical,
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "alignment",
+    //             propertyName: "vertical",
+    //           },
+    //           mode: powerbi.visuals.AlignmentGroupMode.Vertical,
+    //           value: settings.alignment.vertical,
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "alignment_horizontal_alignment",
+    //       disabled: settings.alignment.show_additional_horizontal,
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.AlignmentGroup,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "alignment",
+    //             propertyName: "horizontal",
+    //           },
+    //           mode: powerbi.visuals.AlignmentGroupMode.Horizonal,
+    //           value: settings.alignment.horizontal,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
 
     const alignment_additional_vertical: powerbi.visuals.FormattingGroup = {
       displayName: "Vertical alignment",
@@ -486,7 +486,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    alignment.groups.push(alignment_all);
+    // alignment.groups.push(alignment_all);
     alignment.groups.push(alignment_additional_vertical);
     alignment.groups.push(alignment_additional_horizontal);
 
@@ -636,89 +636,114 @@ export class CardKPI implements IVisual {
       revertToDefaultDescriptors: [],
     };
 
-    const font_all: powerbi.visuals.FormattingGroup = {
-      uid: "font_all",
-      displayName: "All",
-      disabled: settings.font.additionalShow,
-      slices: [
-        {
-          uid: "font_all_font",
-          displayName: "Font family",
-          description: "Specify the font family",
-          control: {
-            type: powerbi.visuals.FormattingComponent.FontControl,
-            properties: {
-              fontFamily: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "fontFamily",
-                },
-                value: settings.font.fontFamily,
-              },
-              fontSize: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "textSize",
-                },
-                value: settings.font.textSize,
-              },
-              bold: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "isBold",
-                },
-                value: settings.font.isBold,
-              },
-              italic: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "isItalic",
-                },
-                value: settings.font.isItalic,
-              },
-              underline: {
-                descriptor: {
-                  objectName: "font",
-                  propertyName: "isUnderline",
-                },
-                value: settings.font.isUnderline,
-              },
-            },
-          },
-        },
-        {
-          uid: "font_all_word_wrap",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-            properties: {
-              descriptor: {
-                objectName: "font",
-                propertyName: "wordWrap_",
-              },
-              value: settings.font.wordWrap_,
-            },
-          },
-        },
-      ],
-    };
+    // const font_all: powerbi.visuals.FormattingGroup = {
+    //   uid: "font_all",
+    //   displayName: "All",
+    //   disabled: settings.font.additionalShow,
+    //   slices: [
+    //     {
+    //       uid: "font_all_font",
+    //       displayName: "Font family",
+    //       description: "Specify the font family",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.FontControl,
+    //         properties: {
+    //           fontFamily: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "fontFamily",
+    //             },
+    //             value: settings.font.fontFamily,
+    //           },
+    //           fontSize: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "textSize",
+    //             },
+    //             value: settings.font.textSize,
+    //           },
+    //           bold: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "isBold",
+    //             },
+    //             value: settings.font.isBold,
+    //           },
+    //           italic: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "isItalic",
+    //             },
+    //             value: settings.font.isItalic,
+    //           },
+    //           underline: {
+    //             descriptor: {
+    //               objectName: "font",
+    //               propertyName: "isUnderline",
+    //             },
+    //             value: settings.font.isUnderline,
+    //           },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_word_wrap",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "wordWrap_",
+    //           },
+    //           value: settings.font.wordWrap_,
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_color",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "allColor",
+    //           },
+    //           value: { value: settings.font.allColor },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_category",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "allCategoryColor",
+    //           },
+    //           value: { value: settings.font.allCategoryColor },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "font_all_additional",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "font",
+    //             propertyName: "allAdditionalCategoryColor",
+    //           },
+    //           value: { value: settings.font.allAdditionalCategoryColor },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
 
     const font_additional: powerbi.visuals.FormattingGroup = {
       uid: "font_additional",
       displayName: "Additiional settings",
-      topLevelToggle: {
-        uid: "font_additional_show",
-        control: {
-          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-          properties: {
-            descriptor: {
-              objectName: "font",
-              propertyName: "additionalShow",
-            },
-            value: settings.font.additionalShow,
-          },
-        },
-        suppressDisplayName: true,
-      },
       slices: [
         {
           uid: "font_additional_font_category",
@@ -762,6 +787,19 @@ export class CardKPI implements IVisual {
                 },
                 value: settings.font.categoryIsUnderline,
               },
+            },
+          },
+        },
+        {
+          uid: "font_category",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "categoryColor",
+              },
+              value: { value: settings.font.categoryColor },
             },
           },
         },
@@ -824,6 +862,19 @@ export class CardKPI implements IVisual {
           },
         },
         {
+          uid: "font_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "color",
+              },
+              value: { value: settings.font.color },
+            },
+          },
+        },
+        {
           uid: "font_additional_font_additional_name",
           displayName: "Additional measure names",
           description: "Specify the font family",
@@ -865,6 +916,19 @@ export class CardKPI implements IVisual {
                 },
                 value: settings.font.additionalNameIsUnderline,
               },
+            },
+          },
+        },
+        {
+          uid: "font_additional",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "font",
+                propertyName: "additionalCategoryColor",
+              },
+              value: { value: settings.font.additionalCategoryColor },
             },
           },
         },
@@ -929,7 +993,7 @@ export class CardKPI implements IVisual {
       ],
     };
 
-    font.groups.push(font_all);
+    // font.groups.push(font_all);
     font.groups.push(font_additional);
 
     const format: powerbi.visuals.FormattingCard = {
@@ -1003,6 +1067,32 @@ export class CardKPI implements IVisual {
               },
               placeholder: "0",
               value: settings.format.blankAndNaNReplaceText,
+            },
+          },
+        },
+        {
+          uid: "format_all_component_type",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "mainComponentType",
+              },
+              value: settings.format.mainComponentType,
+            },
+          },
+        },
+        {
+          uid: "format_all_invert_variance",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+            properties: {
+              descriptor: {
+                objectName: "format",
+                propertyName: "mainInvertVariance",
+              },
+              value: settings.format.mainInvertVariance,
             },
           },
         },
@@ -1224,7 +1314,7 @@ export class CardKPI implements IVisual {
                   },
                 ],
               };
-            }
+            },
           ),
         ],
       },
@@ -1235,68 +1325,94 @@ export class CardKPI implements IVisual {
     format.groups.push(format_additional);
 
     const color: powerbi.visuals.FormattingCard = {
-      description: "Color",
-      displayName: "Color",
+      description: "Conditional formatting",
+      displayName: "Conditional formatting",
       uid: "color",
       groups: [],
       revertToDefaultDescriptors: [],
     };
 
-    const color_all: powerbi.visuals.FormattingGroup = {
-      uid: "color_all",
-      displayName: "All",
-      description: "Set color for all elements.",
-      slices: [
-        {
-          uid: "color_all_color",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "color",
-              },
-              value: { value: settings.color.color },
-            },
-          },
-        },
-      ],
-    };
-    const color_main: powerbi.visuals.FormattingGroup = {
-      uid: "color_main",
-      displayName: "Main measure value",
-      description: "Set Color for Main Measure",
-      topLevelToggle: {
-        uid: "color_main_show",
-        control: {
-          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
-          properties: {
-            descriptor: {
-              objectName: "color",
-              propertyName: "mainShow",
-            },
-            value: settings.color.mainShow,
-          },
-        },
-        suppressDisplayName: true,
-      },
-      slices: [
-        {
-          uid: "color_main_color",
-          control: {
-            type: powerbi.visuals.FormattingComponent.ColorPicker,
-            properties: {
-              descriptor: {
-                objectName: "color",
-                propertyName: "mainColor",
-                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
-              },
-              value: { value: settings.color.mainColor },
-            },
-          },
-        },
-      ],
-    };
+    // const color_all: powerbi.visuals.FormattingGroup = {
+    //   uid: "color_all",
+    //   displayName: "All",
+    //   description: "Set color for all elements.",
+    //   slices: [
+    //     {
+    //       uid: "color_all_color",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "color",
+    //           },
+    //           value: { value: settings.font.color },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "color_all_category",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "categoryColor",
+    //           },
+    //           value: { value: settings.font.categoryColor },
+    //         },
+    //       },
+    //     },
+    //     {
+    //       uid: "color_all_additional",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "additionalCategoryColor",
+    //           },
+    //           value: { value: settings.font.additionalCategoryColor },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
+    // const color_main: powerbi.visuals.FormattingGroup = {
+    //   uid: "color_main",
+    //   displayName: "Main measure value",
+    //   description: "Set Color for Main Measure",
+    //   topLevelToggle: {
+    //     uid: "color_main_show",
+    //     control: {
+    //       type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+    //       properties: {
+    //         descriptor: {
+    //           objectName: "color",
+    //           propertyName: "mainShow",
+    //         },
+    //         value: settings.color.mainShow,
+    //       },
+    //     },
+    //     suppressDisplayName: true,
+    //   },
+    //   slices: [
+    //     {
+    //       uid: "color_main_color",
+    //       control: {
+    //         type: powerbi.visuals.FormattingComponent.ColorPicker,
+    //         properties: {
+    //           descriptor: {
+    //             objectName: "color",
+    //             propertyName: "mainColor",
+    //             instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+    //           },
+    //           value: { value: settings.color.mainColor },
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
     const color_additional: powerbi.visuals.FormattingGroup = {
       uid: "color_additional",
       displayName: "Additional measure values",
@@ -1397,32 +1513,223 @@ export class CardKPI implements IVisual {
                         value: item.invertVariance,
                       },
                     },
-                  }
+                  },
                 );
                 this.addConditionColor(list, item, 1);
                 this.addConditionColor(list, item, 2);
                 this.addConditionColor(list, item, 3);
               }
               return list;
-            }
+            },
           ),
         ],
       },
     };
 
-    color.groups.push(color_all);
-    color.groups.push(color_main);
+    // color.groups.push(color_all);
+    // color.groups.push(color_main);
     color.groups.push(color_additional);
 
+    const bullet: powerbi.visuals.FormattingCard = {
+      description: "Bullet chart",
+      displayName: "Bullet chart",
+      uid: "bullet",
+      groups: [],
+      revertToDefaultDescriptors: [],
+      topLevelToggle: {
+        uid: "bullet_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "bulletChart",
+              propertyName: "show",
+            },
+            value: settings.bulletChart.show,
+          },
+        },
+        suppressDisplayName: true,
+      },
+    };
+
+    const bullet_colors: powerbi.visuals.FormattingGroup = {
+      uid: "bullet_colors",
+      displayName: "Data colors",
+      description: "Set color for bullet chart.",
+      slices: [
+        {
+          uid: "bullet_color_main",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "mainColor",
+              },
+              value: { value: settings.bulletChart.mainColor },
+            },
+          },
+        },
+        {
+          uid: "bullet_color_target",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "targetColor",
+              },
+              value: { value: settings.bulletChart.targetColor },
+            },
+          },
+        },
+      ],
+    };
+    const bullet_shape: powerbi.visuals.FormattingGroup = {
+      uid: "bullet_shape",
+      displayName: "Bullet shape",
+      description: "Add shape.",
+      topLevelToggle: {
+        uid: "bullet_shape_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "bulletChart",
+              propertyName: "borderShow",
+            },
+            value: settings.bulletChart.borderShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "bullet_shape_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "borderFill",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.bulletChart.borderFill },
+            },
+          },
+        },
+        {
+          uid: "bullet_shape_borderWeight",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "borderWeight",
+              },
+              value: settings.bulletChart.borderWeight,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
+            },
+          },
+        },
+        {
+          uid: "bullet_shape_roundEdges",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "roundEdges",
+              },
+              value: settings.bulletChart.roundEdges,
+              options: {
+                minValue: {
+                  type: powerbi.visuals.ValidatorType.Min,
+                  value: 0,
+                },
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
+            },
+          },
+        },
+      ],
+    };
+    const bullet_target_line: powerbi.visuals.FormattingGroup = {
+      uid: "bullet_target_line",
+      displayName: "Target line",
+      description: "Target line",
+      topLevelToggle: {
+        uid: "bullet_target_line_show",
+        control: {
+          type: powerbi.visuals.FormattingComponent.ToggleSwitch,
+          properties: {
+            descriptor: {
+              objectName: "bulletChart",
+              propertyName: "targetLineShow",
+            },
+            value: settings.bulletChart.targetLineShow,
+          },
+        },
+        suppressDisplayName: true,
+      },
+      slices: [
+        {
+          uid: "bullet_target_line_color",
+          control: {
+            type: powerbi.visuals.FormattingComponent.ColorPicker,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "targetLineColor",
+                instanceKind: VisualEnumerationInstanceKinds.ConstantOrRule,
+              },
+              value: { value: settings.bulletChart.targetLineColor },
+            },
+          },
+        },
+        {
+          uid: "bullet_target_line_weight",
+          control: {
+            type: powerbi.visuals.FormattingComponent.NumUpDown,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "targetLineWeight",
+              },
+              value: settings.bulletChart.targetLineWeight,
+              options: {
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: 30,
+                },
+              },
+            },
+          },
+        },
+      ],
+    };
+
+    bullet.groups.push(bullet_colors);
+    bullet.groups.push(bullet_shape);
+    bullet.groups.push(bullet_target_line);
+
     return {
-      cards: [grid, alignment, format, font, color, background],
+      cards: [grid, alignment, format, font, color, background, bullet],
     };
   }
 
   private addConditionColor(
     list: powerbi.visuals.FormattingContainerItem,
     item: AdditiionalColor,
-    index: number
+    index: number,
   ) {
     list.slices.push({
       uid: `color_additional_condition${index}_${item.measureDisplayName}`,
@@ -1490,7 +1797,7 @@ export class CardKPI implements IVisual {
               value: { value: item[`assignColor${index}`].solid.color },
             },
           },
-        }
+        },
       );
     }
   }
