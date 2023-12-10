@@ -116,7 +116,9 @@ export class Card {
       ),
     };
     this.maxMainMeasureWidth = settings.grid.percentageWidth;
-    this.mainCardContainerHeightPerc = settings.bulletChart.show ? 70 : 100;
+    this.mainCardContainerHeightPerc = settings.bulletChart.show
+      ? 100 - settings.bulletChart.percentageHeight
+      : 100;
   }
 
   // eslint:disable-next-line: max-func-body-length
@@ -199,8 +201,10 @@ export class Card {
       this.svg.push(
         cardContainer
           .append("svg")
+          .style("background-color", "lightcoral")
           .style("width", "100%")
-          .style("height", `${this.mainCardContainerHeightPerc}%`),
+          .style("height", `${this.mainCardContainerHeightPerc}%`)
+          .style("float", "left"),
       );
       this.bulletCharts.push(
         new BulletChart(

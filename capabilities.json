@@ -1114,6 +1114,13 @@
           "type": {
             "integer": true
           }
+        },
+        "percentageHeight": {
+          "displayName": "Percentage height",
+          "displayNameKey": "percentageHeight",
+          "type": {
+            "numeric": true
+          }
         }
       }
     }

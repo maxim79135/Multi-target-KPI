@@ -178,6 +178,7 @@ export class BulletChart {
   public targetLineWeight: number = 3;
   public targetLineColor = "#333333";
   public targetLineShow = false;
+  public percentageHeight = 30;
 }
 export class CardSettings extends DataViewObjectsParser {
   public grid: Grid = new Grid();

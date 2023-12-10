@@ -35,10 +35,12 @@ export class BulletChart {
       .append("svg")
       .classed(BulletClassNames.BulletContainer, true)
       .style("width", "100%")
-      .style("height", "calc(30% - 10px)")
-      .style("margin-left", "2%");
+      .style("height", `${settings.bulletChart.percentageHeight}%`)
+      .style("margin-left", "2%")
+      .style("float", "left");
     this.data = data;
-    this.targetValue = this.data.bulletTargetValue ?? this.data.mainMeasureValue;
+    this.targetValue =
+      this.data.bulletTargetValue ?? this.data.mainMeasureValue;
     this.settings = settings;
     this.host = host;
   }
