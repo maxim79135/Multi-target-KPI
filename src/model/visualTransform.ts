@@ -65,11 +65,11 @@ interface IFormatProperties {
 
 function getAdditionFormatValues(
   value: DataViewValueColumn,
-  settings: CardSettings
+  settings: CardSettings,
 ): AdditiionalFormat {
   let format: AdditiionalFormat;
   format = settings.additionalFormat.find(
-    (i) => i.metadata === value.source.queryName
+    (i) => i.metadata === value.source.queryName,
   );
   if (!format) {
     format = new AdditiionalFormat();
@@ -81,7 +81,7 @@ function getAdditionFormatValues(
         value.source.objects,
         "format",
         "displayUnit",
-        format.displayUnit
+        format.displayUnit,
       )
     );
     format.decimalPlaces = <number>(
@@ -89,7 +89,7 @@ function getAdditionFormatValues(
         value.source.objects,
         "format",
         "decimalPlaces",
-        format.decimalPlaces
+        format.decimalPlaces,
       )
     );
     format.suppressBlankAndNaN = <boolean>(
@@ -97,7 +97,7 @@ function getAdditionFormatValues(
         value.source.objects,
         "format",
         "suppressBlankAndNaN",
-        format.suppressBlankAndNaN
+        format.suppressBlankAndNaN,
       )
     );
     format.blankAndNaNReplaceText = <string>(
@@ -105,7 +105,7 @@ function getAdditionFormatValues(
         value.source.objects,
         "format",
         "blankAndNaNReplaceText",
-        format.blankAndNaNReplaceText
+        format.blankAndNaNReplaceText,
       )
     );
     format.componentType = <string>(
@@ -113,7 +113,7 @@ function getAdditionFormatValues(
         value.source.objects,
         "format",
         "componentType",
-        format.componentType
+        format.componentType,
       )
     );
     format.invertVariance = <boolean>(
@@ -121,7 +121,7 @@ function getAdditionFormatValues(
         value.source.objects,
         "format",
         "invertVariance",
-        format.invertVariance
+        format.invertVariance,
       )
     );
     settings.additionalFormat.push(format);
@@ -133,11 +133,11 @@ function getAdditionFormatValues(
 // eslint-disable-next-line max-lines-per-function
 function getAdditionColor(
   value: DataViewValueColumn,
-  settings: CardSettings
+  settings: CardSettings,
 ): AdditiionalColor {
   let color: AdditiionalColor;
   color = settings.additionalColor.find(
-    (i) => i.metadata === value.source.queryName
+    (i) => i.metadata === value.source.queryName,
   );
   if (!color) {
     color = new AdditiionalColor();
@@ -148,97 +148,103 @@ function getAdditionColor(
       value.source.objects,
       "color",
       "unmatchedColor",
-      color.unmatchedColor
+      color.unmatchedColor,
     );
     color.conditionFormatting = getValue(
       value.source.objects,
       "color",
       "conditionFormatting",
-      color.conditionFormatting
+      color.conditionFormatting,
     );
     color.componentType = getValue(
       value.source.objects,
       "color",
       "componentType",
-      color.componentType
+      color.componentType,
     );
     color.invertVariance = getValue(
       value.source.objects,
       "color",
       "invertVariance",
-      color.invertVariance
+      color.invertVariance,
     );
     color.condition1 = getValue(
       value.source.objects,
       "color",
       "condition1",
-      color.condition1
+      color.condition1,
     );
     color.comparisonOperator1 = getValue(
       value.source.objects,
       "color",
       "comparisonOperator1",
-      color.comparisonOperator1
+      color.comparisonOperator1,
     );
     color.value1 = getValue(
       value.source.objects,
       "color",
       "value1",
-      color.value1
+      color.value1,
     );
     color.assignColor1 = getValue(
       value.source.objects,
       "color",
       "assignColor1",
-      color.assignColor1
+      color.assignColor1,
     );
     color.condition2 = getValue(
       value.source.objects,
       "color",
       "condition2",
-      color.condition2
+      color.condition2,
     );
     color.comparisonOperator2 = getValue(
       value.source.objects,
       "color",
       "comparisonOperator2",
-      color.comparisonOperator2
+      color.comparisonOperator2,
     );
     color.value2 = getValue(
       value.source.objects,
       "color",
       "value2",
-      color.value2
+      color.value2,
     );
     color.assignColor2 = getValue(
       value.source.objects,
       "color",
       "assignColor2",
-      color.assignColor2
+      color.assignColor2,
     );
     color.condition3 = getValue(
       value.source.objects,
       "color",
       "condition3",
-      color.condition3
+      color.condition3,
     );
     color.comparisonOperator3 = getValue(
       value.source.objects,
       "color",
       "comparisonOperator3",
-      color.comparisonOperator3
+      color.comparisonOperator3,
     );
     color.value3 = getValue(
       value.source.objects,
       "color",
       "value3",
-      color.value3
+      color.value3,
     );
     color.assignColor3 = getValue(
       value.source.objects,
       "color",
       "assignColor3",
-      color.assignColor3
+      color.assignColor3,
+    );
+    color.emoji = getValue(
+      value.source.objects,
+      "color",
+      "emoji",
+      color.emoji,
     );
 
     settings.additionalColor.push(color);
@@ -251,7 +257,7 @@ function calculateAdditionalValue(
   mainMeasureValue: number,
   additionalMeasureValue: number,
   componentType: string,
-  invert: boolean
+  invert: boolean,
 ): number {
   let result: number = null;
   if (mainMeasureValue || additionalMeasureValue)
@@ -314,7 +320,7 @@ function calculateAdditionalValue(
 function comparisonValues(
   value1: number,
   value2: number,
-  operator: string
+  operator: string,
 ): boolean {
   switch (operator) {
     case ">":
@@ -336,7 +342,7 @@ function updateAdditionalMeasureColor(
   value2Text: string,
   comparisonOperator: string,
   conditionText: string,
-  assignColorText: string
+  assignColorText: string,
 ) {
   if (
     additionalSettings[conditionText] &&
@@ -352,7 +358,7 @@ function updateAdditionalMeasureColor(
 // eslint-disable-next-line max-lines-per-function
 export function visualTransform(
   options: VisualUpdateOptions,
-  host: IVisualHost
+  host: IVisualHost,
 ): ICardViewModel {
   const dataViews: DataView[] = options.dataViews;
   const dataGroups: IDataGroup[] = [];
@@ -420,7 +426,7 @@ export function visualTransform(
             false,
             formatProperties.suppressBlankAndNaN,
             formatProperties.blankAndNaNReplaceText,
-            host.locale
+            host.locale,
           );
           dataGroup.isPercentage =
             dataValue.source &&
@@ -431,9 +437,10 @@ export function visualTransform(
           const additionalMeasure: IAdditionalMeasure = {};
           const additionalFormatSettings = getAdditionFormatValues(
             dataValue,
-            settings
+            settings,
           );
           const additionalColorSettings = getAdditionColor(dataValue, settings);
+          
           additionalMeasure.displayName =
             additionalFormatSettings.measureDisplayName;
           additionalMeasure.measureValue =
@@ -447,13 +454,13 @@ export function visualTransform(
             dataGroup.mainMeasureValue,
             additionalMeasure.measureValue,
             additionalFormatSettings.componentType,
-            additionalFormatSettings.invertVariance
+            additionalFormatSettings.invertVariance,
           );
           const additionalMeasureForColor = calculateAdditionalValue(
             dataGroup.mainMeasureValue,
             additionalMeasure.measureValue,
             additionalColorSettings.componentType,
-            additionalColorSettings.invertVariance
+            additionalColorSettings.invertVariance,
           );
           if (!additionalColorSettings.conditionFormatting) {
             additionalMeasure.labelFill =
@@ -470,7 +477,7 @@ export function visualTransform(
                   "value1",
                   additionalColorSettings.comparisonOperator1,
                   "condition1",
-                  "assignColor1"
+                  "assignColor1",
                 );
                 color2 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -478,7 +485,7 @@ export function visualTransform(
                   "value2",
                   additionalColorSettings.comparisonOperator2,
                   "condition2",
-                  "assignColor2"
+                  "assignColor2",
                 );
                 color3 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -486,7 +493,7 @@ export function visualTransform(
                   "value3",
                   additionalColorSettings.comparisonOperator3,
                   "condition3",
-                  "assignColor3"
+                  "assignColor3",
                 );
                 break;
               case "changeOver":
@@ -496,7 +503,7 @@ export function visualTransform(
                   "value1",
                   additionalColorSettings.comparisonOperator1,
                   "condition1",
-                  "assignColor1"
+                  "assignColor1",
                 );
                 color2 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -504,7 +511,7 @@ export function visualTransform(
                   "value2",
                   additionalColorSettings.comparisonOperator2,
                   "condition2",
-                  "assignColor2"
+                  "assignColor2",
                 );
                 color3 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -512,7 +519,7 @@ export function visualTransform(
                   "value3",
                   additionalColorSettings.comparisonOperator3,
                   "condition3",
-                  "assignColor3"
+                  "assignColor3",
                 );
                 break;
               case "percentageChangeOver":
@@ -522,7 +529,7 @@ export function visualTransform(
                   "value1",
                   additionalColorSettings.comparisonOperator1,
                   "condition1",
-                  "assignColor1"
+                  "assignColor1",
                 );
                 color2 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -530,7 +537,7 @@ export function visualTransform(
                   "value2",
                   additionalColorSettings.comparisonOperator2,
                   "condition2",
-                  "assignColor2"
+                  "assignColor2",
                 );
                 color3 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -538,7 +545,7 @@ export function visualTransform(
                   "value3",
                   additionalColorSettings.comparisonOperator3,
                   "condition3",
-                  "assignColor3"
+                  "assignColor3",
                 );
                 break;
               case "percentageOver":
@@ -548,7 +555,7 @@ export function visualTransform(
                   "value1",
                   additionalColorSettings.comparisonOperator1,
                   "condition1",
-                  "assignColor1"
+                  "assignColor1",
                 );
                 color2 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -556,7 +563,7 @@ export function visualTransform(
                   "value2",
                   additionalColorSettings.comparisonOperator2,
                   "condition2",
-                  "assignColor2"
+                  "assignColor2",
                 );
                 color3 = updateAdditionalMeasureColor(
                   additionalColorSettings,
@@ -564,7 +571,7 @@ export function visualTransform(
                   "value3",
                   additionalColorSettings.comparisonOperator3,
                   "condition3",
-                  "assignColor3"
+                  "assignColor3",
                 );
                 break;
             }
@@ -592,8 +599,10 @@ export function visualTransform(
               suppressBlankAndNaN: settings.format.suppressBlankAndNaN,
               blankAndNaNReplaceText: settings.format.blankAndNaNReplaceText,
             };
-            additionalFormatSettings.componentType = settings.format.mainComponentType
-            additionalFormatSettings.invertVariance = settings.format.mainInvertVariance
+            additionalFormatSettings.componentType =
+              settings.format.mainComponentType;
+            additionalFormatSettings.invertVariance =
+              settings.format.mainInvertVariance;
           }
 
           switch (additionalFormatSettings.componentType) {
@@ -609,7 +618,7 @@ export function visualTransform(
                 false,
                 formatProperties.suppressBlankAndNaN,
                 formatProperties.blankAndNaNReplaceText,
-                host.locale
+                host.locale,
               );
               break;
             }
@@ -625,7 +634,7 @@ export function visualTransform(
                     true,
                     false,
                     "",
-                    host.locale
+                    host.locale,
                   ) + "ppt";
               } else {
                 additionalMeasure.dataLabel = prepareMeasureText(
@@ -639,7 +648,7 @@ export function visualTransform(
                   true,
                   formatProperties.suppressBlankAndNaN,
                   formatProperties.blankAndNaNReplaceText,
-                  host.locale
+                  host.locale,
                 );
               }
               break;
@@ -655,7 +664,7 @@ export function visualTransform(
                   true,
                   false,
                   "",
-                  host.locale
+                  host.locale,
                 ) + "%";
               break;
             }
@@ -670,9 +679,14 @@ export function visualTransform(
                   false,
                   false,
                   "",
-                  host.locale
+                  host.locale,
                 ) + "%";
               break;
+            }
+          }
+          if (additionalColorSettings.conditionFormatting) {
+            if (additionalColorSettings.emoji != "-") {
+              additionalMeasure.dataLabel += ` ${additionalColorSettings.emoji}`
             }
           }
 
@@ -692,12 +706,13 @@ export function visualTransform(
               false,
               false,
               "",
-              "ru-RU"
+              "ru-RU",
             ),
           });
         }
         if (dataValue.source.roles["bulletTarget"]) {
-          dataGroup.bulletTargetValue = valueType.numeric || valueType.integer ? value : null
+          dataGroup.bulletTargetValue =
+            valueType.numeric || valueType.integer ? value : null;
         }
       }
 
@@ -748,13 +763,13 @@ export function visualTransform(
       allFontSettings,
       settings.font,
       "category",
-      fontSettings.wordWrap_
+      fontSettings.wordWrap_,
     );
     updateFontSetting(
       allFontSettings,
       settings.font,
       "additionalName",
-      fontSettings.wordWrap_
+      fontSettings.wordWrap_,
     );
     updateFontSetting(allFontSettings, settings.font, "additionalValue");
   }
@@ -768,7 +783,7 @@ function updateFontSetting(
   allFontSettings: IFontProperties,
   fontSettings: Font,
   typeLabel: string,
-  wordWrapSetting = null
+  wordWrapSetting = null,
 ) {
   switch (typeLabel) {
     case "main":
