@@ -1031,6 +1031,93 @@
               }
             }
           }
+        },
+        "emoji": {
+          "displayName": "Emoji",
+          "displayNameKey": "emoji",
+          "type": {
+            "enumeration": [
+              {
+                "displayName": "-",
+                "value": "-"
+              },
+              {
+                "displayName": "😀",
+                "displayNameKey": "😀",
+                "value": "😀"
+              },
+              {
+                "displayName": "🙁",
+                "displayNameKey": "🙁",
+                "value": "🙁"
+              },
+              {
+                "displayName": "😡",
+                "displayNameKey": "😡",
+                "value": "😡"
+              },
+              {
+                "displayName": "😐",
+                "displayNameKey": "😐",
+                "value": "😐"
+              },
+              {
+                "displayName": "🤑",
+                "displayNameKey": "🤑",
+                "value": "🤑"
+              },
+              {
+                "displayName": "💩",
+                "displayNameKey": "💩",
+                "value": "💩"
+              },
+              {
+                "displayName": "😱",
+                "displayNameKey": "😱",
+                "value": "😱"
+              },
+              {
+                "displayName": "😎",
+                "displayNameKey": "😎",
+                "value": "😎"
+              },
+              {
+                "displayName": "😍",
+                "displayNameKey": "😍",
+                "value": "😍"
+              },
+              {
+                "displayName": "🥳",
+                "displayNameKey": "🥳",
+                "value": "🥳"
+              },
+              {
+                "displayName": "😭",
+                "displayNameKey": "😭",
+                "value": "😭"
+              },
+              {
+                "displayName": "👍",
+                "displayNameKey": "👍",
+                "value": "👍"
+              },
+              {
+                "displayName": "👎",
+                "displayNameKey": "👎",
+                "value": "👎"
+              },
+              {
+                "displayName": "😬",
+                "displayNameKey": "😬",
+                "value": "😬"
+              },
+              {
+                "displayName": "🙄",
+                "displayNameKey": "🙄",
+                "value": "🙄"
+              }
+            ]
+          }
         }
       }
     },

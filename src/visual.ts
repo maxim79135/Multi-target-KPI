@@ -93,8 +93,6 @@ export class CardKPI implements IVisual {
   public getFormattingModel(): powerbi.visuals.FormattingModel {
     const settings = this.model.settings;
 
-    console.log(settings.additionalFormat);
-
     const grid: powerbi.visuals.FormattingCard = {
       description: "Grid Description",
       displayName: "Grid",
@@ -1495,6 +1493,22 @@ export class CardKPI implements IVisual {
                           },
                         },
                         value: item.componentType,
+                      },
+                    },
+                  },
+                  {
+                    uid: `color_additional_emoji_${item.measureDisplayName}`,
+                    control: {
+                      type: powerbi.visuals.FormattingComponent.Dropdown,
+                      properties: {
+                        descriptor: {
+                          objectName: "color",
+                          propertyName: "emoji",
+                          selector: {
+                            metadata: item.metadata,
+                          },
+                        },
+                        value: item.emoji,
                       },
                     },
                   },
