@@ -1497,22 +1497,6 @@ export class CardKPI implements IVisual {
                     },
                   },
                   {
-                    uid: `color_additional_emoji_${item.measureDisplayName}`,
-                    control: {
-                      type: powerbi.visuals.FormattingComponent.Dropdown,
-                      properties: {
-                        descriptor: {
-                          objectName: "color",
-                          propertyName: "emoji",
-                          selector: {
-                            metadata: item.metadata,
-                          },
-                        },
-                        value: item.emoji,
-                      },
-                    },
-                  },
-                  {
                     uid: `color_additional_invert_variance_${item.measureDisplayName}`,
                     control: {
                       type: powerbi.visuals.FormattingComponent.ToggleSwitch,
@@ -1832,6 +1816,22 @@ export class CardKPI implements IVisual {
                 },
               },
               value: { value: item[`assignColor${index}`].solid.color },
+            },
+          },
+        },
+        {
+          uid: `color_additional_emoji${index}_${item.measureDisplayName}`,
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "color",
+                propertyName: `emoji${index}`,
+                selector: {
+                  metadata: item.metadata,
+                },
+              },
+              value: item[`emoji${index}`],
             },
           },
         },

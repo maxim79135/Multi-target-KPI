@@ -1032,7 +1032,181 @@
             }
           }
         },
-        "emoji": {
+        "emoji1": {
+          "displayName": "Emoji",
+          "displayNameKey": "emoji",
+          "type": {
+            "enumeration": [
+              {
+                "displayName": "-",
+                "value": "-"
+              },
+              {
+                "displayName": "😀",
+                "displayNameKey": "😀",
+                "value": "😀"
+              },
+              {
+                "displayName": "🙁",
+                "displayNameKey": "🙁",
+                "value": "🙁"
+              },
+              {
+                "displayName": "😡",
+                "displayNameKey": "😡",
+                "value": "😡"
+              },
+              {
+                "displayName": "😐",
+                "displayNameKey": "😐",
+                "value": "😐"
+              },
+              {
+                "displayName": "🤑",
+                "displayNameKey": "🤑",
+                "value": "🤑"
+              },
+              {
+                "displayName": "💩",
+                "displayNameKey": "💩",
+                "value": "💩"
+              },
+              {
+                "displayName": "😱",
+                "displayNameKey": "😱",
+                "value": "😱"
+              },
+              {
+                "displayName": "😎",
+                "displayNameKey": "😎",
+                "value": "😎"
+              },
+              {
+                "displayName": "😍",
+                "displayNameKey": "😍",
+                "value": "😍"
+              },
+              {
+                "displayName": "🥳",
+                "displayNameKey": "🥳",
+                "value": "🥳"
+              },
+              {
+                "displayName": "😭",
+                "displayNameKey": "😭",
+                "value": "😭"
+              },
+              {
+                "displayName": "👍",
+                "displayNameKey": "👍",
+                "value": "👍"
+              },
+              {
+                "displayName": "👎",
+                "displayNameKey": "👎",
+                "value": "👎"
+              },
+              {
+                "displayName": "😬",
+                "displayNameKey": "😬",
+                "value": "😬"
+              },
+              {
+                "displayName": "🙄",
+                "displayNameKey": "🙄",
+                "value": "🙄"
+              }
+            ]
+          }
+        },
+        "emoji2": {
+          "displayName": "Emoji",
+          "displayNameKey": "emoji",
+          "type": {
+            "enumeration": [
+              {
+                "displayName": "-",
+                "value": "-"
+              },
+              {
+                "displayName": "😀",
+                "displayNameKey": "😀",
+                "value": "😀"
+              },
+              {
+                "displayName": "🙁",
+                "displayNameKey": "🙁",
+                "value": "🙁"
+              },
+              {
+                "displayName": "😡",
+                "displayNameKey": "😡",
+                "value": "😡"
+              },
+              {
+                "displayName": "😐",
+                "displayNameKey": "😐",
+                "value": "😐"
+              },
+              {
+                "displayName": "🤑",
+                "displayNameKey": "🤑",
+                "value": "🤑"
+              },
+              {
+                "displayName": "💩",
+                "displayNameKey": "💩",
+                "value": "💩"
+              },
+              {
+                "displayName": "😱",
+                "displayNameKey": "😱",
+                "value": "😱"
+              },
+              {
+                "displayName": "😎",
+                "displayNameKey": "😎",
+                "value": "😎"
+              },
+              {
+                "displayName": "😍",
+                "displayNameKey": "😍",
+                "value": "😍"
+              },
+              {
+                "displayName": "🥳",
+                "displayNameKey": "🥳",
+                "value": "🥳"
+              },
+              {
+                "displayName": "😭",
+                "displayNameKey": "😭",
+                "value": "😭"
+              },
+              {
+                "displayName": "👍",
+                "displayNameKey": "👍",
+                "value": "👍"
+              },
+              {
+                "displayName": "👎",
+                "displayNameKey": "👎",
+                "value": "👎"
+              },
+              {
+                "displayName": "😬",
+                "displayNameKey": "😬",
+                "value": "😬"
+              },
+              {
+                "displayName": "🙄",
+                "displayNameKey": "🙄",
+                "value": "🙄"
+              }
+            ]
+          }
+        },
+        "emoji3": {
           "displayName": "Emoji",
           "displayNameKey": "emoji",
           "type": {

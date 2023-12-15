@@ -240,11 +240,23 @@ function getAdditionColor(
       "assignColor3",
       color.assignColor3,
     );
-    color.emoji = getValue(
+    color.emoji1 = getValue(
       value.source.objects,
       "color",
-      "emoji",
-      color.emoji,
+      "emoji1",
+      color.emoji1,
+    );
+    color.emoji2 = getValue(
+      value.source.objects,
+      "color",
+      "emoji2",
+      color.emoji2,
+    );
+    color.emoji3 = getValue(
+      value.source.objects,
+      "color",
+      "emoji3",
+      color.emoji3,
     );
 
     settings.additionalColor.push(color);
@@ -355,6 +367,23 @@ function updateAdditionalMeasureColor(
   return undefined;
 }
 
+function updateAdditionalMeasureEmoji(
+  additionalSettings: AdditiionalColor,
+  value: number,
+  value2Text: string,
+  comparisonOperator: string,
+  conditionText: string,
+  emoji: string,
+) {
+  if (
+    additionalSettings[conditionText] &&
+    comparisonValues(value, additionalSettings[value2Text], comparisonOperator)
+  ) {
+    return additionalSettings[emoji];
+  }
+  return undefined;
+}
+
 // eslint-disable-next-line max-lines-per-function
 export function visualTransform(
   options: VisualUpdateOptions,
@@ -440,7 +469,7 @@ export function visualTransform(
             settings,
           );
           const additionalColorSettings = getAdditionColor(dataValue, settings);
-          
+
           additionalMeasure.displayName =
             additionalFormatSettings.measureDisplayName;
           additionalMeasure.measureValue =
@@ -467,8 +496,9 @@ export function visualTransform(
               additionalColorSettings.unmatchedColor.solid.color;
           }
 
+          let emoji1: string, emoji2: string, emoji3: string;
           if (additionalColorSettings.conditionFormatting) {
-            let color1, color2, color3: string;
+            let color1: string, color2: string, color3: string;
             switch (additionalColorSettings.componentType) {
               case "measure":
                 color1 = updateAdditionalMeasureColor(
@@ -494,6 +524,31 @@ export function visualTransform(
                   additionalColorSettings.comparisonOperator3,
                   "condition3",
                   "assignColor3",
+                );
+
+                emoji1 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  value,
+                  "value1",
+                  additionalColorSettings.comparisonOperator1,
+                  "condition1",
+                  "emoji1",
+                );
+                emoji2 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  value,
+                  "value2",
+                  additionalColorSettings.comparisonOperator2,
+                  "condition2",
+                  "emoji2",
+                );
+                emoji3 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  value,
+                  "value3",
+                  additionalColorSettings.comparisonOperator3,
+                  "condition3",
+                  "emoji3",
                 );
                 break;
               case "changeOver":
@@ -521,6 +576,31 @@ export function visualTransform(
                   "condition3",
                   "assignColor3",
                 );
+
+                emoji1 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor,
+                  "value1",
+                  additionalColorSettings.comparisonOperator1,
+                  "condition1",
+                  "emoji1",
+                );
+                emoji2 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor,
+                  "value2",
+                  additionalColorSettings.comparisonOperator2,
+                  "condition2",
+                  "emoji2",
+                );
+                emoji3 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor,
+                  "value3",
+                  additionalColorSettings.comparisonOperator3,
+                  "condition3",
+                  "emoji3",
+                );
                 break;
               case "percentageChangeOver":
                 color1 = updateAdditionalMeasureColor(
@@ -547,6 +627,31 @@ export function visualTransform(
                   "condition3",
                   "assignColor3",
                 );
+
+                emoji1 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor * 100,
+                  "value1",
+                  additionalColorSettings.comparisonOperator1,
+                  "condition1",
+                  "emoji1",
+                );
+                emoji2 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor * 100,
+                  "value2",
+                  additionalColorSettings.comparisonOperator2,
+                  "condition2",
+                  "emoji2",
+                );
+                emoji3 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor * 100,
+                  "value3",
+                  additionalColorSettings.comparisonOperator3,
+                  "condition3",
+                  "emoji3",
+                );
                 break;
               case "percentageOver":
                 color1 = updateAdditionalMeasureColor(
@@ -572,6 +677,31 @@ export function visualTransform(
                   additionalColorSettings.comparisonOperator3,
                   "condition3",
                   "assignColor3",
+                );
+
+                emoji1 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor * 100,
+                  "value1",
+                  additionalColorSettings.comparisonOperator1,
+                  "condition1",
+                  "emoji1",
+                );
+                emoji2 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor * 100,
+                  "value2",
+                  additionalColorSettings.comparisonOperator2,
+                  "condition2",
+                  "emoji2",
+                );
+                emoji3 = updateAdditionalMeasureEmoji(
+                  additionalColorSettings,
+                  additionalMeasureForColor * 100,
+                  "value3",
+                  additionalColorSettings.comparisonOperator3,
+                  "condition3",
+                  "emoji3",
                 );
                 break;
             }
@@ -685,8 +815,12 @@ export function visualTransform(
             }
           }
           if (additionalColorSettings.conditionFormatting) {
-            if (additionalColorSettings.emoji != "-") {
-              additionalMeasure.dataLabel += ` ${additionalColorSettings.emoji}`
+            if (emoji1 && emoji1 != "-") {
+              additionalMeasure.dataLabel += ` ${emoji1}`;
+            } else if (emoji2 && emoji2 != "-") {
+              additionalMeasure.dataLabel += ` ${emoji2}`;
+            } else if (emoji3 && emoji3 != "-") {
+              additionalMeasure.dataLabel += ` ${emoji3}`;
             }
           }
 

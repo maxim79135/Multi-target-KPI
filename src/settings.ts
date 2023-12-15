@@ -166,7 +166,9 @@ export class AdditiionalColor {
   public assignColor1 = { solid: { color: "#008864" } };
   public assignColor2 = { solid: { color: "#CB5033" } };
   public assignColor3 = { solid: { color: "#333333" } };
-  public emoji: string = "-";
+  public emoji1: string = "-";
+  public emoji2: string = "-";
+  public emoji3: string = "-";
 }
 export class BulletChart {
   public show = false;
