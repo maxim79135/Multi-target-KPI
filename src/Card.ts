@@ -201,7 +201,6 @@ export class Card {
       this.svg.push(
         cardContainer
           .append("svg")
-          .style("background-color", "lightcoral")
           .style("width", "100%")
           .style("height", `${this.mainCardContainerHeightPerc}%`)
           .style("float", "left"),
