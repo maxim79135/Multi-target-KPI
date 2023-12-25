@@ -1679,6 +1679,29 @@ export class CardKPI implements IVisual {
           },
         },
         {
+          uid: "bullet_shape_main_height",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "percentageBulletHeight",
+              },
+              value: settings.bulletChart.percentageBulletHeight,
+              options: {
+                minValue: {
+                  type: powerbi.visuals.ValidatorType.Min,
+                  value: 10,
+                },
+                maxValue: {
+                  type: powerbi.visuals.ValidatorType.Max,
+                  value: settings.bulletChart.targetLineShow ? 80 : 100,
+                },
+              },
+            },
+          },
+        },
+        {
           uid: "bullet_shape_color",
           control: {
             type: powerbi.visuals.FormattingComponent.ColorPicker,

@@ -1390,6 +1390,13 @@
           "type": {
             "numeric": true
           }
+        },
+        "percentageBulletHeight": {
+          "displayName": "Percentage bullet height",
+          "displayNameKey": "percentageBulletHeight",
+          "type": {
+            "numeric": true
+          }
         }
       }
     },

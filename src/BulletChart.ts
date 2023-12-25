@@ -55,10 +55,7 @@ export class BulletChart {
       this.data.mainMeasureValue,
       this.targetValue ?? this.data.mainMeasureValue,
     );
-    const baseRectHeight =
-      bulletSettings.targetLineShow && maxValue == this.data.mainMeasureValue
-        ? "70%"
-        : "100%";
+    const baseRectHeight = `${bulletSettings.percentageBulletHeight}%`;
 
     const xScale = d3
       .scaleLinear()
@@ -83,12 +80,10 @@ export class BulletChart {
       .attr("height", baseRectHeight)
       .style("fill", colorTarget)
       .attr("opacity", 1 - bulletSettings.transparency / 100);
-    if (
-      bulletSettings.targetLineShow &&
-      maxValue == this.data.mainMeasureValue
-    ) {
-      this.bulletChartTargetRect.attr("y", "15%");
-    }
+    this.bulletChartTargetRect.attr(
+      "y",
+      `${(100 - bulletSettings.percentageBulletHeight) / 2}%`,
+    );
     if (bulletSettings.borderShow) {
       this.bulletChartTargetRect
         .attr("rx", bulletSettings.roundEdges)
@@ -105,12 +100,10 @@ export class BulletChart {
         .attr("height", baseRectHeight)
         .style("fill", bulletSettings.mainColor)
         .attr("opacity", 1 - bulletSettings.transparency / 100);
-      if (
-        bulletSettings.targetLineShow &&
-        maxValue == this.data.mainMeasureValue
-      ) {
-        this.bulletChartMainRect.attr("y", "15%");
-      }
+      this.bulletChartMainRect.attr(
+        "y",
+        `${(100 - bulletSettings.percentageBulletHeight) / 2}%`,
+      );
       if (bulletSettings.borderShow) {
         this.bulletChartMainRect
           .attr("rx", bulletSettings.roundEdges)
@@ -128,9 +121,15 @@ export class BulletChart {
       this.bulletChartContainer
         .append("line")
         .attr("x1", () => xScale(this.targetValue))
-        .attr("y1", 0)
+        .attr(
+          "y1",
+          `${(100 - bulletSettings.percentageBulletHeight) / 2 - 10}%`,
+        )
         .attr("x2", () => xScale(this.targetValue))
-        .attr("y2", this.getSVGRect(this.bulletChartContainer).height)
+        .attr(
+          "y2",
+          `${100 - (100 - bulletSettings.percentageBulletHeight) / 2 + 10}%`,
+        )
         .style("stroke", bulletSettings.targetLineColor)
         .style("stroke-width", bulletSettings.targetLineWeight)
         .attr("opacity", 1 - bulletSettings.transparency / 100);

@@ -182,6 +182,7 @@ export class BulletChart {
   public targetLineColor = "#333333";
   public targetLineShow = false;
   public percentageHeight = 30;
+  public percentageBulletHeight = 100;
   public transparency = 0;
 }
 
