@@ -907,6 +907,7 @@ export function visualTransform(
     );
     updateFontSetting(allFontSettings, settings.font, "additionalValue");
   }
+  updateThemeCard(settings, dataGroups);
 
   // console.log(settings);
 
@@ -956,5 +957,75 @@ function updateFontSetting(
 
     default:
       break;
+  }
+}
+
+function updateThemeCard(settings: CardSettings, dataGroups: IDataGroup[]) {
+  if (settings.template.theme == "-" || settings.template.themeType == "-")
+    return;
+
+  if (settings.template.theme == "winter") {
+    switch (settings.template.themeType) {
+      case "bold":
+        settings.background.borderShow = true;
+        settings.background.borderFill = "#252A44";
+        settings.background.borderWeight = 3;
+
+        settings.font.mainIsBold = true;
+        settings.font.categoryIsBold = true;
+        settings.font.additionalNameIsBold = true;
+        settings.font.additionalValueIsBold = true;
+        settings.font.mainFontFamily = "segoe_bold";
+        settings.font.categoryFontFamily = "segoe_bold";
+        settings.font.additionalNameFontFamily =
+          '"Segoe UI Semibold", wf_segoe-ui_semibold, helvetica, arial, sans-serif';
+        settings.font.additionalValueFontFamily = "segoe_bold";
+        break;
+
+      case "dark":
+        settings.background.layoutShow = true;
+        settings.background.backFill = "#252A44";
+        settings.background.borderShow = true;
+        settings.background.borderFill = "#9AA165";
+        settings.background.borderWeight = 8;
+
+        settings.font.categoryColor = "#FFFFFF";
+        settings.font.color = "#FFFFFF";
+        settings.font.additionalCategoryColor = "#FFFFFF";
+
+        settings.font.mainFontFamily = "segoe_bold";
+        settings.font.categoryFontFamily =
+          '"Segoe UI Light", wf_segoe-ui_semibold, helvetica, arial, sans-serif';
+        settings.font.additionalNameFontFamily =
+          '"Segoe UI Semibold", wf_segoe-ui_semibold, helvetica, arial, sans-serif';
+        settings.font.additionalValueFontFamily = "segoe_bold";
+        break;
+
+      case "light":
+        settings.background.layoutShow = true;
+        settings.background.backFill = "#EFF9F8";
+
+        settings.font.mainFontFamily = "segoe_bold";
+        settings.font.categoryFontFamily = "segoe_bold";
+        settings.font.additionalNameFontFamily =
+          '"Segoe UI Semibold", wf_segoe-ui_semibold, helvetica, arial, sans-serif';
+        settings.font.additionalValueFontFamily = "segoe_bold";
+        break;
+
+      case "smooth":
+        settings.background.layoutShow = true;
+        settings.background.backFill = "#DAEFF4";
+        settings.background.borderShow = true;
+        settings.background.borderFill = "#DAEFF4";
+        settings.background.roundEdges = 17;
+
+        settings.font.mainFontFamily = "segoe_bold";
+        settings.font.categoryFontFamily =
+          '"Segoe UI Semibold", wf_segoe-ui_semibold, helvetica, arial, sans-serif';
+        settings.font.additionalNameFontFamily =
+          '"Segoe UI Semibold", wf_segoe-ui_semibold, helvetica, arial, sans-serif';
+        settings.font.additionalValueFontFamily = "segoe_bold";
+        break;
+    }
   }
 }

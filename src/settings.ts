@@ -182,7 +182,14 @@ export class BulletChart {
   public targetLineColor = "#333333";
   public targetLineShow = false;
   public percentageHeight = 30;
+  public transparency = 0;
 }
+
+export class Template {
+  public theme: string = "";
+  public themeType: string = "";
+}
+
 export class CardSettings extends DataViewObjectsParser {
   public grid: Grid = new Grid();
   public alignment: Alignment = new Alignment();
@@ -194,6 +201,7 @@ export class CardSettings extends DataViewObjectsParser {
   public additionalColor: AdditiionalColor[] = [];
   public constants: Constants = new Constants();
   public bulletChart: BulletChart = new BulletChart();
+  public template: Template = new Template();
 }
 
 export class Constants {

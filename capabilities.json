@@ -1382,6 +1382,80 @@
           "type": {
             "numeric": true
           }
+        },
+        "transparency": {
+          "displayName": "Transparency",
+          "description": "Set background transparency from 0 to 100%.",
+          "displayNameKey": "transparency",
+          "type": {
+            "numeric": true
+          }
+        }
+      }
+    },
+    "template": {
+      "properties": {
+        "show": {
+          "type": {
+            "bool": true
+          }
+        },
+        "theme": {
+          "displayName": "Theme base",
+          "type": {
+            "enumeration": [
+              {
+                "displayName": "-",
+                "value": "-"
+              },
+              {
+                "displayName": "Winter",
+                "displayNameKey": "winter",
+                "value": "winter"
+              },
+              {
+                "displayName": "Autumn",
+                "displayNameKey": "autumn",
+                "value": "autumn"
+              },
+              {
+                "displayName": "Forest",
+                "displayNameKey": "forest",
+                "value": "forest"
+              }
+            ]
+          }
+        },
+        "themeType": {
+          "displayName": "Theme type",
+          "type": {
+            "enumeration": [
+              {
+                "displayName": "-",
+                "value": "-"
+              },
+              {
+                "displayName": "Bold",
+                "displayNameKey": "Bold",
+                "value": "bold"
+              },
+              {
+                "displayName": "Light",
+                "displayNameKey": "Light",
+                "value": "light"
+              },
+              {
+                "displayName": "Dark",
+                "displayNameKey": "Dark",
+                "value": "dark"
+              },
+              {
+                "displayName": "Smooth",
+                "displayNameKey": "Smooth",
+                "value": "smooth"
+              }
+            ]
+          }
         }
       }
     }

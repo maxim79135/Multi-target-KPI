@@ -65,6 +65,11 @@ export class BulletChart {
       .domain([0, maxValue])
       .range([0, this.getSVGRect(this.bulletChartContainer).width]);
 
+    const colorTarget =
+      maxValue == this.data.mainMeasureValue
+        ? bulletSettings.mainColor
+        : bulletSettings.targetColor;
+
     if (bulletSettings.mainColor == "") {
       bulletSettings.mainColor = this.host.colorPalette.getColor(
         this.data.mainMeasureDataLabel,
@@ -76,12 +81,8 @@ export class BulletChart {
       .classed(BulletClassNames.BulletTargetRect, true)
       .attr("width", "96%")
       .attr("height", baseRectHeight)
-      .style(
-        "fill",
-        maxValue == this.data.mainMeasureValue
-          ? bulletSettings.mainColor
-          : bulletSettings.targetColor,
-      );
+      .style("fill", colorTarget)
+      .attr("opacity", 1 - bulletSettings.transparency / 100);
     if (
       bulletSettings.targetLineShow &&
       maxValue == this.data.mainMeasureValue
@@ -102,7 +103,8 @@ export class BulletChart {
         .classed(BulletClassNames.BulletMainRect, true)
         .attr("width", () => xScale(this.data.mainMeasureValue))
         .attr("height", baseRectHeight)
-        .style("fill", bulletSettings.mainColor);
+        .style("fill", bulletSettings.mainColor)
+        .attr("opacity", 1 - bulletSettings.transparency / 100);
       if (
         bulletSettings.targetLineShow &&
         maxValue == this.data.mainMeasureValue
@@ -130,7 +132,8 @@ export class BulletChart {
         .attr("x2", () => xScale(this.targetValue))
         .attr("y2", this.getSVGRect(this.bulletChartContainer).height)
         .style("stroke", bulletSettings.targetLineColor)
-        .style("stroke-width", bulletSettings.targetLineWeight);
+        .style("stroke-width", bulletSettings.targetLineWeight)
+        .attr("opacity", 1 - bulletSettings.transparency / 100);
     }
   }
 

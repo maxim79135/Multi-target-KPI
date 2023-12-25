@@ -269,6 +269,46 @@ export class CardKPI implements IVisual {
     grid.groups.push(category);
     grid.groups.push(additionalMeasures);
 
+    const template: powerbi.visuals.FormattingCard = {
+      description: "Template",
+      displayName: "Template",
+      uid: "template",
+      groups: [],
+    };
+    const templateTheme: powerbi.visuals.FormattingGroup = {
+      displayName: "Theme",
+      uid: "template_theme",
+      slices: [
+        {
+          uid: "template_theme_theme",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "template",
+                propertyName: "theme",
+              },
+              value: settings.template.theme,
+            },
+          },
+        },
+        {
+          uid: "template_theme_type",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Dropdown,
+            properties: {
+              descriptor: {
+                objectName: "template",
+                propertyName: "themeType",
+              },
+              value: settings.template.themeType,
+            },
+          },
+        },
+      ],
+    };
+    template.groups.push(templateTheme);
+
     const alignment: powerbi.visuals.FormattingCard = {
       description: "Alignment Description",
       displayName: "Alignment",
@@ -1581,6 +1621,19 @@ export class CardKPI implements IVisual {
             },
           },
         },
+        {
+          uid: "bullet_color_transparency",
+          control: {
+            type: powerbi.visuals.FormattingComponent.Slider,
+            properties: {
+              descriptor: {
+                objectName: "bulletChart",
+                propertyName: "transparency",
+              },
+              value: settings.bulletChart.transparency,
+            },
+          },
+        },
       ],
     };
     const bullet_shape: powerbi.visuals.FormattingGroup = {
@@ -1743,7 +1796,16 @@ export class CardKPI implements IVisual {
     bullet.groups.push(bullet_target_line);
 
     return {
-      cards: [grid, alignment, format, font, color, background, bullet],
+      cards: [
+        grid,
+        template,
+        alignment,
+        format,
+        font,
+        color,
+        background,
+        bullet,
+      ],
     };
   }
 
