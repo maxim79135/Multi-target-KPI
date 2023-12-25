@@ -36,7 +36,6 @@ export class BulletChart {
       .classed(BulletClassNames.BulletContainer, true)
       .style("width", "100%")
       .style("height", `${settings.bulletChart.percentageHeight}%`)
-      .style("margin-left", "2%")
       .style("float", "left");
     this.data = data;
     this.targetValue =
@@ -60,7 +59,7 @@ export class BulletChart {
     const xScale = d3
       .scaleLinear()
       .domain([0, maxValue])
-      .range([0, this.getSVGRect(this.bulletChartContainer).width]);
+      .range([0, this.getSVGRect(this.bulletChartContainer).width * 0.96]);
 
     const colorTarget =
       maxValue == this.data.mainMeasureValue
@@ -76,6 +75,7 @@ export class BulletChart {
     this.bulletChartTargetRect = this.bulletChartContainer
       .append("rect")
       .classed(BulletClassNames.BulletTargetRect, true)
+      .attr("x", "2%")
       .attr("width", "96%")
       .attr("height", baseRectHeight)
       .style("fill", colorTarget)
