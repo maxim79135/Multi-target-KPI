@@ -96,6 +96,7 @@ export class BulletChart {
       this.bulletChartMainRect = this.bulletChartContainer
         .append("rect")
         .classed(BulletClassNames.BulletMainRect, true)
+        .attr("x", "2%")
         .attr("width", () => xScale(this.data.mainMeasureValue))
         .attr("height", baseRectHeight)
         .style("fill", bulletSettings.mainColor)
