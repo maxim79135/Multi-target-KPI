@@ -1344,6 +1344,9 @@ export class CardKPI implements IVisual {
                         descriptor: {
                           objectName: "format",
                           propertyName: "blankAndNaNReplaceText",
+                          selector: {
+                            metadata: item.metadata,
+                          },
                         },
                         placeholder: "0",
                         value: item.blankAndNaNReplaceText,
