@@ -337,7 +337,7 @@ export class Card {
 
       // init start position
       const xStartPos = 0;
-      const yStartPos = 0;
+      const yStartPos = svgRect.height * 0.1;
       let maxWidth: number;
       let maxHeight: number;
       if (settings.grid.position == "aboveMainMeasure") {
@@ -391,6 +391,7 @@ export class Card {
 
       // update position
       categoryLabel.attr("transform", translate(xStartPos, yStartPos));
+      maxHeight = maxHeight - svgRect.height * 0.1
       this.setXPos(
         categoryLabel,
         maxWidth,

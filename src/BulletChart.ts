@@ -54,7 +54,8 @@ export class BulletChart {
       this.data.mainMeasureValue,
       this.targetValue ?? this.data.mainMeasureValue,
     );
-    const baseRectHeight = `${bulletSettings.percentageBulletHeight}%`;
+    const baseRectHeight = bulletSettings.percentageBulletHeight == 100 ? 90 : bulletSettings.percentageBulletHeight;
+    const baseRectHeightPerc = `${baseRectHeight}%`;
 
     const xScale = d3
       .scaleLinear()
@@ -77,7 +78,7 @@ export class BulletChart {
       .classed(BulletClassNames.BulletTargetRect, true)
       .attr("x", "2%")
       .attr("width", "96%")
-      .attr("height", baseRectHeight)
+      .attr("height", baseRectHeightPerc)
       .style("fill", colorTarget)
       .attr("opacity", 1 - bulletSettings.transparency / 100);
     this.bulletChartTargetRect.attr(
@@ -98,7 +99,7 @@ export class BulletChart {
         .classed(BulletClassNames.BulletMainRect, true)
         .attr("x", "2%")
         .attr("width", () => xScale(this.data.mainMeasureValue))
-        .attr("height", baseRectHeight)
+        .attr("height", baseRectHeightPerc)
         .style("fill", bulletSettings.mainColor)
         .attr("opacity", 1 - bulletSettings.transparency / 100);
       this.bulletChartMainRect.attr(

@@ -1042,59 +1042,19 @@
                 "value": "-"
               },
               {
-                "displayName": "😀",
-                "displayNameKey": "😀",
-                "value": "😀"
+                "displayName": "🔴",
+                "displayNameKey": "🔴",
+                "value": "🔴"
               },
               {
-                "displayName": "🙁",
-                "displayNameKey": "🙁",
-                "value": "🙁"
+                "displayName": "🟢",
+                "displayNameKey": "🟢",
+                "value": "🟢"
               },
               {
-                "displayName": "😡",
-                "displayNameKey": "😡",
-                "value": "😡"
-              },
-              {
-                "displayName": "😐",
-                "displayNameKey": "😐",
-                "value": "😐"
-              },
-              {
-                "displayName": "🤑",
-                "displayNameKey": "🤑",
-                "value": "🤑"
-              },
-              {
-                "displayName": "💩",
-                "displayNameKey": "💩",
-                "value": "💩"
-              },
-              {
-                "displayName": "😱",
-                "displayNameKey": "😱",
-                "value": "😱"
-              },
-              {
-                "displayName": "😎",
-                "displayNameKey": "😎",
-                "value": "😎"
-              },
-              {
-                "displayName": "😍",
-                "displayNameKey": "😍",
-                "value": "😍"
-              },
-              {
-                "displayName": "🥳",
-                "displayNameKey": "🥳",
-                "value": "🥳"
-              },
-              {
-                "displayName": "😭",
-                "displayNameKey": "😭",
-                "value": "😭"
+                "displayName": "🟡",
+                "displayNameKey": "🟡",
+                "value": "🟡"
               },
               {
                 "displayName": "👍",
@@ -1107,14 +1067,69 @@
                 "value": "👎"
               },
               {
-                "displayName": "😬",
-                "displayNameKey": "😬",
-                "value": "😬"
+                "displayName": "😀",
+                "displayNameKey": "😀",
+                "value": "😀"
               },
               {
-                "displayName": "🙄",
-                "displayNameKey": "🙄",
-                "value": "🙄"
+                "displayName": "🤨",
+                "displayNameKey": "🤨",
+                "value": "🤨"
+              },
+              {
+                "displayName": "🙁",
+                "displayNameKey": "🙁",
+                "value": "🙁"
+              },
+              {
+                "displayName": "🤑",
+                "displayNameKey": "🤑",
+                "value": "🤑"
+              },
+              {
+                "displayName": "😐",
+                "displayNameKey": "😐",
+                "value": "😐"
+              },
+              {
+                "displayName": "😡",
+                "displayNameKey": "😡",
+                "value": "😡"
+              },
+              {
+                "displayName": "😍",
+                "displayNameKey": "😍",
+                "value": "😍"
+              },
+              {
+                "displayName": "🤔",
+                "displayNameKey": "🤔",
+                "value": "🤔"
+              },
+              {
+                "displayName": "🥳",
+                "displayNameKey": "🥳",
+                "value": "🥳"
+              },
+              {
+                "displayName": "😔",
+                "displayNameKey": "😔",
+                "value": "😔"
+              },
+              {
+                "displayName": "😭",
+                "displayNameKey": "😭",
+                "value": "😭"
+              },
+              {
+                "displayName": "\u2B06",
+                "displayNameKey": "\u2B06",
+                "value": "\u2B06"
+              },
+              {
+                "displayName": "\u2B07",
+                "displayNameKey": "\u2B07",
+                "value": "\u2B07"
               }
             ]
           }
@@ -1129,59 +1144,19 @@
                 "value": "-"
               },
               {
-                "displayName": "😀",
-                "displayNameKey": "😀",
-                "value": "😀"
+                "displayName": "🔴",
+                "displayNameKey": "🔴",
+                "value": "🔴"
               },
               {
-                "displayName": "🙁",
-                "displayNameKey": "🙁",
-                "value": "🙁"
+                "displayName": "🟢",
+                "displayNameKey": "🟢",
+                "value": "🟢"
               },
               {
-                "displayName": "😡",
-                "displayNameKey": "😡",
-                "value": "😡"
-              },
-              {
-                "displayName": "😐",
-                "displayNameKey": "😐",
-                "value": "😐"
-              },
-              {
-                "displayName": "🤑",
-                "displayNameKey": "🤑",
-                "value": "🤑"
-              },
-              {
-                "displayName": "💩",
-                "displayNameKey": "💩",
-                "value": "💩"
-              },
-              {
-                "displayName": "😱",
-                "displayNameKey": "😱",
-                "value": "😱"
-              },
-              {
-                "displayName": "😎",
-                "displayNameKey": "😎",
-                "value": "😎"
-              },
-              {
-                "displayName": "😍",
-                "displayNameKey": "😍",
-                "value": "😍"
-              },
-              {
-                "displayName": "🥳",
-                "displayNameKey": "🥳",
-                "value": "🥳"
-              },
-              {
-                "displayName": "😭",
-                "displayNameKey": "😭",
-                "value": "😭"
+                "displayName": "🟡",
+                "displayNameKey": "🟡",
+                "value": "🟡"
               },
               {
                 "displayName": "👍",
@@ -1194,14 +1169,69 @@
                 "value": "👎"
               },
               {
-                "displayName": "😬",
-                "displayNameKey": "😬",
-                "value": "😬"
+                "displayName": "😀",
+                "displayNameKey": "😀",
+                "value": "😀"
               },
               {
-                "displayName": "🙄",
-                "displayNameKey": "🙄",
-                "value": "🙄"
+                "displayName": "🤨",
+                "displayNameKey": "🤨",
+                "value": "🤨"
+              },
+              {
+                "displayName": "🙁",
+                "displayNameKey": "🙁",
+                "value": "🙁"
+              },
+              {
+                "displayName": "🤑",
+                "displayNameKey": "🤑",
+                "value": "🤑"
+              },
+              {
+                "displayName": "😐",
+                "displayNameKey": "😐",
+                "value": "😐"
+              },
+              {
+                "displayName": "😡",
+                "displayNameKey": "😡",
+                "value": "😡"
+              },
+              {
+                "displayName": "😍",
+                "displayNameKey": "😍",
+                "value": "😍"
+              },
+              {
+                "displayName": "🤔",
+                "displayNameKey": "🤔",
+                "value": "🤔"
+              },
+              {
+                "displayName": "🥳",
+                "displayNameKey": "🥳",
+                "value": "🥳"
+              },
+              {
+                "displayName": "😔",
+                "displayNameKey": "😔",
+                "value": "😔"
+              },
+              {
+                "displayName": "😭",
+                "displayNameKey": "😭",
+                "value": "😭"
+              },
+              {
+                "displayName": "\u2B06",
+                "displayNameKey": "\u2B06",
+                "value": "\u2B06"
+              },
+              {
+                "displayName": "\u2B07",
+                "displayNameKey": "\u2B07",
+                "value": "\u2B07"
               }
             ]
           }
@@ -1216,59 +1246,19 @@
                 "value": "-"
               },
               {
-                "displayName": "😀",
-                "displayNameKey": "😀",
-                "value": "😀"
+                "displayName": "🔴",
+                "displayNameKey": "🔴",
+                "value": "🔴"
               },
               {
-                "displayName": "🙁",
-                "displayNameKey": "🙁",
-                "value": "🙁"
+                "displayName": "🟢",
+                "displayNameKey": "🟢",
+                "value": "🟢"
               },
               {
-                "displayName": "😡",
-                "displayNameKey": "😡",
-                "value": "😡"
-              },
-              {
-                "displayName": "😐",
-                "displayNameKey": "😐",
-                "value": "😐"
-              },
-              {
-                "displayName": "🤑",
-                "displayNameKey": "🤑",
-                "value": "🤑"
-              },
-              {
-                "displayName": "💩",
-                "displayNameKey": "💩",
-                "value": "💩"
-              },
-              {
-                "displayName": "😱",
-                "displayNameKey": "😱",
-                "value": "😱"
-              },
-              {
-                "displayName": "😎",
-                "displayNameKey": "😎",
-                "value": "😎"
-              },
-              {
-                "displayName": "😍",
-                "displayNameKey": "😍",
-                "value": "😍"
-              },
-              {
-                "displayName": "🥳",
-                "displayNameKey": "🥳",
-                "value": "🥳"
-              },
-              {
-                "displayName": "😭",
-                "displayNameKey": "😭",
-                "value": "😭"
+                "displayName": "🟡",
+                "displayNameKey": "🟡",
+                "value": "🟡"
               },
               {
                 "displayName": "👍",
@@ -1281,14 +1271,69 @@
                 "value": "👎"
               },
               {
-                "displayName": "😬",
-                "displayNameKey": "😬",
-                "value": "😬"
+                "displayName": "😀",
+                "displayNameKey": "😀",
+                "value": "😀"
               },
               {
-                "displayName": "🙄",
-                "displayNameKey": "🙄",
-                "value": "🙄"
+                "displayName": "🤨",
+                "displayNameKey": "🤨",
+                "value": "🤨"
+              },
+              {
+                "displayName": "🙁",
+                "displayNameKey": "🙁",
+                "value": "🙁"
+              },
+              {
+                "displayName": "🤑",
+                "displayNameKey": "🤑",
+                "value": "🤑"
+              },
+              {
+                "displayName": "😐",
+                "displayNameKey": "😐",
+                "value": "😐"
+              },
+              {
+                "displayName": "😡",
+                "displayNameKey": "😡",
+                "value": "😡"
+              },
+              {
+                "displayName": "😍",
+                "displayNameKey": "😍",
+                "value": "😍"
+              },
+              {
+                "displayName": "🤔",
+                "displayNameKey": "🤔",
+                "value": "🤔"
+              },
+              {
+                "displayName": "🥳",
+                "displayNameKey": "🥳",
+                "value": "🥳"
+              },
+              {
+                "displayName": "😔",
+                "displayNameKey": "😔",
+                "value": "😔"
+              },
+              {
+                "displayName": "😭",
+                "displayNameKey": "😭",
+                "value": "😭"
+              },
+              {
+                "displayName": "\u2B06",
+                "displayNameKey": "\u2B06",
+                "value": "\u2B06"
+              },
+              {
+                "displayName": "\u2B07",
+                "displayNameKey": "\u2B07",
+                "value": "\u2B07"
               }
             ]
           }
